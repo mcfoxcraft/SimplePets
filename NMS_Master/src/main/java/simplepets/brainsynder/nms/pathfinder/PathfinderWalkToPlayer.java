@@ -114,8 +114,8 @@ public class PathfinderWalkToPlayer extends Goal {
 
             // Will create a path to the player, and stop the pet within 5 (default) blocks of the player
             // it will stop around 10 blocks if it is a large pet
-            Path path = fixThisStupidThing();
-            alsoFixThis(path);
+            Path path = navigation.createPath(player, getStoppingDistance());
+            navigation.moveTo(path, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
         }
     }
 
@@ -187,32 +187,5 @@ public class PathfinderWalkToPlayer extends Goal {
 
     private int getRandomInt(int min, int max) {
         return MathUtils.random(max - min) + min;
-    }
-
-    private Path fixThisStupidThing() {
-        try {
-            return navigation.createPath(player, getStoppingDistance());
-        } catch (NoSuchMethodError ex) {
-            try {
-                return (Path) Reflection.getMethod(PathNavigation.class, "createPath", Entity.class, int.class)
-                        .invoke(navigation, player, getStoppingDistance());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    private void alsoFixThis(Path path) {
-        try {
-            navigation.moveTo(path, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
-        } catch (NoSuchMethodError ex) {
-            try {
-                Reflection.getMethod(PathNavigation.class, "moveTo", Path.class, double.class)
-                        .invoke(navigation, path, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
