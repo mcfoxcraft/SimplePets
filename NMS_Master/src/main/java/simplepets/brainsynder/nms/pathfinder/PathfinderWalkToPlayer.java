@@ -1,10 +1,8 @@
 package simplepets.brainsynder.nms.pathfinder;
 
 import lib.brainsynder.math.MathUtils;
-import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -24,7 +22,6 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.EnumSet;
 
 public class PathfinderWalkToPlayer extends Goal {
@@ -99,7 +96,6 @@ public class PathfinderWalkToPlayer extends Goal {
 
     @Override
     public void tick() {
-
         // Translation: Entity.squaredDistanceTo (Entity)
         if (entity.distanceToSqr(this.player) >= 155.0D) { // Will teleport the pet if the player is more then 155 blocks away
             // Translation: Entity.distanceTo (Entity)
