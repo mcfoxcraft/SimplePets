@@ -83,6 +83,15 @@ public class SpawnerUtil implements ISpawnUtil {
                 return BiOptional.of(null, Colorize.translateBungeeHex(ConfigOption.INSTANCE.WORLDS_FAIL_MESSAGE.getValue()));
         }
 
+        if (ConfigOption.INSTANCE.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.getValue()) {
+            int maxHeight = location.getWorld().getMaxHeight();
+            int minHeight = location.getWorld().getMinHeight();
+            int y = location.getBlockY();
+
+            if ( (y > maxHeight) || (minHeight > y) )
+                return BiOptional.of(null, Colorize.translateBungeeHex(ConfigOption.INSTANCE.MISC_TOGGLES_EXCEEDS_WORLD_CONFINES.getValue()));
+        }
+
         try {
             EntityPet customEntity;
 

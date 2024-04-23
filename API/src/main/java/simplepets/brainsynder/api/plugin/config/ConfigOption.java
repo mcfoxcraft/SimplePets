@@ -351,6 +351,25 @@ public enum ConfigOption {
                     NOTE: This will override the 'pet-visibility' option
                     
                     Default: {default}""");
+    public final ConfigEntry<Boolean> MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS = createOption("misc-toggles.world-confines-pet-limits.enabled", false,
+            """
+                    When pets are outside of the vertical confines of the world they will
+                    be removed and more pets will be prevented from spawning
+                    
+                    Note: This is recommended if you are experiencing lag with pets and players being high up in the world
+                    Note: This MIGHT be removed in the future when a permanent fix is implemented
+                    
+                    Default: {default}""");
+    public final ConfigEntry<String> MISC_TOGGLES_EXCEEDS_WORLD_CONFINES = createOption("misc-toggles.world-confines-pet-limits.spawning-error-message",
+            "&cPets are not allowed to be spawned outside of the worlds vertical confines",
+            """
+                    When pets are outside of the vertical confines of the world they will
+                    be removed and more pets will be prevented from spawning
+                    
+                    Note: This is recommended if you are experiencing lag with pets and players being high up in the world
+                    Note: This MIGHT be removed in the future when a permanent fix is implemented
+                    
+                    Default: {default}""");
 
 
     // Pet Toggles

@@ -83,6 +83,10 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     private boolean hideNameShifting = true;
     private int autoRemoveTick = 10000;
 
+    private boolean verticalWorldConfines = false;
+    private int maxHeight;
+    private int minHeight;
+
     public EntityPet(EntityType<? extends Mob> entitytypes, Level world) {
         super(entitytypes, world);
         rawEntityType = EntityType.PIG;
@@ -114,6 +118,10 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
         VersionTranslator.setAttributes(this, walkSpeed, flySpeed);
         EntityUtils.fetchTeam(user.getPlayer()).addEntry(getUUID().toString());
+
+        verticalWorldConfines = ConfigOption.INSTANCE.MISC_TOGGLES_WORLD_CONFINES_PET_LIMITS.getValue();
+        maxHeight = getEntity().getWorld().getMaxHeight();
+        minHeight = getEntity().getWorld().getMinHeight();
     }
 
     public void setDisplayName(boolean displayName) {
@@ -482,6 +490,11 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (getPetUser () == null || getPetUser ().getPlayer() == null || !getPetUser ().getPlayer().isOnline()) {
             if (bukkitEntity != null)
                 bukkitEntity.remove();
+            return;
+        }
+
+        if (verticalWorldConfines && ( (getY() > maxHeight) || (minHeight > getY()) )) {
+            getPetUser ().removePet(getPetType());
             return;
         }
 
