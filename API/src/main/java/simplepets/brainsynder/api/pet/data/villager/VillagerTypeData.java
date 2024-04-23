@@ -1,12 +1,12 @@
 package simplepets.brainsynder.api.pet.data.villager;
 
 import simplepets.brainsynder.api.Namespace;
-import simplepets.brainsynder.api.entity.passive.IEntityVillagerPet;
+import simplepets.brainsynder.api.entity.misc.IProfession;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.wrappers.villager.VillagerType;
 
 @Namespace(namespace = "profession")
-public class VillagerTypeData extends PetData<IEntityVillagerPet> {
+public class VillagerTypeData extends PetData<IProfession> {
     public VillagerTypeData() {
         for (VillagerType type : VillagerType.values()) {
             addDefaultItem(type.name(), type.getIcon()
@@ -20,17 +20,17 @@ public class VillagerTypeData extends PetData<IEntityVillagerPet> {
     }
 
     @Override
-    public void onLeftClick(IEntityVillagerPet entity) {
+    public void onLeftClick(IProfession entity) {
         entity.setVillagerType(VillagerType.getNext(entity.getVillagerType()));
     }
 
     @Override
-    public void onRightClick(IEntityVillagerPet entity) {
+    public void onRightClick(IProfession entity) {
         entity.setVillagerType(VillagerType.getPrevious(entity.getVillagerType()));
     }
 
     @Override
-    public Object value(IEntityVillagerPet entity) {
+    public Object value(IProfession entity) {
         return entity.getVillagerType();
     }
 }

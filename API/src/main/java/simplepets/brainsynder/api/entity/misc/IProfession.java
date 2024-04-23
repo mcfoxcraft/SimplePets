@@ -1,12 +1,13 @@
 package simplepets.brainsynder.api.entity.misc;
 
 
+import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.wrappers.villager.BiomeType;
 import simplepets.brainsynder.api.wrappers.villager.VillagerData;
 import simplepets.brainsynder.api.wrappers.villager.VillagerLevel;
 import simplepets.brainsynder.api.wrappers.villager.VillagerType;
 
-public interface IProfession {
+public interface IProfession extends IEntityPet {
     /**
      * This gets used for 1.14+
      */
