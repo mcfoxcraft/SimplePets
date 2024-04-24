@@ -31,11 +31,16 @@ public class Premium {
         SPIGOT,
         POLYMART,
         MODRINTH,
-        HANGAR;
+        HANGAR,
+        CUSTOM;
 
         public UpdateCheckSource toSource () {
-            if (this == JENKINS) return UpdateCheckSource.CUSTOM_URL;
+            if (!fromDownloadSite()) return UpdateCheckSource.CUSTOM_URL;
             return UpdateCheckSource.valueOf(name());
+        }
+
+        public boolean fromDownloadSite () {
+            return (this != JENKINS) && (this != CUSTOM);
         }
     }
 }
