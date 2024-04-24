@@ -60,6 +60,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     private ChatColor glowColor = ChatColor.WHITE;
     private boolean ignoreVanish = false;
     private int standStillTicks = 0;
+    private int hoverTickCount = 0;
     private int blockX = 0;
     private int blockZ = 0;
     private int blockY = 0;
@@ -82,6 +83,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     private boolean displayNameVisibility = true;
     private boolean hideNameShifting = true;
     private int autoRemoveTick = 10000;
+    private final int hoverRemoveTick = 6000;
 
     private boolean verticalWorldConfines = false;
     private int maxHeight;
@@ -496,6 +498,19 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (verticalWorldConfines && ( (getY() > maxHeight) || (minHeight > getY()) )) {
             getPetUser ().removePet(getPetType());
             return;
+        }
+
+        if (isOnGround()) {
+            if (hoverTickCount != 0) hoverTickCount = 0;
+        } else {
+            if (hoverTickCount == hoverRemoveTick) {
+                if (getPetUser () != null) {
+                    getPetUser ().removePet(getPetType());
+                } else {
+                    bukkitEntity.remove();
+                }
+            }
+            hoverTickCount++;
         }
 
         if (getPetUser ().isPetVehicle(getPetType())) {
