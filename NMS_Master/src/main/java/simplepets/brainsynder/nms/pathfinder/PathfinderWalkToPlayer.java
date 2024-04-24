@@ -12,6 +12,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import simplepets.brainsynder.api.entity.misc.EntityPetType;
+import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.event.entity.movment.PetTeleportEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.pet.CommandReason;
@@ -36,6 +37,9 @@ public class PathfinderWalkToPlayer extends Goal {
     private final boolean first = true;
     private boolean large = true;
 
+    private final int largeDistance;
+    private final int smallDistance;
+
     public PathfinderWalkToPlayer(EntityPet entity, int minDistance, int maxDistance) {
         this.entity = entity;
 
@@ -52,6 +56,9 @@ public class PathfinderWalkToPlayer extends Goal {
 
         this.maxDistance = modifyInt(maxDistance);
         this.minDistance = modifyInt(minDistance);
+
+        largeDistance = ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_LARGE.getValue();
+        smallDistance = ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_SMALL.getValue();
 
         // Translation: setControls(EnumSet<Goal.Control>)
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -107,6 +114,8 @@ public class PathfinderWalkToPlayer extends Goal {
             return;
         }
 
+        if ( (!(entity instanceof IFlyableEntity)) && (!entity.onGround())) return;
+
         // Translation: EntityInsentient.getLookControl().lookAt(EntityPlayer, 10.0F, (float)EntityInsentient.getLookPitchSpeed())
         //entity.getControllerLook().a(player, 10F, entity.O());
         if (--this.updateCountdownTicks <= 0) {
@@ -132,8 +141,7 @@ public class PathfinderWalkToPlayer extends Goal {
     private int getStoppingDistance() {
         if (SimplePets.getConfiguration() == null) return 0;
 
-        return large ? ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_LARGE.getValue()
-                : ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_SMALL.getValue();
+        return large ? largeDistance : smallDistance;
     }
 
     /**
