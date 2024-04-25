@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>simplepets.brainsynder</groupId>
+        <artifactId>SimplePets</artifactId>
+        <version>1</version>
+    </parent>
+
+    <artifactId>Version_${minecraft.version}</artifactId>
+    <version>${module.version}</version>
+
+    <build>
+        <sourceDirectory>src/</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>net.md-5</groupId>
+                <artifactId>specialsource-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.version}</version>
+                <configuration>
+                    <minimizeJar>false</minimizeJar>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <outputDirectory>/tmp</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>${groupId}.nms</pattern>
+                                    <shadedPattern>${groupId}.versions.${current-module.version}</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bukkit.craftbukkit.${spigot.nms}</pattern>
+                                    <shadedPattern>org.bukkit.craftbukkit.${current-module.nms}</shadedPattern>
+                                </relocation>
+
+
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>${groupId}.internal.apache</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>anvil.brainsynder</pattern>
+                                    <shadedPattern>${groupId}.internal.anvil</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>${groupId}.internal.papermc</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.jeff_media.updatechecker</pattern>
+                                    <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <java.version>21</java.version>
+
+        <minecraft.version>1.20.5</minecraft.version>
+        <current-module.version>v1_20_5</current-module.version>
+        <current-module.nms>v1_20_R4</current-module.nms>
+
+        <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
+        <module.info>-${minecraft.version}</module.info>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>${spigot.version}</version>
+            <classifier>remapped-mojang</classifier>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>simplepets.brainsynder</groupId>
+            <artifactId>API</artifactId>
+            <version>${module.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>simplepets.brainsynder</groupId>
+            <artifactId>MAIN</artifactId>
+            <version>${module.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>anvil.brainsynder</groupId>
+                    <artifactId>anvilgui</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.jeff_media</groupId>
+                    <artifactId>SpigotUpdateChecker</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>simplepets.brainsynder</groupId>
+            <artifactId>NMS_Master</artifactId>
+            <version>${module.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>
