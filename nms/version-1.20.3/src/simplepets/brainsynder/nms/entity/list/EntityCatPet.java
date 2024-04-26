@@ -18,27 +18,28 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.CatType;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.animal.Cat}
  */
 public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
-    private static final EntityDataAccessor<CatVariant> TYPE;
-    private static final EntityDataAccessor<Boolean> SLEEPING_WITH_OWNER;
-    private static final EntityDataAccessor<Boolean> HEAD_UP;
-    private static final EntityDataAccessor<Integer> COLLAR_COLOR;
+    private static final EntityDataAccessor<CatVariant> TYPE = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.CAT_VARIANT);
+    private static final EntityDataAccessor<Boolean> SLEEPING_WITH_OWNER = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HEAD_UP = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.INT);
 
     public EntityCatPet(PetType type, PetUser user) {
         super(EntityType.CAT, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(TYPE, BuiltInRegistries.CAT_VARIANT.getOrThrow(CatVariant.TABBY));
-        registerAccessorValue(SLEEPING_WITH_OWNER, false);
-        registerAccessorValue(HEAD_UP, false);
-        registerAccessorValue(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(TYPE, BuiltInRegistries.CAT_VARIANT.getOrThrow(CatVariant.TABBY));
+        dataAccess.define(SLEEPING_WITH_OWNER, false);
+        dataAccess.define(HEAD_UP, false);
+        dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
     }
 
     @Override
@@ -99,12 +100,5 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     @Override
     public void setPetSleeping(boolean sleeping) {
         entityData.set(SLEEPING_WITH_OWNER, sleeping);
-    }
-
-    static {
-        TYPE = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.CAT_VARIANT);
-        SLEEPING_WITH_OWNER = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
-        HEAD_UP = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
-        COLLAR_COLOR = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.INT);
     }
 }

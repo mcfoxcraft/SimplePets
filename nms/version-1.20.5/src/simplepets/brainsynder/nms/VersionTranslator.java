@@ -3,6 +3,8 @@ package simplepets.brainsynder.nms;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import lib.brainsynder.ServerVersion;
+import lib.brainsynder.internal.nbtapi.nbtapi.NBTContainer;
+import lib.brainsynder.internal.nbtapi.nbtapi.NBTReflectionUtil;
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.other.NBTException;
@@ -69,7 +71,7 @@ public class VersionTranslator {
                 public float bl
                 protected int bm
              */
-            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_3.getEntityJumpField()); // For 1.20.1
+            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_5.getEntityJumpField()); // For 1.20.1
             jumpingField.setAccessible(true);
             return VersionTranslator.jumpingField = jumpingField;
         } catch (Exception ex) {
@@ -77,7 +79,7 @@ public class VersionTranslator {
         }
     }
 
-    public static org.bukkit.entity.Entity getBukkitEntity (Entity entity) {
+    public static org.bukkit.entity.Entity getBukkitEntity(Entity entity) {
         org.bukkit.craftbukkit.v1_20_R4.entity.CraftEntity craftEntity = entity.getBukkitEntity();
         return craftEntity;
     }
@@ -139,7 +141,7 @@ public class VersionTranslator {
                                       boolean glow) throws IllegalAccessException {
         Int2ObjectMap<SynchedEntityData.DataItem<Byte>> newMap =
                 (Int2ObjectMap<SynchedEntityData.DataItem<Byte>>) FieldUtils.readDeclaredField(toCloneDataWatcher,
-                        VersionFields.v1_20_3.getEntityDataMapField(), true);
+                        VersionFields.v1_20_5.getEntityDataMapField(), true);
 
         SynchedEntityData.DataItem<Byte> item = newMap.get(0);
         byte initialBitMask = item.getValue();
@@ -149,7 +151,7 @@ public class VersionTranslator {
         } else {
             item.setValue((byte) (initialBitMask & ~(1 << bitMaskIndex)));
         }
-        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_20_3.getEntityDataMapField(), newMap, true);
+        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_20_5.getEntityDataMapField(), newMap, true);
     }
 
     public static org.bukkit.inventory.ItemStack toItemStack(StorageTagCompound compound) {
@@ -161,8 +163,8 @@ public class VersionTranslator {
 
             try {
                 CompoundTag compoundTag = TagParser.parseTag(compound.toString());
-                //ItemStack nmsItem = ItemStack.parseOptional(compoundTag);
-                return CraftItemStack.asBukkitCopy(null);
+                ItemStack nmsItem = (ItemStack) NBTReflectionUtil.convertNBTCompoundtoNMSItem(new NBTContainer(compoundTag));
+                return CraftItemStack.asBukkitCopy(nmsItem);
             } catch (CommandSyntaxException e) {
                 throw new InvalidInputException("Failed to parse Item NBT", e);
             }
@@ -172,7 +174,8 @@ public class VersionTranslator {
     public static StorageTagCompound fromItemStack(org.bukkit.inventory.ItemStack item) {
         CompoundTag compoundTag = new CompoundTag();
         ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        //compoundTag = nmsItem.save(HolderLookup.RegistryLookup.Provider compoundTag);
+        compoundTag = (CompoundTag) NBTReflectionUtil.convertNMSItemtoNBTCompound(nmsItem).getCompound();
+        // compoundTag = nmsItem.save(((CraftServer) Bukkit.getServer()).getServer().registryAccess(), compoundTag);
 
         try {
             return JsonToNBT.getTagFromJson(compoundTag.toString());
@@ -219,7 +222,7 @@ public class VersionTranslator {
     // net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity
     // private final net.minecraft.world.entity.EntityTypes<?>
     public static String getEntityTypeVariable() {
-        return "e";
+        return "f";
     }
 
     public static boolean useInteger() {
@@ -230,33 +233,34 @@ public class VersionTranslator {
     // ADDED DURING 1.20.1 DEVELOPMENT
     public static final EntityDataSerializer<Optional<BlockState>> OPTIONAL_BLOCK_STATE = EntityDataSerializers.OPTIONAL_BLOCK_STATE;
 
-    public static void calculateEntityAnimation (LivingEntity entity, boolean var) {
+    public static void calculateEntityAnimation(LivingEntity entity, boolean var) {
         entity.calculateEntityAnimation(var);
     }
 
-    public static void setMapUpStep (Entity entity, float value) {
+    public static void setMapUpStep(Entity entity, float value) {
         // Was this even needed?
         // entity.setMaxUpStep(value);
     }
-    public static BlockPos getPosition (Entity entity) {
+
+    public static BlockPos getPosition(Entity entity) {
         return BlockPos.containing(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
     }
 
-    public static ResourceLocation toMinecraftResource (NamespacedKey key) {
+    public static ResourceLocation toMinecraftResource(NamespacedKey key) {
         return CraftNamespacedKey.toMinecraft(key);
     }
 
-    public static NamespacedKey toBukkitNamespace (ResourceLocation resource) {
+    public static NamespacedKey toBukkitNamespace(ResourceLocation resource) {
         return CraftNamespacedKey.fromMinecraft(resource);
     }
 
     // ADDED DURING 1.20.1 DEVELOPMENT
-    public static Level getEntityLevel (Entity entity) {
+    public static Level getEntityLevel(Entity entity) {
         return entity.level();
     }
 
     // ADDED DURING 1.20.5 DEVELOPMENT
-    public static void registerDataAccessors (SynchedEntityData.Builder datawatcher, LinkedList<DataWatcherValue> values) {
+    public static void registerDataAccessors(SynchedEntityData.Builder datawatcher, LinkedList<DataWatcherValue> values) {
         values.forEach(accessor -> {
             datawatcher.define(accessor.accessor(), accessor.value());
         });

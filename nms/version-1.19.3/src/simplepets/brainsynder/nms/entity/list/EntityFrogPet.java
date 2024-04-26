@@ -1,10 +1,15 @@
+/*
+ * Copyright 2024
+ * BSDevelopment <https://bsdevelopment.org>
+ */
+
 package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
 import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.nbt.StorageTagCompound;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,11 +19,11 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.animal.FrogVariant;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.craftbukkit.v1_19_R1.util.CraftNamespacedKey;
 import simplepets.brainsynder.api.entity.passive.IEntityFrogPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.FrogType;
+import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
@@ -113,12 +118,12 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
 
     @Override
     public void setVariant(FrogType variant) {
-        entityData.set(DATA_VARIANT, Registry.FROG_VARIANT.get(CraftNamespacedKey.toMinecraft(variant.getKey())));
+        entityData.set(DATA_VARIANT, BuiltInRegistries.FROG_VARIANT.get(VersionTranslator.toMinecraftResource(variant.getKey())));
     }
 
     @Override
     public FrogType getVariant() {
-        return FrogType.getByName(org.bukkit.Registry.FROG_VARIANT.get(CraftNamespacedKey.fromMinecraft(net.minecraft.core.Registry.FROG_VARIANT.getKey(entityData.get(DATA_VARIANT)))).name());
+        return FrogType.getByName(org.bukkit.Registry.FROG_VARIANT.get(VersionTranslator.toBukkitNamespace(BuiltInRegistries.FROG_VARIANT.getKey(entityData.get(DATA_VARIANT)))).name());
     }
 
     @Override

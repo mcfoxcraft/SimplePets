@@ -17,54 +17,38 @@
         <sourceDirectory>src/</sourceDirectory>
         <plugins>
             <plugin>
-                <groupId>net.md-5</groupId>
-                <artifactId>specialsource-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>${shade.version}</version>
-                <configuration>
-                    <minimizeJar>false</minimizeJar>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <outputDirectory>/tmp</outputDirectory>
-                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>net.md-5</groupId>
+                <artifactId>specialsource-maven-plugin</artifactId>
+                <version>${specialsource.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>remap</goal>
                         </goals>
+                        <id>remap-obf</id>
                         <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>${groupId}.nms</pattern>
-                                    <shadedPattern>${groupId}.versions.${current-module.version}</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.bukkit.craftbukkit.${spigot.nms}</pattern>
-                                    <shadedPattern>org.bukkit.craftbukkit.${current-module.nms}</shadedPattern>
-                                </relocation>
-
-
-                                <relocation>
-                                    <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>${groupId}.internal.apache</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>anvil.brainsynder</pattern>
-                                    <shadedPattern>${groupId}.internal.anvil</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>io.papermc.lib</pattern>
-                                    <shadedPattern>${groupId}.internal.papermc</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.jeff_media.updatechecker</pattern>
-                                    <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
-                                </relocation>
-                            </relocations>
+                            <srgIn>org.spigotmc:minecraft-server:${spigot.version}:txt:maps-mojang</srgIn>
+                            <reverse>true</reverse>
+                            <remappedDependencies>org.spigotmc:spigot:${spigot.version}:jar:remapped-mojang</remappedDependencies>
+                            <remappedArtifactAttached>true</remappedArtifactAttached>
+                            <remappedClassifierName>remapped-obf</remappedClassifierName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remap</goal>
+                        </goals>
+                        <id>remap-spigot</id>
+                        <configuration>
+                            <inputFile>${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar</inputFile>
+                            <srgIn>org.spigotmc:minecraft-server:${spigot.version}:csrg:maps-spigot</srgIn>
+                            <remappedDependencies>org.spigotmc:spigot:${spigot.version}:jar:remapped-obf</remappedDependencies>
                         </configuration>
                     </execution>
                 </executions>
@@ -96,11 +80,13 @@
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>API</artifactId>
             <version>${module.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>MAIN</artifactId>
             <version>${module.version}</version>
+            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>anvil.brainsynder</groupId>

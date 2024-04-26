@@ -5,7 +5,6 @@ import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -17,11 +16,10 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.CitizensFixer;
 import simplepets.brainsynder.nms.VersionFields;
 import simplepets.brainsynder.nms.VersionTranslator;
-import simplepets.brainsynder.nms.utils.DataWatcherValue;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.lang.reflect.Field;
 import java.util.IdentityHashMap;
-import java.util.LinkedList;
 
 public class EntityBase extends Mob {
     protected final EntityType<? extends Mob> entityType;
@@ -45,18 +43,15 @@ public class EntityBase extends Mob {
         originalEntityType = entitytypes;
     }
 
-    private final LinkedList<DataWatcherValue> dataWatcherValues = new LinkedList<>();
+    public void populateDataAccess(PetDataAccess dataAccess) {}
 
-    public void registerAccessorValue (EntityDataAccessor<?> accessor, Object value) {
-        dataWatcherValues.addLast(new DataWatcherValue(accessor, value));
-    }
-
-    // The way we register EntityData was changed a bit to try and work with multiple versions...
-    // We can blame 1.20.5 for removing the define method from SynchedEntityData
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        VersionTranslator.registerDataAccessors(this, dataWatcherValues);
+
+        PetDataAccess dataAccess = new PetDataAccess();
+        populateDataAccess(dataAccess);
+        dataAccess.getAccessorDefinitions().forEach(entityData::define);
     }
 
     // 1.20.1+   Replaces boolean rideableUnderWater()
