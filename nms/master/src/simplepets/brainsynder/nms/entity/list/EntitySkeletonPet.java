@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntitySkeletonAbstractPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntitySkeleton}
+ * NMS: {@link net.minecraft.world.entity.monster.Skeleton}
  */
 public class EntitySkeletonPet extends EntitySkeletonAbstractPet implements IEntitySkeletonPet {
     public EntitySkeletonPet(PetType type, PetUser user) {

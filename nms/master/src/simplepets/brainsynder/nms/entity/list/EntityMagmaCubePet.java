@@ -6,7 +6,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityMagmaCube}
+ * NMS: {@link net.minecraft.world.entity.monster.MagmaCube}
  */
 public class EntityMagmaCubePet extends EntitySlimePet implements IEntityMagmaCubePet {
     public EntityMagmaCubePet(PetType type, PetUser user) {

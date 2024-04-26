@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityCaveSpider}
+ * NMS: {@link net.minecraft.world.entity.monster.CaveSpider}
  */
 public class EntityCaveSpiderPet extends EntityPet implements IEntityCaveSpiderPet {
     public EntityCaveSpiderPet(PetType type, PetUser user) {

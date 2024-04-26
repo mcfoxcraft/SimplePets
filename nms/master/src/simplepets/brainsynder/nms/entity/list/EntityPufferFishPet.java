@@ -13,7 +13,7 @@ import simplepets.brainsynder.nms.entity.EntityFishPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPufferFish}
+ * NMS: {@link net.minecraft.world.entity.animal.Pufferfish}
  */
 public class EntityPufferFishPet extends EntityFishPet implements IEntityPufferFishPet {
     private static final EntityDataAccessor<Integer> PUFF_STATE = SynchedEntityData.defineId(EntityPufferFishPet.class, EntityDataSerializers.INT);

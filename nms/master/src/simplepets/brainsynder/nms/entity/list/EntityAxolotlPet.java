@@ -19,7 +19,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityAxolotl}
+ * NMS: {@link net.minecraft.world.entity.animal.axolotl.Axolotl}
  */
 // Implement Bucketable so the server resends the entity when the client tries
 // to pick it up with a bucket

@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPhantom}
+ * NMS: {@link net.minecraft.world.entity.monster.Phantom}
  */
 public class EntityPhantomPet extends EntityPet implements IEntitySlimePet {
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(EntityPhantomPet.class, EntityDataSerializers.INT);

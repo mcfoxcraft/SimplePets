@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityTurtle}
+ * NMS: {@link net.minecraft.world.entity.animal.Turtle}
  */
 public class EntityTurtlePet extends EntityAgeablePet implements IEntityTurtlePet {
     private static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BLOCK_POS);

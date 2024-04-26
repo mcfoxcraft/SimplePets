@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntityDonkeyAbstractPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityHorseMule}
+ * NMS: {@link net.minecraft.world.entity.animal.horse.Mule}
  */
 public class EntityMulePet extends EntityDonkeyAbstractPet implements IEntityMulePet {
     public EntityMulePet(PetType type, PetUser user) {

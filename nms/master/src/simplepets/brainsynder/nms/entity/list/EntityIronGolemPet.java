@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityIronGolem}
+ * NMS: {@link net.minecraft.world.entity.animal.IronGolem}
  */
 public class EntityIronGolemPet extends EntityPet implements IEntityIronGolemPet {
     public EntityIronGolemPet(PetType type, PetUser user) {

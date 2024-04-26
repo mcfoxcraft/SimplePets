@@ -19,7 +19,7 @@ import simplepets.brainsynder.nms.utils.EntityUtils;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityVillager}
+ * NMS: {@link net.minecraft.world.entity.npc.Villager}
  */
 public class EntityVillagerPet extends EntityAgeablePet implements IEntityVillagerPet {
     private static final EntityDataAccessor<Integer> HEAD_ROLLING_TIME_LEFT = SynchedEntityData.defineId(EntityVillagerPet.class, EntityDataSerializers.INT);

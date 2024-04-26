@@ -21,7 +21,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 import java.util.List;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPanda}
+ * NMS: {@link net.minecraft.world.entity.animal.Panda}
  */
 public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet {
     private static final EntityDataAccessor<Integer> ASK_FOR_BAMBOO_TICKS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);

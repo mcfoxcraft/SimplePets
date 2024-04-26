@@ -16,7 +16,7 @@ import simplepets.brainsynder.nms.entity.branch.EntityDonkeyAbstractPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityLlama}
+ * NMS: {@link net.minecraft.world.entity.animal.horse.Llama}
  */
 public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLlamaPet {
     private static final EntityDataAccessor<Integer> STRENGTH = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);

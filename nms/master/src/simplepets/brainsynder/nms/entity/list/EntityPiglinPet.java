@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.branch.EntityPiglinAbstractPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPiglin}
+ * NMS: {@link net.minecraft.world.entity.monster.piglin.Piglin}
  */
 public class EntityPiglinPet extends EntityPiglinAbstractPet implements IEntityPiglinPet {
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);

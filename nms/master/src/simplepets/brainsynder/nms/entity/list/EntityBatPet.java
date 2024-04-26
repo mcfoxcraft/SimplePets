@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityBat}
+ * NMS: {@link net.minecraft.world.entity.ambient.Bat}
  */
 public class EntityBatPet extends EntityPet implements IEntityBatPet {
     private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(EntityBatPet.class, EntityDataSerializers.BYTE);

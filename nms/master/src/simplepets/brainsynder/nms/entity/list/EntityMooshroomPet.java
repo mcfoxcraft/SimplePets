@@ -13,7 +13,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityMushroomCow}
+ * NMS: {@link net.minecraft.world.entity.animal.MushroomCow}
  */
 public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMooshroomPet {
     private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(EntityMooshroomPet.class, EntityDataSerializers.STRING);

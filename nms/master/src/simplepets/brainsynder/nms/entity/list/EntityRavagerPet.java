@@ -10,7 +10,7 @@ import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.branch.EntityRaiderPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityRavager}
+ * NMS: {@link net.minecraft.world.entity.monster.Ravager}
  */
 public class EntityRavagerPet extends EntityRaiderPet implements IEntityRavagerPet {
     private int attackTick = 10;

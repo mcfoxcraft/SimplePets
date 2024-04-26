@@ -22,7 +22,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 import java.util.Optional;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityEnderman}
+ * NMS: {@link net.minecraft.world.entity.monster.Enderman}
  */
 public class EntityEndermanPet extends EntityPet implements IEntityEndermanPet {
     private static final EntityDataAccessor<Optional<BlockState>> CARRIED_BLOCK = SynchedEntityData.defineId(EntityEndermanPet.class, VersionTranslator.OPTIONAL_BLOCK_STATE);

@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityVex}
+ * NMS: {@link net.minecraft.world.entity.monster.Vex}
  */
 public class EntityVexPet extends EntityPet implements IEntityVexPet {
     protected static final EntityDataAccessor<Byte> VEX_FLAGS = SynchedEntityData.defineId(EntityVexPet.class, EntityDataSerializers.BYTE);

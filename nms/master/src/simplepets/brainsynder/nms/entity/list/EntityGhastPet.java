@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityGhast}
+ * NMS: {@link net.minecraft.world.entity.monster.Ghast}
  */
 public class EntityGhastPet extends EntityPet implements IEntityGhastPet {
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(EntityGhastPet.class, EntityDataSerializers.BOOLEAN);

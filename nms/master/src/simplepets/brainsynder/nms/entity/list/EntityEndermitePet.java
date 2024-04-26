@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityEndermite}
+ * NMS: {@link net.minecraft.world.entity.monster.Endermite}
  */
 public class EntityEndermitePet extends EntityPet implements IEntityEndermitePet {
     public EntityEndermitePet(PetType type, PetUser user) {

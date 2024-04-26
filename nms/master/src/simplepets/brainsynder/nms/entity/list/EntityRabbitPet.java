@@ -23,7 +23,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityRabbit}
+ * NMS: {@link net.minecraft.world.entity.animal.Rabbit}
  */
 public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPet {
     private static final EntityDataAccessor<Integer> RABBIT_TYPE = SynchedEntityData.defineId(EntityRabbitPet.class, EntityDataSerializers.INT);

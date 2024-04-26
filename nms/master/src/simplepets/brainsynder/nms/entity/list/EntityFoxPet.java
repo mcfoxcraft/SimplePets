@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityFox}
+ * NMS: {@link net.minecraft.world.entity.animal.Fox}
  */
 public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
     private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.INT);

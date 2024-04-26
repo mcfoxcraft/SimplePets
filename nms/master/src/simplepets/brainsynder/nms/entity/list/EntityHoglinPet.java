@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityHoglin}
+ * NMS: {@link net.minecraft.world.entity.monster.hoglin.Hoglin}
  */
 public class EntityHoglinPet extends EntityAgeablePet implements IEntityHoglinPet {
     private static final EntityDataAccessor<Boolean> IMMUNE_TO_ZOMBIFICATION = SynchedEntityData.defineId(EntityHoglinPet.class, EntityDataSerializers.BOOLEAN);

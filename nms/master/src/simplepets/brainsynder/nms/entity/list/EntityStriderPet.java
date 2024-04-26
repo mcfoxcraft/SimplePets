@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityStrider}
+ * NMS: {@link net.minecraft.world.entity.monster.Strider}
  */
 public class EntityStriderPet extends EntityAgeablePet implements IEntityStriderPet {
     private static final EntityDataAccessor<Integer> BOOST_TIME = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.INT);

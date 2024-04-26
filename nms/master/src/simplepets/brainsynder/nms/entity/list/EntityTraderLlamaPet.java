@@ -6,7 +6,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityLlamaTrader}
+ * NMS: {@link net.minecraft.world.entity.animal.horse.TraderLlama}
  */
 public class EntityTraderLlamaPet extends EntityLlamaPet implements IEntityTraderLlamaPet {
     public EntityTraderLlamaPet(PetType type, PetUser user) {

@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityCow}
+ * NMS: {@link net.minecraft.world.entity.animal.Cow}
  */
 public class EntityCowPet extends EntityAgeablePet implements IEntityCowPet {
     public EntityCowPet(PetType type, PetUser user) {

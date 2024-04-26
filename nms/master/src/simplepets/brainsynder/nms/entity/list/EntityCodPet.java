@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityCod}
+ * NMS: {@link net.minecraft.world.entity.animal.Cod}
  */
 public class EntityCodPet extends EntityFishPet implements IEntityCodPet {
     public EntityCodPet(PetType type, PetUser user) {

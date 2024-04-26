@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityBee}
+ * NMS: {@link net.minecraft.world.entity.animal.Bee}
  */
 public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
     private static final EntityDataAccessor<Byte> FLAGS = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.BYTE);

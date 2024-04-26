@@ -13,7 +13,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntitySheep}
+ * NMS: {@link net.minecraft.world.entity.animal.Sheep}
  */
 public class EntitySheepPet extends EntityAgeablePet implements IEntitySheepPet {
     private static final EntityDataAccessor<Byte> DYE_COLOR = SynchedEntityData.defineId(EntitySheepPet.class, EntityDataSerializers.BYTE);

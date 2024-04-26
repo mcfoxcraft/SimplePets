@@ -17,7 +17,7 @@ import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityParrot}
+ * NMS: {@link net.minecraft.world.entity.animal.Parrot}
  */
 public class EntityParrotPet extends EntityTameablePet implements IEntityParrotPet {
     private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(EntityParrotPet.class, EntityDataSerializers.INT);

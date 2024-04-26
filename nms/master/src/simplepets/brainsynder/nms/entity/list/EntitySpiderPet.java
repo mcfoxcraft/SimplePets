@@ -13,7 +13,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntitySpider}
+ * NMS: {@link net.minecraft.world.entity.monster.Spider}
  */
 public class EntitySpiderPet extends EntityPet implements IEntitySpiderPet {
     private static final EntityDataAccessor<Byte> WALL_CLIMB_FLAG = SynchedEntityData.defineId(EntitySpiderPet.class, EntityDataSerializers.BYTE);

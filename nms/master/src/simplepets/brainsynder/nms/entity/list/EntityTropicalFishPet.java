@@ -14,7 +14,7 @@ import simplepets.brainsynder.nms.entity.EntityFishPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityTropicalFish}
+ * NMS: {@link net.minecraft.world.entity.animal.TropicalFish}
  */
 public class EntityTropicalFishPet extends EntityFishPet implements IEntityTropicalFishPet {
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityTropicalFishPet.class, EntityDataSerializers.INT);

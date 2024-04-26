@@ -18,7 +18,7 @@ import simplepets.brainsynder.nms.utils.EntityUtils;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityZombieVillager}
+ * NMS: {@link net.minecraft.world.entity.monster.ZombieVillager}
  */
 public class EntityZombieVillagerPet extends EntityZombiePet implements IEntityZombieVillagerPet {
     private static final EntityDataAccessor<Boolean> CONVERTING = SynchedEntityData.defineId(EntityZombieVillagerPet.class, EntityDataSerializers.BOOLEAN);

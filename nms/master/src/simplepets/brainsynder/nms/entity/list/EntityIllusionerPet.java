@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntityIllagerWizardPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityIllagerIllusioner}
+ * NMS: {@link net.minecraft.world.entity.monster.Illusioner}
  */
 public class EntityIllusionerPet extends EntityIllagerWizardPet implements IEntityIllusionerPet {
     public EntityIllusionerPet(PetType type, PetUser user) {

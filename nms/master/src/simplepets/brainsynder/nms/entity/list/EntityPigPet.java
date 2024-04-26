@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPig}
+ * NMS: {@link net.minecraft.world.entity.animal.Pig}
  */
 public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     private static final EntityDataAccessor<Boolean> SADDLE = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.BOOLEAN);

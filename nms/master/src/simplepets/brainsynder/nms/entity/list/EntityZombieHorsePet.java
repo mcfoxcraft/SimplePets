@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntityHorseAbstractPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityHorseZombie}
+ * NMS: {@link net.minecraft.world.entity.animal.horse.ZombieHorse}
  */
 public class EntityZombieHorsePet extends EntityHorseAbstractPet implements IEntityZombieHorsePet {
     public EntityZombieHorsePet(PetType type, PetUser user) {

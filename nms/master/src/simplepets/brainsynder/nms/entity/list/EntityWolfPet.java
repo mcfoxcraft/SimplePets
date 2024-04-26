@@ -14,7 +14,7 @@ import simplepets.brainsynder.nms.entity.EntityTameablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityWolf}
+ * NMS: {@link net.minecraft.world.entity.animal.Wolf}
  */
 public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     private static final EntityDataAccessor<Boolean> BEGGING = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.BOOLEAN);

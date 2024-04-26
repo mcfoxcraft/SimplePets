@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntityPiglinAbstractPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPiglinBrute}
+ * NMS: {@link net.minecraft.world.entity.monster.piglin.PiglinBrute}
  */
 public class EntityPiglinBrutePet extends EntityPiglinAbstractPet implements IEntityPiglinBrutePet {
     public EntityPiglinBrutePet(PetType type, PetUser user) {

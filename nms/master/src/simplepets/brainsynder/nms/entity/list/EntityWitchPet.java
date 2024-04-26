@@ -20,7 +20,7 @@ import simplepets.brainsynder.nms.entity.branch.EntityRaiderPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityWitch}
+ * NMS: {@link net.minecraft.world.entity.monster.Witch}
  */
 public class EntityWitchPet extends EntityRaiderPet implements IEntityWitchPet {
     private static final EntityDataAccessor<Boolean> IS_DRINKING = SynchedEntityData.defineId(EntityWitchPet.class, EntityDataSerializers.BOOLEAN);

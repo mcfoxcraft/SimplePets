@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityCreeper}
+ * NMS: {@link net.minecraft.world.entity.monster.Creeper}
  */
 public class EntityCreeperPet extends EntityPet implements IEntityCreeperPet {
     protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.INT);

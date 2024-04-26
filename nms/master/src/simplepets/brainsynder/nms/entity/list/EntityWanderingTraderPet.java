@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityVillagerTrader}
+ * NMS: {@link net.minecraft.world.entity.npc.WanderingTrader}
  */
 public class EntityWanderingTraderPet extends EntityPet implements IEntityWanderingTraderPet {
     public EntityWanderingTraderPet(PetType type, PetUser user) {

@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityZoglin}
+ * NMS: {@link net.minecraft.world.entity.monster.Zoglin}
  */
 public class EntityZoglinPet extends EntityAgeablePet implements IEntityZoglinPet {
     public EntityZoglinPet(PetType type, PetUser user) {

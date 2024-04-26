@@ -12,7 +12,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityDolphin}
+ * NMS: {@link net.minecraft.world.entity.animal.Dolphin}
  */
 public class EntityDolphinPet extends EntityPet implements IEntityDolphinPet {
     private static final EntityDataAccessor<BlockPos> TREASURE = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.BLOCK_POS);

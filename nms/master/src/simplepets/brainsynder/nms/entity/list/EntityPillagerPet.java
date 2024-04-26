@@ -7,7 +7,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntityIllagerAbstractPet;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntityPillager}
+ * NMS: {@link net.minecraft.world.entity.monster.Pillager}
  */
 public class EntityPillagerPet extends EntityIllagerAbstractPet implements IEntityPillagerPet {
     public EntityPillagerPet(PetType type, PetUser user) {

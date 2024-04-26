@@ -17,7 +17,7 @@ import simplepets.brainsynder.nms.entity.controller.ControllerSlime;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
- * NMS: {@link net.minecraft.server.v1_16_R3.EntitySlime}
+ * NMS: {@link net.minecraft.world.entity.monster.Slime}
  */
 public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(EntitySlimePet.class, EntityDataSerializers.INT);
