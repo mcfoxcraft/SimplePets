@@ -9,12 +9,13 @@ import simplepets.brainsynder.api.entity.passive.IEntityPigPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityPig}
  */
 public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
-    private static final EntityDataAccessor<Boolean> SADDLE;
+    private static final EntityDataAccessor<Boolean> SADDLE = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityPigPet(PetType type, PetUser user) {
         super(EntityType.PIG, type, user);
@@ -22,9 +23,9 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(SADDLE, false);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(SADDLE, false);
     }
 
     @Override
@@ -48,9 +49,5 @@ public class EntityPigPet extends EntityAgeablePet implements IEntityPigPet {
     @Override
     public void setSaddled(boolean flag) {
         entityData.set(SADDLE, flag);
-    }
-
-    static {
-        SADDLE = SynchedEntityData.defineId(EntityPigPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

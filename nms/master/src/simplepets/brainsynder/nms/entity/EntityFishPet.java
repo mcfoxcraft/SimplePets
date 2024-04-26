@@ -14,20 +14,21 @@ import net.minecraft.world.item.Items;
 import simplepets.brainsynder.api.entity.misc.IEntityFishPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 // Implement Bucketable so the server resends the entity when the client tries
 // to pick it up with a bucket
 public class EntityFishPet extends EntityPet implements IEntityFishPet, Bucketable {
-    private static final EntityDataAccessor<Boolean> FROM_BUCKET;
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityFishPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityFishPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(FROM_BUCKET, false);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(FROM_BUCKET, false);
     }
 
     @Override
@@ -56,9 +57,5 @@ public class EntityFishPet extends EntityPet implements IEntityFishPet, Bucketab
     @Override
     public SoundEvent getPickupSound() {
         return SoundEvents.BUCKET_FILL_FISH;
-    }
-
-    static {
-        FROM_BUCKET = SynchedEntityData.defineId(EntityFishPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

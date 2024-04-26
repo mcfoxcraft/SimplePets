@@ -10,14 +10,15 @@ import simplepets.brainsynder.api.entity.hostile.IEntityZombiePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityZombie}
  */
 public class EntityZombiePet extends EntityPet implements IEntityZombiePet {
-    private static final EntityDataAccessor<Boolean> BABY;
-    private static final EntityDataAccessor<Integer> UNKNOWN;
-    private static final EntityDataAccessor<Boolean> DROWN_CONVERTING;
+    private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> UNKNOWN = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DROWN_CONVERTING = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityZombiePet(PetType type, PetUser user) {
         this(EntityType.ZOMBIE, type, user);
@@ -27,10 +28,10 @@ public class EntityZombiePet extends EntityPet implements IEntityZombiePet {
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(BABY, false);
-        registerAccessorValue(DROWN_CONVERTING, false);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(BABY, false);
+        dataAccess.define(DROWN_CONVERTING, false);
     }
 
     @Override
@@ -48,12 +49,6 @@ public class EntityZombiePet extends EntityPet implements IEntityZombiePet {
         setBabySafe(object.getBoolean("baby", false));
         setShaking(object.getBoolean("shaking", false));
         super.applyCompound(object);
-    }
-
-    static {
-        BABY = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);
-        UNKNOWN = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.INT);
-        DROWN_CONVERTING = SynchedEntityData.defineId(EntityZombiePet.class, EntityDataSerializers.BOOLEAN);
     }
 
     @Override

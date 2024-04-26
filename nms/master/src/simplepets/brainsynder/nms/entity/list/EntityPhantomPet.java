@@ -9,21 +9,22 @@ import simplepets.brainsynder.api.entity.hostile.IEntitySlimePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityPhantom}
  */
 public class EntityPhantomPet extends EntityPet implements IEntitySlimePet {
-    private static final EntityDataAccessor<Integer> SIZE;
+    private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(EntityPhantomPet.class, EntityDataSerializers.INT);
 
     public EntityPhantomPet(PetType type, PetUser user) {
         super(EntityType.PHANTOM, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(SIZE, 1);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(SIZE, 1);
     }
 
     @Override
@@ -45,9 +46,5 @@ public class EntityPhantomPet extends EntityPet implements IEntitySlimePet {
 
     public void setSize(int i) {
         this.entityData.set(SIZE, i);
-    }
-
-    static {
-        SIZE = SynchedEntityData.defineId(EntityPhantomPet.class, EntityDataSerializers.INT);
     }
 }

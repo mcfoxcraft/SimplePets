@@ -21,13 +21,14 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.AngerLevel;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.warden.Warden}
  */
 @SupportedVersion(version = ServerVersion.v1_19)
 public class EntityWardenPet extends EntityPet implements IEntityWardenPet {
-    protected static final EntityDataAccessor<Integer> ANGER_LEVEL;
+    protected static final EntityDataAccessor<Integer> ANGER_LEVEL = SynchedEntityData.defineId(EntityWardenPet.class, EntityDataSerializers.INT);
     private boolean vibrationEffect = false;
     private int vibrationTick = 0;
 
@@ -37,6 +38,12 @@ public class EntityWardenPet extends EntityPet implements IEntityWardenPet {
             this.setPose(Pose.EMERGING);
             Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> this.setPose(Pose.STANDING), 135);
         }
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(ANGER_LEVEL, 0);
     }
 
     @Override
@@ -51,12 +58,6 @@ public class EntityWardenPet extends EntityPet implements IEntityWardenPet {
             }
             vibrationTick--;
         }
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(ANGER_LEVEL, 0);
     }
 
     @Override
@@ -119,9 +120,5 @@ public class EntityWardenPet extends EntityPet implements IEntityWardenPet {
 
         this.setPose(Pose.DIGGING);
         Bukkit.getScheduler().runTaskLater(PetCore.getInstance(), () -> super.remove(entity_removalreason), 100);
-    }
-
-    static {
-        ANGER_LEVEL = SynchedEntityData.defineId(EntityWardenPet.class, EntityDataSerializers.INT);
     }
 }

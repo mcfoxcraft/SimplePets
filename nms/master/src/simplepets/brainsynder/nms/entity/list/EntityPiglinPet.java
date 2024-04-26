@@ -9,25 +9,26 @@ import simplepets.brainsynder.api.entity.hostile.IEntityPiglinPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.branch.EntityPiglinAbstractPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityPiglin}
  */
 public class EntityPiglinPet extends EntityPiglinAbstractPet implements IEntityPiglinPet {
-    private static final EntityDataAccessor<Boolean> BABY;
-    private static final EntityDataAccessor<Boolean> CHARGING;
-    private static final EntityDataAccessor<Boolean> DANCING;
+    private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityPiglinPet(PetType type, PetUser user) {
         super(EntityType.PIGLIN, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(BABY, false);
-        registerAccessorValue(CHARGING, false);
-        registerAccessorValue(DANCING, false); // Makes them not shake by default
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(BABY, false);
+        dataAccess.define(CHARGING, false);
+        dataAccess.define(DANCING, false); // Makes them not shake by default - Why is it named dancing then...
     }
 
     @Override
@@ -75,11 +76,5 @@ public class EntityPiglinPet extends EntityPiglinAbstractPet implements IEntityP
     @Override
     public void setBabySafe(boolean value) {
         entityData.set(BABY, value);
-    }
-
-    static {
-        BABY = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);
-        CHARGING = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);
-        DANCING = SynchedEntityData.defineId(EntityPiglinPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

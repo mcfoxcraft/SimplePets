@@ -9,12 +9,19 @@ import net.minecraft.world.entity.Mob;
 import simplepets.brainsynder.api.entity.misc.IChestedAbstractPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 public class EntityDonkeyAbstractPet extends EntityHorseAbstractPet implements IChestedAbstractPet {
-    private static final EntityDataAccessor<Boolean> CHEST;
+    private static final EntityDataAccessor<Boolean> CHEST = SynchedEntityData.defineId(EntityDonkeyAbstractPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityDonkeyAbstractPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(CHEST, false);
     }
 
     @Override
@@ -31,12 +38,6 @@ public class EntityDonkeyAbstractPet extends EntityHorseAbstractPet implements I
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(CHEST, Boolean.FALSE);
-    }
-
-    @Override
     public boolean isChested() {
         return entityData.get(CHEST);
     }
@@ -44,9 +45,5 @@ public class EntityDonkeyAbstractPet extends EntityHorseAbstractPet implements I
     @Override
     public void setChested(boolean flag) {
         this.entityData.set(CHEST, flag);
-    }
-
-    static {
-        CHEST = SynchedEntityData.defineId(EntityDonkeyAbstractPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

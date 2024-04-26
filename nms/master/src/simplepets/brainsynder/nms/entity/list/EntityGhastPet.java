@@ -9,21 +9,22 @@ import simplepets.brainsynder.api.entity.hostile.IEntityGhastPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityGhast}
  */
 public class EntityGhastPet extends EntityPet implements IEntityGhastPet {
-    private static final EntityDataAccessor<Boolean> ATTACKING;
+    private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(EntityGhastPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityGhastPet(PetType type, PetUser user) {
         super(EntityType.GHAST, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(ATTACKING, false);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(ATTACKING, false);
     }
 
     @Override
@@ -47,10 +48,5 @@ public class EntityGhastPet extends EntityPet implements IEntityGhastPet {
     @Override
     public void setScreaming(boolean flag) {
         this.entityData.set(ATTACKING, flag);
-    }
-
-
-    static {
-        ATTACKING = SynchedEntityData.defineId(EntityGhastPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

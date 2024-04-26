@@ -9,27 +9,28 @@ import simplepets.brainsynder.api.entity.hostile.IEntityWitherPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityWither}
  */
 public class EntityWitherPet extends EntityPet implements IEntityWitherPet {
-    private static final EntityDataAccessor<Integer> FIRST_HEAD_TARGET;
-    private static final EntityDataAccessor<Integer> SECOND_HEAD_TARGET;
-    private static final EntityDataAccessor<Integer> THIRD_HEAD_TARGET;
-    private static final EntityDataAccessor<Integer> INVULNERABILITY_TIME;
+    private static final EntityDataAccessor<Integer> FIRST_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SECOND_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> THIRD_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INVULNERABILITY_TIME = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
 
     public EntityWitherPet(PetType type, PetUser user) {
         super(EntityType.WITHER, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(FIRST_HEAD_TARGET, 0);
-        registerAccessorValue(SECOND_HEAD_TARGET, 0);
-        registerAccessorValue(THIRD_HEAD_TARGET, 0);
-        registerAccessorValue(INVULNERABILITY_TIME, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(FIRST_HEAD_TARGET, 0);
+        dataAccess.define(SECOND_HEAD_TARGET, 0);
+        dataAccess.define(THIRD_HEAD_TARGET, 0);
+        dataAccess.define(INVULNERABILITY_TIME, 0);
     }
 
     @Override
@@ -68,13 +69,5 @@ public class EntityWitherPet extends EntityPet implements IEntityWitherPet {
     public void setSmall(boolean var) {
         this.entityData.set(INVULNERABILITY_TIME, var ? 600 : 0);
         getPetUser().updateDataMenu();
-    }
-
-
-    static {
-        FIRST_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
-        SECOND_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
-        THIRD_HEAD_TARGET = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
-        INVULNERABILITY_TIME = SynchedEntityData.defineId(EntityWitherPet.class, EntityDataSerializers.INT);
     }
 }

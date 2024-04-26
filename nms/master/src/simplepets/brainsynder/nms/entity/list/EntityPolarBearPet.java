@@ -9,21 +9,22 @@ import simplepets.brainsynder.api.entity.passive.IEntityPolarBearPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityPolarBear}
  */
 public class EntityPolarBearPet extends EntityAgeablePet implements IEntityPolarBearPet {
-    private static final EntityDataAccessor<Boolean> IS_STANDING;
+    private static final EntityDataAccessor<Boolean> IS_STANDING = SynchedEntityData.defineId(EntityPolarBearPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityPolarBearPet(PetType type, PetUser user) {
         super(EntityType.POLAR_BEAR, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(IS_STANDING, Boolean.FALSE);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(IS_STANDING, false);
     }
 
     @Override
@@ -47,9 +48,5 @@ public class EntityPolarBearPet extends EntityAgeablePet implements IEntityPolar
     @Override
     public boolean isStanding() {
         return this.entityData.get(IS_STANDING);
-    }
-
-    static {
-        IS_STANDING = SynchedEntityData.defineId(EntityPolarBearPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

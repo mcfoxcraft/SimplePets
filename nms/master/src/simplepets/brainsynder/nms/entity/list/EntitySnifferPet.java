@@ -13,15 +13,15 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.SnifferState;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 // TODO: Implement a state reset task, it will reset the state after a bit and reset it to do the animations
 /**
  * NMS: {@link net.minecraft.world.entity.animal.sniffer.Sniffer}
  */
 public class EntitySnifferPet extends EntityAgeablePet implements IEntitySnifferPet {
-    private static final EntityDataAccessor<Sniffer.State> DATA_STATE;
-    private static final EntityDataAccessor<Integer> DATA_DROP_SEED_AT_TICK;
-
+    private static final EntityDataAccessor<Sniffer.State> DATA_STATE = SynchedEntityData.defineId(EntitySnifferPet.class, EntityDataSerializers.SNIFFER_STATE);
+    private static final EntityDataAccessor<Integer> DATA_DROP_SEED_AT_TICK = SynchedEntityData.defineId(EntitySnifferPet.class, EntityDataSerializers.INT);
     private SnifferState state = SnifferState.IDLING;
 
     public EntitySnifferPet(PetType type, PetUser user) {
@@ -29,10 +29,10 @@ public class EntitySnifferPet extends EntityAgeablePet implements IEntitySniffer
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(DATA_STATE, Sniffer.State.IDLING);
-        registerAccessorValue(DATA_DROP_SEED_AT_TICK, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(DATA_STATE, Sniffer.State.IDLING);
+        dataAccess.define(DATA_DROP_SEED_AT_TICK, 0);
     }
 
     @Override
@@ -63,12 +63,6 @@ public class EntitySnifferPet extends EntityAgeablePet implements IEntitySniffer
         Sniffer.State sniffer_state = Sniffer.State.valueOf(state.name());
         this.entityData.set(DATA_STATE, sniffer_state);
     }
-
-    static {
-        DATA_STATE = SynchedEntityData.defineId(EntitySnifferPet.class, EntityDataSerializers.SNIFFER_STATE);
-        DATA_DROP_SEED_AT_TICK = SynchedEntityData.defineId(EntitySnifferPet.class, EntityDataSerializers.INT);
-    }
-
 
     //  ---- Implemented methods directly from the NMS Code ---- //
     public void transitionTo(SnifferState state) {

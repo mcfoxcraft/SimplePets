@@ -15,14 +15,15 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.branch.EntityHorseAbstractPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.animal.camel.Camel}
  */
 @SupportedVersion(version = ServerVersion.v1_20)
 public class EntityCamelPet extends EntityHorseAbstractPet implements IEntityCamelPet {
-    private static final EntityDataAccessor<Boolean> DASH;
-    private static final EntityDataAccessor<Long> LAST_POSE_CHANGE_TICK;
+    private static final EntityDataAccessor<Boolean> DASH = SynchedEntityData.defineId(EntityCamelPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Long> LAST_POSE_CHANGE_TICK = SynchedEntityData.defineId(EntityCamelPet.class, EntityDataSerializers.LONG);
 
     public EntityCamelPet(PetType type, PetUser user) {
         this(EntityType.CAMEL, type, user);
@@ -34,10 +35,10 @@ public class EntityCamelPet extends EntityHorseAbstractPet implements IEntityCam
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(DASH, false);
-        registerAccessorValue(LAST_POSE_CHANGE_TICK, 0L);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(DASH, false);
+        dataAccess.define(LAST_POSE_CHANGE_TICK, 0L);
     }
 
     @Override
@@ -51,12 +52,6 @@ public class EntityCamelPet extends EntityHorseAbstractPet implements IEntityCam
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("sitting")) setSitting(object.getBoolean("sitting"));
         super.applyCompound(object);
-    }
-
-
-    static {
-        DASH = SynchedEntityData.defineId(EntityCamelPet.class, EntityDataSerializers.BOOLEAN);
-        LAST_POSE_CHANGE_TICK = SynchedEntityData.defineId(EntityCamelPet.class, EntityDataSerializers.LONG);
     }
 
     @Override

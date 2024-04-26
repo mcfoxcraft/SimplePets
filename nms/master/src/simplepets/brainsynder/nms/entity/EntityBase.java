@@ -1,7 +1,6 @@
 package simplepets.brainsynder.nms.entity;
 
 import lib.brainsynder.ServerVersion;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -11,10 +10,9 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionFields;
 import simplepets.brainsynder.nms.VersionTranslator;
-import simplepets.brainsynder.nms.utils.DataWatcherValue;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
 
 public class EntityBase extends Mob {
     protected  final EntityType<? extends Mob> entityType;
@@ -37,19 +35,17 @@ public class EntityBase extends Mob {
         originalEntityType = entitytypes;
     }
 
-    private final LinkedList<DataWatcherValue> dataWatcherValues = new LinkedList<>();
+    public void populateDataAccess(PetDataAccess dataAccess) {}
 
-    public void registerAccessorValue (EntityDataAccessor<?> accessor, Object value) {
-        dataWatcherValues.addLast(new DataWatcherValue(accessor, value));
-    }
-
-    // The way we register EntityData was changed a bit to try and work with multiple versions...
-    // We can blame 1.20.5 for removing the define method from SynchedEntityData
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder datawatcher) {
         super.defineSynchedData(datawatcher);
-        VersionTranslator.registerDataAccessors(datawatcher, dataWatcherValues);
+
+        PetDataAccess dataAccess = new PetDataAccess();
+        populateDataAccess(dataAccess);
+        dataAccess.getAccessorDefinitions().forEach(datawatcher::define);
     }
+
 
     // 1.19.4+   Replaces boolean rideableUnderWater()
     @Override

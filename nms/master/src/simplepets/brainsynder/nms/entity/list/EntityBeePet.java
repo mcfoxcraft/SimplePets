@@ -9,23 +9,24 @@ import simplepets.brainsynder.api.entity.passive.IEntityBeePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityBee}
  */
 public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
-    private static final EntityDataAccessor<Byte> FLAGS;
-    private static final EntityDataAccessor<Integer> ANGER;
+    private static final EntityDataAccessor<Byte> FLAGS = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Integer> ANGER = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.INT);
 
     public EntityBeePet(PetType type, PetUser user) {
         super(EntityType.BEE, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(FLAGS, (byte) 4);
-        registerAccessorValue(ANGER, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(FLAGS, (byte) 4);
+        dataAccess.define(ANGER, 0);
     }
 
     @Override
@@ -72,11 +73,5 @@ public class EntityBeePet extends EntityAgeablePet implements IEntityBeePet {
     @Override
     public boolean getSpecialFlag(int flag) {
         return (this.entityData.get(FLAGS) & flag) != 0;
-    }
-
-
-    static {
-        FLAGS = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.BYTE);
-        ANGER = SynchedEntityData.defineId(EntityBeePet.class, EntityDataSerializers.INT);
     }
 }

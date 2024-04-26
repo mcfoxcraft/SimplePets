@@ -10,6 +10,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.FoxType;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -18,14 +19,23 @@ import java.util.UUID;
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityFox}
  */
 public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
-    private static final EntityDataAccessor<Integer> TYPE;
-    private static final EntityDataAccessor<Byte> FOX_FLAGS;
-    private static final EntityDataAccessor<Optional<UUID>> OWNER;
-    private static final EntityDataAccessor<Optional<UUID>> OTHER_TRUSTED;
+    private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> FOX_FLAGS = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> OTHER_TRUSTED = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.OPTIONAL_UUID);
 
 
     public EntityFoxPet(PetType type, PetUser user) {
         super(EntityType.FOX, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(OWNER, Optional.empty());
+        dataAccess.define(OTHER_TRUSTED, Optional.empty());
+        dataAccess.define(TYPE, FoxType.RED.ordinal());
+        dataAccess.define(FOX_FLAGS, (byte)0);
     }
 
     @Override
@@ -47,15 +57,6 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
         if (object.hasKey("sitting")) setSitting(object.getBoolean("sitting"));
         if (object.hasKey("sleep")) setPetSleeping(object.getBoolean("sleep"));
         super.applyCompound(object);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(OWNER, Optional.empty());
-        registerAccessorValue(OTHER_TRUSTED, Optional.empty());
-        registerAccessorValue(TYPE, FoxType.RED.ordinal());
-        registerAccessorValue(FOX_FLAGS, (byte)0);
     }
 
     @Override
@@ -90,12 +91,5 @@ public class EntityFoxPet extends EntityAgeablePet implements IEntityFoxPet {
     @Override
     public boolean getSpecialFlag(int flag) {
         return (entityData.get(FOX_FLAGS) & flag) != 0x0;
-    }
-
-    static {
-        TYPE = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.INT);
-        FOX_FLAGS = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.BYTE);
-        OWNER = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.OPTIONAL_UUID);
-        OTHER_TRUSTED = SynchedEntityData.defineId(EntityFoxPet.class, EntityDataSerializers.OPTIONAL_UUID);
     }
 }

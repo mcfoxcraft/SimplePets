@@ -10,21 +10,22 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.MooshroomType;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityMushroomCow}
  */
 public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMooshroomPet {
-    private static final EntityDataAccessor<String> TYPE;
+    private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(EntityMooshroomPet.class, EntityDataSerializers.STRING);
 
     public EntityMooshroomPet(PetType type, PetUser user) {
         super(EntityType.MOOSHROOM, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(TYPE, MooshroomType.RED.name());
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(TYPE, MooshroomType.RED.name());
     }
 
     @Override
@@ -49,9 +50,5 @@ public class EntityMooshroomPet extends EntityAgeablePet implements IEntityMoosh
     @Override
     public MooshroomType getMooshroomType() {
         return MooshroomType.valueOf(entityData.get(TYPE).toUpperCase());
-    }
-
-    static {
-        TYPE = SynchedEntityData.defineId(EntityMooshroomPet.class, EntityDataSerializers.STRING);
     }
 }

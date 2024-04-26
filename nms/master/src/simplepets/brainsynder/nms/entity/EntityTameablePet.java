@@ -9,23 +9,24 @@ import net.minecraft.world.entity.Mob;
 import simplepets.brainsynder.api.entity.misc.ITameable;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class EntityTameablePet extends EntityAgeablePet implements ITameable {
-    private static final EntityDataAccessor<Byte> TAMEABLE_FLAGS;
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID;
+    private static final EntityDataAccessor<Byte> TAMEABLE_FLAGS = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public EntityTameablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(TAMEABLE_FLAGS, (byte) 0);
-        registerAccessorValue(OWNER_UUID, Optional.empty());
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(TAMEABLE_FLAGS, (byte) 0);
+        dataAccess.define(OWNER_UUID, Optional.empty());
     }
 
     @Override
@@ -71,10 +72,5 @@ public class EntityTameablePet extends EntityAgeablePet implements ITameable {
         } else {
             this.entityData.set(TAMEABLE_FLAGS, (byte) (i & -2));
         }
-    }
-
-    static {
-        TAMEABLE_FLAGS = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.BYTE);
-        OWNER_UUID = SynchedEntityData.defineId(EntityTameablePet.class, EntityDataSerializers.OPTIONAL_UUID);
     }
 }

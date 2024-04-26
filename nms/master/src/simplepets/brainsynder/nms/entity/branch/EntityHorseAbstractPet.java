@@ -12,19 +12,31 @@ import simplepets.brainsynder.api.entity.misc.IHorseAbstract;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class EntityHorseAbstractPet extends EntityAgeablePet implements IHorseAbstract {
-    private static final EntityDataAccessor<Byte> STATUS;
+    private static final EntityDataAccessor<Byte> STATUS = SynchedEntityData.defineId(EntityHorseAbstractPet.class, EntityDataSerializers.BYTE);
     private static EntityDataAccessor<Optional<UUID>> OWNER_UNIQUE_ID;
+
+    static {
+        if (!ServerVersion.isNewer(ServerVersion.v1_19_4)) OWNER_UNIQUE_ID = SynchedEntityData.defineId(EntityHorseAbstractPet.class, EntityDataSerializers.OPTIONAL_UUID);
+    }
 
     protected boolean isJumping;
 
     public EntityHorseAbstractPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
         doIndirectAttach = true;
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(STATUS, (byte) 0);
+        if (!ServerVersion.isNewer(ServerVersion.v1_19_4)) dataAccess.define(OWNER_UNIQUE_ID, Optional.empty());
     }
 
     public boolean isJumping() {
@@ -72,17 +84,5 @@ public class EntityHorseAbstractPet extends EntityAgeablePet implements IHorseAb
         if (object.hasKey("angry")) setAngry(object.getBoolean("angry"));
         if (object.hasKey("rearing")) setRearing(object.getBoolean("rearing"));
         super.applyCompound(object);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(STATUS, (byte) 0);
-        if (!ServerVersion.isNewer(ServerVersion.v1_19_4)) registerAccessorValue(OWNER_UNIQUE_ID, Optional.empty());
-    }
-
-    static {
-        STATUS = SynchedEntityData.defineId(EntityHorseAbstractPet.class, EntityDataSerializers.BYTE);
-        if (!ServerVersion.isNewer(ServerVersion.v1_19_4)) OWNER_UNIQUE_ID = SynchedEntityData.defineId(EntityHorseAbstractPet.class, EntityDataSerializers.OPTIONAL_UUID);
     }
 }

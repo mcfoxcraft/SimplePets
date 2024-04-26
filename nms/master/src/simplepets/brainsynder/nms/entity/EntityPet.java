@@ -345,8 +345,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         return getPetType().getEntityType();
     }
 
-    protected void registerDatawatchers() {}
-
     public void setIgnoreVanish(boolean ignoreVanish) {
         this.ignoreVanish = ignoreVanish;
     }

@@ -9,25 +9,26 @@ import simplepets.brainsynder.api.entity.passive.IEntityGoatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.animal.goat.Goat}
  */
 public class EntityGoatPet extends EntityAgeablePet implements IEntityGoatPet {
-    private static final EntityDataAccessor<Boolean> DATA_IS_SCREAMING_GOAT;
-    public static final EntityDataAccessor<Boolean> DATA_HAS_LEFT_HORN;
-    public static final EntityDataAccessor<Boolean> DATA_HAS_RIGHT_HORN;
+    private static final EntityDataAccessor<Boolean> DATA_IS_SCREAMING_GOAT = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_HAS_LEFT_HORN = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_HAS_RIGHT_HORN = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityGoatPet(PetType type, PetUser user) {
         super(EntityType.GOAT, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(DATA_IS_SCREAMING_GOAT, false);
-        registerAccessorValue(DATA_HAS_LEFT_HORN, true);
-        registerAccessorValue(DATA_HAS_RIGHT_HORN, true);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(DATA_IS_SCREAMING_GOAT, false);
+        dataAccess.define(DATA_HAS_LEFT_HORN, true);
+        dataAccess.define(DATA_HAS_RIGHT_HORN, true);
     }
 
     @Override
@@ -75,11 +76,5 @@ public class EntityGoatPet extends EntityAgeablePet implements IEntityGoatPet {
     @Override
     public boolean hasRightHorn() {
         return entityData.get(DATA_HAS_RIGHT_HORN);
-    }
-
-    static {
-        DATA_IS_SCREAMING_GOAT = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
-        DATA_HAS_LEFT_HORN = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
-        DATA_HAS_RIGHT_HORN = SynchedEntityData.defineId(EntityGoatPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

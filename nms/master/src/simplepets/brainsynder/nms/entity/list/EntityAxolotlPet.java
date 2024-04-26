@@ -16,6 +16,7 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.AxolotlVariant;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityAxolotl}
@@ -23,12 +24,20 @@ import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 // Implement Bucketable so the server resends the entity when the client tries
 // to pick it up with a bucket
 public class EntityAxolotlPet extends EntityAgeablePet implements IEntityAxolotlPet, Bucketable {
-    private static final EntityDataAccessor<Integer> DATA_VARIANT;
-    private static final EntityDataAccessor<Boolean> DATA_PLAYING_DEAD;
-    private static final EntityDataAccessor<Boolean> FROM_BUCKET;
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_PLAYING_DEAD = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityAxolotlPet(PetType type, PetUser user) {
         super(EntityType.AXOLOTL, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(DATA_VARIANT, 0);
+        dataAccess.define(DATA_PLAYING_DEAD, false);
+        dataAccess.define(FROM_BUCKET, false);
     }
 
     @Override
@@ -44,14 +53,6 @@ public class EntityAxolotlPet extends EntityAgeablePet implements IEntityAxolotl
         if (object.hasKey("variant")) setVariant(object.getEnum("variant", AxolotlVariant.class, AxolotlVariant.LUCY));
         if (object.hasKey("playing_dead")) setPlayingDead(object.getBoolean("playing_dead", false));
         super.applyCompound(object);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(DATA_VARIANT, 0);
-        registerAccessorValue(DATA_PLAYING_DEAD, false);
-        registerAccessorValue(FROM_BUCKET, false);
     }
 
     @Override
@@ -100,11 +101,5 @@ public class EntityAxolotlPet extends EntityAgeablePet implements IEntityAxolotl
     @Override
     public SoundEvent getPickupSound() {
         return SoundEvents.BUCKET_FILL_FISH;
-    }
-
-    static {
-        DATA_VARIANT = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.INT);
-        DATA_PLAYING_DEAD = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.BOOLEAN);
-        FROM_BUCKET = SynchedEntityData.defineId(EntityAxolotlPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

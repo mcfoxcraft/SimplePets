@@ -17,21 +17,22 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.branch.EntityRaiderPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityWitch}
  */
 public class EntityWitchPet extends EntityRaiderPet implements IEntityWitchPet {
-    private static final EntityDataAccessor<Boolean> IS_DRINKING;
+    private static final EntityDataAccessor<Boolean> IS_DRINKING = SynchedEntityData.defineId(EntityWitchPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityWitchPet(PetType type, PetUser user) {
         super(EntityType.WITCH, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(IS_DRINKING, Boolean.FALSE);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(IS_DRINKING, Boolean.FALSE);
     }
 
     @Override
@@ -65,9 +66,5 @@ public class EntityWitchPet extends EntityRaiderPet implements IEntityWitchPet {
     @Override
     public boolean isDrinkingPotion() {
         return entityData.get(IS_DRINKING);
-    }
-
-    static {
-        IS_DRINKING = SynchedEntityData.defineId(EntityWitchPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

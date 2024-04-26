@@ -9,39 +9,31 @@ import simplepets.brainsynder.api.entity.passive.IEntityTurtlePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityTurtle}
  */
 public class EntityTurtlePet extends EntityAgeablePet implements IEntityTurtlePet {
-    private static final EntityDataAccessor<BlockPos> HOME_POS;
-    private static final EntityDataAccessor<Boolean> HAS_EGG;
-    private static final EntityDataAccessor<Boolean> DIGGING_SAND;
-    private static final EntityDataAccessor<BlockPos> TRAVEL_POS;
-    private static final EntityDataAccessor<Boolean> LAND_BOUND;
-    private static final EntityDataAccessor<Boolean> ACTIVELY_TRAVELLING;
+    private static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DIGGING_SAND = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockPos> TRAVEL_POS = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> LAND_BOUND = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ACTIVELY_TRAVELLING = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityTurtlePet(PetType type, PetUser user) {
         super(EntityType.TURTLE, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(HOME_POS, BlockPos.ZERO);
-        registerAccessorValue(HAS_EGG, false);
-        registerAccessorValue(TRAVEL_POS, BlockPos.ZERO);
-        registerAccessorValue(LAND_BOUND, false);
-        registerAccessorValue(ACTIVELY_TRAVELLING, false);
-        registerAccessorValue(DIGGING_SAND, false);
-    }
-
-    static {
-        HOME_POS = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BLOCK_POS);
-        HAS_EGG = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
-        DIGGING_SAND = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
-        TRAVEL_POS = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BLOCK_POS);
-        LAND_BOUND = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
-        ACTIVELY_TRAVELLING = SynchedEntityData.defineId(EntityTurtlePet.class, EntityDataSerializers.BOOLEAN);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(HOME_POS, BlockPos.ZERO);
+        dataAccess.define(HAS_EGG, false);
+        dataAccess.define(TRAVEL_POS, BlockPos.ZERO);
+        dataAccess.define(LAND_BOUND, false);
+        dataAccess.define(ACTIVELY_TRAVELLING, false);
+        dataAccess.define(DIGGING_SAND, false);
     }
 }

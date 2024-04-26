@@ -9,20 +9,22 @@ import simplepets.brainsynder.api.entity.hostile.IEntityVexPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityVex}
  */
 public class EntityVexPet extends EntityPet implements IEntityVexPet {
-    protected static final EntityDataAccessor<Byte> VEX_FLAGS;
+    protected static final EntityDataAccessor<Byte> VEX_FLAGS = SynchedEntityData.defineId(EntityVexPet.class, EntityDataSerializers.BYTE);
 
     public EntityVexPet(PetType type, PetUser user) {
         super(EntityType.VEX, type, user);
     }
 
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(VEX_FLAGS, (byte) 0);
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(VEX_FLAGS, (byte) 0);
     }
 
     @Override
@@ -54,9 +56,5 @@ public class EntityVexPet extends EntityPet implements IEntityVexPet {
         }
 
         this.entityData.set(VEX_FLAGS, (byte) (j & 255));
-    }
-
-    static {
-        VEX_FLAGS = SynchedEntityData.defineId(EntityVexPet.class, EntityDataSerializers.BYTE);
     }
 }

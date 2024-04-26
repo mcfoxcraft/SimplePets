@@ -9,21 +9,22 @@ import simplepets.brainsynder.api.entity.passive.IEntityBatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityBat}
  */
 public class EntityBatPet extends EntityPet implements IEntityBatPet {
-    private static final EntityDataAccessor<Byte> HANGING;
+    private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(EntityBatPet.class, EntityDataSerializers.BYTE);
 
     public EntityBatPet(PetType type, PetUser user) {
         super(EntityType.BAT, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(HANGING, (byte) 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(HANGING, (byte) 0);
     }
 
     @Override
@@ -52,10 +53,5 @@ public class EntityBatPet extends EntityPet implements IEntityBatPet {
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("hanging")) setHanging(object.getBoolean("hanging"));
         super.applyCompound(object);
-    }
-
-
-    static {
-        HANGING = SynchedEntityData.defineId(EntityBatPet.class, EntityDataSerializers.BYTE);
     }
 }

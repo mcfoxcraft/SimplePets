@@ -11,14 +11,16 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityWolf}
  */
 public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
-    private static final EntityDataAccessor<Boolean> BEGGING;
-    private static final EntityDataAccessor<Integer> COLLAR_COLOR;
-    private static final EntityDataAccessor<Integer> ANGER_TIME;
+    private static final EntityDataAccessor<Boolean> BEGGING = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
+    // TODO: Need to setup the new Wolf DataAccessor
 
     private boolean angry = false;
     private boolean furWet = false;
@@ -26,6 +28,14 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
 
     public EntityWolfPet(PetType type, PetUser user) {
         super(EntityType.WOLF, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(BEGGING, false);
+        dataAccess.define(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
+        dataAccess.define(ANGER_TIME, 0);
     }
 
     @Override
@@ -44,14 +54,6 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
             }
         }
         if (this.angry && (entityData.get(ANGER_TIME) < 50)) entityData.set(ANGER_TIME, 500);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(BEGGING, false);
-        registerAccessorValue(COLLAR_COLOR, DyeColorWrapper.WHITE.getWoolData());
-        registerAccessorValue(ANGER_TIME, 0);
     }
 
     @Override
@@ -102,12 +104,6 @@ public class EntityWolfPet extends EntityTameablePet implements IEntityWolfPet {
     @Override
     public void setColor(DyeColorWrapper color) {
         this.entityData.set(COLLAR_COLOR, color.getWoolData());
-    }
-
-    static {
-        BEGGING = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.BOOLEAN);
-        COLLAR_COLOR = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
-        ANGER_TIME = SynchedEntityData.defineId(EntityWolfPet.class, EntityDataSerializers.INT);
     }
 
     @Override

@@ -9,19 +9,27 @@ import simplepets.brainsynder.api.entity.passive.IEntityStriderPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityStrider}
  */
 public class EntityStriderPet extends EntityAgeablePet implements IEntityStriderPet {
-    private static EntityDataAccessor<Integer> BOOST_TIME;
-    private static EntityDataAccessor<Boolean> COLD;
-    private static EntityDataAccessor<Boolean> SADDLED;
-    private static boolean registered = false;
+    private static final EntityDataAccessor<Integer> BOOST_TIME = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> COLD = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityStriderPet(PetType type, PetUser user) {
         super(EntityType.STRIDER, type, user);
         doIndirectAttach = true;
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(BOOST_TIME, 0);
+        dataAccess.define(COLD, false);
+        dataAccess.define(SADDLED, false);
     }
 
     @Override
@@ -57,19 +65,5 @@ public class EntityStriderPet extends EntityAgeablePet implements IEntityStrider
     @Override
     public void setCold(boolean cold) {
         entityData.set(COLD, cold);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        if (!registered) {
-            BOOST_TIME = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.INT);
-            COLD = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.BOOLEAN);
-            SADDLED = SynchedEntityData.defineId(EntityStriderPet.class, EntityDataSerializers.BOOLEAN);
-            registered = true;
-        }
-        registerAccessorValue(BOOST_TIME, 0);
-        registerAccessorValue(COLD, false);
-        registerAccessorValue(SADDLED, false);
     }
 }

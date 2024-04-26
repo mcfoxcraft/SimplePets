@@ -9,13 +9,14 @@ import simplepets.brainsynder.api.entity.hostile.IEntityGuardianPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityGuardian}
  */
 public class EntityGuardianPet extends EntityPet implements IEntityGuardianPet {
-    private static final EntityDataAccessor<Boolean> MOVING;
-    private static final EntityDataAccessor<Integer> TARGET_ENTITY;
+    private static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(EntityGuardianPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> TARGET_ENTITY = SynchedEntityData.defineId(EntityGuardianPet.class, EntityDataSerializers.INT);
 
     public EntityGuardianPet(PetType type, PetUser user) {
         super(EntityType.GUARDIAN, type, user);
@@ -25,14 +26,9 @@ public class EntityGuardianPet extends EntityPet implements IEntityGuardianPet {
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(MOVING, Boolean.FALSE);
-        registerAccessorValue(TARGET_ENTITY, 0);
-    }
-
-    static {
-        MOVING = SynchedEntityData.defineId(EntityGuardianPet.class, EntityDataSerializers.BOOLEAN);
-        TARGET_ENTITY = SynchedEntityData.defineId(EntityGuardianPet.class, EntityDataSerializers.INT);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(MOVING, Boolean.FALSE);
+        dataAccess.define(TARGET_ENTITY, 0);
     }
 }

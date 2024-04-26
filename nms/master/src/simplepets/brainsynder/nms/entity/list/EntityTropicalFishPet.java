@@ -11,21 +11,22 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.TropicalPattern;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityTropicalFish}
  */
 public class EntityTropicalFishPet extends EntityFishPet implements IEntityTropicalFishPet {
-    private static final EntityDataAccessor<Integer> VARIANT;
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityTropicalFishPet.class, EntityDataSerializers.INT);
 
     public EntityTropicalFishPet(PetType type, PetUser user) {
         super(EntityType.TROPICAL_FISH, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(VARIANT, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(VARIANT, 0);
     }
 
     @Override
@@ -89,9 +90,5 @@ public class EntityTropicalFishPet extends EntityFishPet implements IEntityTropi
             setPattern(TropicalPattern.getByName(compound.getString("pattern")));
         if (compound.hasKey("color"))
             setPatternColor(DyeColorWrapper.getByName(compound.getString("color")));
-    }
-
-    static {
-        VARIANT = SynchedEntityData.defineId(EntityTropicalFishPet.class, EntityDataSerializers.INT);
     }
 }

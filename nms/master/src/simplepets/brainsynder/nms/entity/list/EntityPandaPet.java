@@ -16,6 +16,7 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.PandaGene;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.List;
 
@@ -23,26 +24,26 @@ import java.util.List;
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityPanda}
  */
 public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet {
-    private static final EntityDataAccessor<Integer> ASK_FOR_BAMBOO_TICKS;
-    private static final EntityDataAccessor<Integer> SNEEZE_PROGRESS;
-    private static final EntityDataAccessor<Integer> EATING_TICKS;
-    private static final EntityDataAccessor<Byte> MAIN_GENE;
-    private static final EntityDataAccessor<Byte> HIDDEN_GENE;
-    private static final EntityDataAccessor<Byte> PANDA_FLAGS;
+    private static final EntityDataAccessor<Integer> ASK_FOR_BAMBOO_TICKS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SNEEZE_PROGRESS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> EATING_TICKS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> MAIN_GENE = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> HIDDEN_GENE = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> PANDA_FLAGS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
 
     public EntityPandaPet(PetType type, PetUser user) {
         super(EntityType.PANDA, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(ASK_FOR_BAMBOO_TICKS, 0);
-        registerAccessorValue(SNEEZE_PROGRESS, 0);
-        registerAccessorValue(MAIN_GENE, (byte)0);
-        registerAccessorValue(HIDDEN_GENE, (byte)0);
-        registerAccessorValue(PANDA_FLAGS, (byte)0);
-        registerAccessorValue(EATING_TICKS, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(ASK_FOR_BAMBOO_TICKS, 0);
+        dataAccess.define(SNEEZE_PROGRESS, 0);
+        dataAccess.define(MAIN_GENE, (byte)0);
+        dataAccess.define(HIDDEN_GENE, (byte)0);
+        dataAccess.define(PANDA_FLAGS, (byte)0);
+        dataAccess.define(EATING_TICKS, 0);
     }
 
     @Override
@@ -144,14 +145,5 @@ public class EntityPandaPet extends EntityAgeablePet implements IEntityPandaPet 
     private boolean isSpookedBySneeze () {
         if (isLyingOnBack()) return false;
         return !isPlaying();
-    }
-
-    static {
-        ASK_FOR_BAMBOO_TICKS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);
-        SNEEZE_PROGRESS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);
-        EATING_TICKS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.INT);
-        MAIN_GENE = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
-        HIDDEN_GENE = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
-        PANDA_FLAGS = SynchedEntityData.defineId(EntityPandaPet.class, EntityDataSerializers.BYTE);
     }
 }

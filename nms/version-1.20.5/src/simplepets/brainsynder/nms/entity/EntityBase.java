@@ -5,7 +5,6 @@ import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -18,11 +17,10 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.CitizensFixer;
 import simplepets.brainsynder.nms.VersionFields;
 import simplepets.brainsynder.nms.VersionTranslator;
-import simplepets.brainsynder.nms.utils.DataWatcherValue;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.lang.reflect.Field;
 import java.util.IdentityHashMap;
-import java.util.LinkedList;
 
 public class EntityBase extends Mob {
     protected final EntityType<? extends Mob> entityType;
@@ -46,18 +44,15 @@ public class EntityBase extends Mob {
         originalEntityType = entitytypes;
     }
 
-    private final LinkedList<DataWatcherValue> dataWatcherValues = new LinkedList<>();
+    public void populateDataAccess(PetDataAccess dataAccess) {}
 
-    public void registerAccessorValue (EntityDataAccessor<?> accessor, Object value) {
-        dataWatcherValues.addLast(new DataWatcherValue(accessor, value));
-    }
-
-    // The way we register EntityData was changed a bit to try and work with multiple versions...
-    // We can blame 1.20.5 for removing the define method from SynchedEntityData
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder datawatcher) {
         super.defineSynchedData(datawatcher);
-        VersionTranslator.registerDataAccessors(datawatcher, dataWatcherValues);
+
+        PetDataAccess dataAccess = new PetDataAccess();
+        populateDataAccess(dataAccess);
+        dataAccess.getAccessorDefinitions().forEach(datawatcher::define);
     }
 
     // 1.20.1+   Replaces boolean rideableUnderWater()
@@ -82,11 +77,11 @@ public class EntityBase extends Mob {
             CitizensFixer.overrideRegistry(registry);
 
             // Melts the frozen status, so we can register the mob...
-            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_20_3.getRegistryFrozenField());
+            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_20_5.getRegistryFrozenField());
             if (frozen != null) frozen.set(registry, false);
 
             // Clears the intrusive holder field to an empty map
-            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_20_3.getRegistryIntrusiveField());
+            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_20_5.getRegistryIntrusiveField());
             if (intrusiveField != null) intrusiveField.set(registry, new IdentityHashMap<>());
 
             // Fetch the entity type instance before we resume
@@ -106,7 +101,7 @@ public class EntityBase extends Mob {
     }
 
     private EntityType<? extends Mob> handleMobBuilder(EntityType<? extends Mob> originalType) throws NoSuchFieldException, IllegalAccessException {
-        Field field = Reflection.getField(EntityType.class, VersionFields.v1_20_3.getEntityFactoryField());
+        Field field = Reflection.getField(EntityType.class, VersionFields.v1_20_5.getEntityFactoryField());
 
         EntityType.Builder<? extends Mob> builder = EntityType.Builder.of(
                 (EntityType.EntityFactory<? extends Mob>) field.get(originalType),

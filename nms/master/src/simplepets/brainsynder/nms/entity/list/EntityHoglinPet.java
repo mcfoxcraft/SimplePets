@@ -9,26 +9,22 @@ import simplepets.brainsynder.api.entity.hostile.IEntityHoglinPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityHoglin}
  */
 public class EntityHoglinPet extends EntityAgeablePet implements IEntityHoglinPet {
-    private static EntityDataAccessor<Boolean> IMMUNE_TO_ZOMBIFICATION;
-    private static boolean registered = false;
+    private static final EntityDataAccessor<Boolean> IMMUNE_TO_ZOMBIFICATION = SynchedEntityData.defineId(EntityHoglinPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityHoglinPet(PetType type, PetUser user) {
         super(EntityType.HOGLIN, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        if (!registered) {
-            IMMUNE_TO_ZOMBIFICATION = SynchedEntityData.defineId(EntityHoglinPet.class, EntityDataSerializers.BOOLEAN);
-            registered = true;
-        }
-        registerAccessorValue(IMMUNE_TO_ZOMBIFICATION, true); // Makes them not shade by default
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(IMMUNE_TO_ZOMBIFICATION, true);
     }
 
     @Override

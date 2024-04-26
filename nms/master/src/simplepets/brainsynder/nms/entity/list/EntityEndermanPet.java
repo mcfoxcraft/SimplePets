@@ -17,6 +17,7 @@ import simplepets.brainsynder.debug.DebugBuilder;
 import simplepets.brainsynder.debug.DebugLevel;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.util.Optional;
 
@@ -24,18 +25,18 @@ import java.util.Optional;
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityEnderman}
  */
 public class EntityEndermanPet extends EntityPet implements IEntityEndermanPet {
-    private static final EntityDataAccessor<Optional<BlockState>> CARRIED_BLOCK;
-    private static final EntityDataAccessor<Boolean> SCREAMING;
+    private static final EntityDataAccessor<Optional<BlockState>> CARRIED_BLOCK = SynchedEntityData.defineId(EntityEndermanPet.class, VersionTranslator.OPTIONAL_BLOCK_STATE);
+    private static final EntityDataAccessor<Boolean> SCREAMING = SynchedEntityData.defineId(EntityEndermanPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityEndermanPet(PetType type, PetUser user) {
         super(EntityType.ENDERMAN, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(CARRIED_BLOCK, Optional.empty());
-        registerAccessorValue(SCREAMING, false);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(CARRIED_BLOCK, Optional.empty());
+        dataAccess.define(SCREAMING, false);
     }
 
     @Override
@@ -92,11 +93,5 @@ public class EntityEndermanPet extends EntityPet implements IEntityEndermanPet {
     @Override
     public void setCarriedBlock(BlockData blockData) {
         entityData.set(CARRIED_BLOCK, Optional.ofNullable(VersionTranslator.getBlockState(blockData)));
-    }
-
-
-    static {
-        CARRIED_BLOCK = SynchedEntityData.defineId(EntityEndermanPet.class, VersionTranslator.OPTIONAL_BLOCK_STATE);
-        SCREAMING = SynchedEntityData.defineId(EntityEndermanPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

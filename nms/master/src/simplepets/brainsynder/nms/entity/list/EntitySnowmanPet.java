@@ -9,21 +9,22 @@ import simplepets.brainsynder.api.entity.passive.IEntitySnowmanPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntitySnowman}
  */
 public class EntitySnowmanPet extends EntityPet implements IEntitySnowmanPet {
-    private static final EntityDataAccessor<Byte> PUMPKIN;
+    private static final EntityDataAccessor<Byte> PUMPKIN = SynchedEntityData.defineId(EntitySnowmanPet.class, EntityDataSerializers.BYTE);
 
     public EntitySnowmanPet(PetType type, PetUser user) {
         super(EntityType.SNOW_GOLEM, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(PUMPKIN, (byte) 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(PUMPKIN, (byte) 0);
     }
 
     @Override
@@ -52,9 +53,5 @@ public class EntitySnowmanPet extends EntityPet implements IEntitySnowmanPet {
         } else {
             this.entityData.set(PUMPKIN, (byte) (b0 & -17));
         }
-    }
-
-    static {
-        PUMPKIN = SynchedEntityData.defineId(EntitySnowmanPet.class, EntityDataSerializers.BYTE);
     }
 }

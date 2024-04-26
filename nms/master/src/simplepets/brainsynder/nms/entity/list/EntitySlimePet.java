@@ -14,12 +14,13 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.entity.controller.ControllerSlime;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntitySlime}
  */
 public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
-    private static final EntityDataAccessor<Integer> SIZE;
+    private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(EntitySlimePet.class, EntityDataSerializers.INT);
 
     public EntitySlimePet(PetType type, PetUser user) {
         this(EntityType.SLIME, type, user);
@@ -31,9 +32,9 @@ public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(SIZE, 2);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(SIZE, 2);
     }
 
     @Override
@@ -56,10 +57,6 @@ public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
     public void setSize(int i) {
         this.entityData.set(SIZE, i);
         getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2 + 0.1 * i);
-    }
-
-    static {
-        SIZE = SynchedEntityData.defineId(EntitySlimePet.class, EntityDataSerializers.INT);
     }
 
     public void playJumpSound() {

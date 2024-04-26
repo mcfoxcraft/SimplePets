@@ -9,30 +9,25 @@ import simplepets.brainsynder.api.entity.hostile.IEntityDolphinPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityDolphin}
  */
 public class EntityDolphinPet extends EntityPet implements IEntityDolphinPet {
-    private static final EntityDataAccessor<BlockPos> TREASURE;
-    private static final EntityDataAccessor<Boolean> HAS_FISH;
-    private static final EntityDataAccessor<Integer> MOIST;
+    private static final EntityDataAccessor<BlockPos> TREASURE = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> HAS_FISH = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> MOIST = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.INT);
 
     public EntityDolphinPet(PetType type, PetUser user) {
         super(EntityType.DOLPHIN, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(TREASURE, BlockPos.ZERO);
-        registerAccessorValue(HAS_FISH, false);
-        registerAccessorValue(MOIST, 2400);
-    }
-
-    static {
-        TREASURE = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.BLOCK_POS);
-        HAS_FISH = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.BOOLEAN);
-        MOIST = SynchedEntityData.defineId(EntityDolphinPet.class, EntityDataSerializers.INT);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(TREASURE, BlockPos.ZERO);
+        dataAccess.define(HAS_FISH, false);
+        dataAccess.define(MOIST, 2400);
     }
 }

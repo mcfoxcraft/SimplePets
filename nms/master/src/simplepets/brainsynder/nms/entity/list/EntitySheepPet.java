@@ -10,12 +10,13 @@ import simplepets.brainsynder.api.entity.passive.IEntitySheepPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntitySheep}
  */
 public class EntitySheepPet extends EntityAgeablePet implements IEntitySheepPet {
-    private static final EntityDataAccessor<Byte> DYE_COLOR;
+    private static final EntityDataAccessor<Byte> DYE_COLOR = SynchedEntityData.defineId(EntitySheepPet.class, EntityDataSerializers.BYTE);
     private DyeColorWrapper color = DyeColorWrapper.WHITE;
     private boolean rainbow = false;
     private int toggle = 0;
@@ -25,9 +26,9 @@ public class EntitySheepPet extends EntityAgeablePet implements IEntitySheepPet 
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(DYE_COLOR, (byte) 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(DYE_COLOR, (byte) 0);
     }
 
     @Override
@@ -95,9 +96,5 @@ public class EntitySheepPet extends EntityAgeablePet implements IEntitySheepPet 
     @Override
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
-    }
-
-    static {
-        DYE_COLOR = SynchedEntityData.defineId(EntitySheepPet.class, EntityDataSerializers.BYTE);
     }
 }

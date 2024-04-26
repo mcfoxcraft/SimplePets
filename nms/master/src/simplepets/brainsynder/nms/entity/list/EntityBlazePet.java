@@ -9,21 +9,22 @@ import simplepets.brainsynder.api.entity.hostile.IEntityBlazePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Blaze}
  */
 public class EntityBlazePet extends EntityPet implements IEntityBlazePet {
-    private static final EntityDataAccessor<Byte> ON_FIRE;
+    private static final EntityDataAccessor<Byte> ON_FIRE = SynchedEntityData.defineId(EntityBlazePet.class, EntityDataSerializers.BYTE);
 
     public EntityBlazePet(PetType type, PetUser user) {
         super(EntityType.BLAZE, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(ON_FIRE, (byte) 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(ON_FIRE, (byte) 0);
     }
 
     @Override
@@ -37,11 +38,6 @@ public class EntityBlazePet extends EntityPet implements IEntityBlazePet {
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("burning")) setBurning(object.getBoolean("burning"));
         super.applyCompound(object);
-    }
-
-
-    static {
-        ON_FIRE = SynchedEntityData.defineId(EntityBlazePet.class, EntityDataSerializers.BYTE);
     }
 
     @Override

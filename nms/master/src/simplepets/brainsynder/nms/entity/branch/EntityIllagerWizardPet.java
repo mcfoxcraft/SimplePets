@@ -12,12 +12,19 @@ import simplepets.brainsynder.api.entity.misc.IEntityWizard;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.WizardSpell;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 public class EntityIllagerWizardPet extends EntityIllagerAbstractPet implements IEntityWizard {
-    private static final EntityDataAccessor<Byte> SPELL;
+    private static final EntityDataAccessor<Byte> SPELL = SynchedEntityData.defineId(EntityIllagerWizardPet.class, EntityDataSerializers.BYTE);
 
     public EntityIllagerWizardPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(SPELL, (byte) 0);
     }
 
     @Override
@@ -64,15 +71,5 @@ public class EntityIllagerWizardPet extends EntityIllagerAbstractPet implements 
 //            VersionTranslator.getEntityLevel(this).addParticle(ParticleTypes.ENTITY_EFFECT, getX() + offsetX * 0.6D, getY() + 1.8D, getZ() + offsetZ * 0.6D, velocityX, velocityY, velocityZ);
 //            VersionTranslator.getEntityLevel(this).addParticle(ParticleTypes.ENTITY_EFFECT, getX() - offsetX * 0.6D, getY() + 1.8D, getZ() - offsetZ * 0.6D, velocityX, velocityY, velocityZ);
         }
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(SPELL, (byte) 0);
-    }
-
-    static {
-        SPELL = SynchedEntityData.defineId(EntityIllagerWizardPet.class, EntityDataSerializers.BYTE);
     }
 }

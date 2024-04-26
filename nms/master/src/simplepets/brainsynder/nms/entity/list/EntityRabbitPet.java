@@ -18,6 +18,7 @@ import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
 import simplepets.brainsynder.nms.entity.controller.ControllerJumpRabbit;
 import simplepets.brainsynder.nms.entity.controller.ControllerMoveRabbit;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -25,7 +26,7 @@ import java.lang.reflect.InvocationTargetException;
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityRabbit}
  */
 public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPet {
-    private static final EntityDataAccessor<Integer> RABBIT_TYPE;
+    private static final EntityDataAccessor<Integer> RABBIT_TYPE = SynchedEntityData.defineId(EntityRabbitPet.class, EntityDataSerializers.INT);
     private int jumpTicks;
     private int jumpDuration;
     private boolean onGroundLastTick = false;
@@ -38,9 +39,9 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(RABBIT_TYPE, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(RABBIT_TYPE, 0);
     }
 
     @Override
@@ -172,9 +173,5 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
         this.setJumping(true);
         this.jumpDuration = 10;
         this.jumpTicks = 0;
-    }
-
-    static {
-        RABBIT_TYPE = SynchedEntityData.defineId(EntityRabbitPet.class, EntityDataSerializers.INT);
     }
 }

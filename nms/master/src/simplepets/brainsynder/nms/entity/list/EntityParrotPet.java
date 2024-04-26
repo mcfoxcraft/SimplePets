@@ -14,18 +14,25 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ParrotVariant;
 import simplepets.brainsynder.nms.entity.EntityTameablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityParrot}
  */
 public class EntityParrotPet extends EntityTameablePet implements IEntityParrotPet {
-    private static final EntityDataAccessor<Integer> TYPE;
+    private static final EntityDataAccessor<Integer> TYPE = SynchedEntityData.defineId(EntityParrotPet.class, EntityDataSerializers.INT);
     private boolean rainbow = false;
     private int toggle = 0;
 
     public EntityParrotPet(PetType type, PetUser user) {
         super(EntityType.PARROT, type, user);
         this.moveControl = new FlyingMoveControl(this, 10, false);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(TYPE, 0);
     }
 
     @Override
@@ -39,12 +46,6 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
             }
             toggle++;
         }
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(TYPE, 0);
     }
 
     @Override
@@ -89,9 +90,5 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
         navigationflying.setCanFloat(true);
         navigationflying.setCanPassDoors(true);
         return navigationflying;
-    }
-
-    static {
-        TYPE = SynchedEntityData.defineId(EntityParrotPet.class, EntityDataSerializers.INT);
     }
 }

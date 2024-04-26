@@ -10,12 +10,19 @@ import simplepets.brainsynder.api.entity.misc.ISkeletonAbstract;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityAgeablePet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 public class EntitySkeletonAbstractPet extends EntityAgeablePet implements ISkeletonAbstract {
-    private static final EntityDataAccessor<Boolean> SWINGING_ARMS;
+    private static final EntityDataAccessor<Boolean> SWINGING_ARMS = SynchedEntityData.defineId(EntitySkeletonAbstractPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntitySkeletonAbstractPet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(SWINGING_ARMS, false);
     }
 
     @Override
@@ -39,15 +46,5 @@ public class EntitySkeletonAbstractPet extends EntityAgeablePet implements ISkel
     public void applyCompound(StorageTagCompound object) {
         if (object.hasKey("raised")) setArmsRaised(object.getBoolean("raised"));
         super.applyCompound(object);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(SWINGING_ARMS, false);
-    }
-
-    static {
-        SWINGING_ARMS = SynchedEntityData.defineId(EntitySkeletonAbstractPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

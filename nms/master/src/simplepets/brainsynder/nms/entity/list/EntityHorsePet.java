@@ -16,12 +16,13 @@ import simplepets.brainsynder.api.wrappers.horse.HorseColorType;
 import simplepets.brainsynder.api.wrappers.horse.HorseStyleType;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.branch.EntityHorseAbstractPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.animal.horse.Horse}
  */
 public class EntityHorsePet extends EntityHorseAbstractPet implements IEntityHorsePet {
-    private static final EntityDataAccessor<Integer> HORSE_VARIANT;
+    private static final EntityDataAccessor<Integer> HORSE_VARIANT = SynchedEntityData.defineId(EntityHorsePet.class, EntityDataSerializers.INT);
     private HorseArmorType armor = null;
 
     public EntityHorsePet(PetType type, PetUser user) {
@@ -29,9 +30,9 @@ public class EntityHorsePet extends EntityHorseAbstractPet implements IEntityHor
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(HORSE_VARIANT, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(HORSE_VARIANT, 0);
     }
 
     @Override
@@ -98,9 +99,5 @@ public class EntityHorsePet extends EntityHorseAbstractPet implements IEntityHor
 
     private void updateHorse (HorseColorType colorType, HorseStyleType styleType) {
         this.entityData.set(HORSE_VARIANT, ( colorType.ordinal() & 255 | styleType.ordinal() << 8 & '\uff00' ));
-    }
-
-    static {
-        HORSE_VARIANT = SynchedEntityData.defineId(EntityHorsePet.class, EntityDataSerializers.INT);
     }
 }

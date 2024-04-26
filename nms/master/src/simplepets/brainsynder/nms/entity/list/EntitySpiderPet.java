@@ -10,17 +10,24 @@ import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntitySpider}
  */
 public class EntitySpiderPet extends EntityPet implements IEntitySpiderPet {
-    private static final EntityDataAccessor<Byte> WALL_CLIMB_FLAG;
+    private static final EntityDataAccessor<Byte> WALL_CLIMB_FLAG = SynchedEntityData.defineId(EntitySpiderPet.class, EntityDataSerializers.BYTE);
     private final boolean wallClimbing;
 
     public EntitySpiderPet(PetType type, PetUser user) {
         super(EntityType.SPIDER, type, user);
         wallClimbing = ConfigOption.INSTANCE.PET_TOGGLES_SPIDER_CLIMB.getValue();
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(WALL_CLIMB_FLAG, (byte)0);
     }
 
     @Override
@@ -32,16 +39,6 @@ public class EntitySpiderPet extends EntityPet implements IEntitySpiderPet {
     public void tick() {
         super.tick();
         if ((!VersionTranslator.getEntityLevel(this).isClientSide) && wallClimbing) this.setWallClimb(this.horizontalCollision);
-    }
-
-    @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(WALL_CLIMB_FLAG, (byte)0);
-    }
-
-    static {
-        WALL_CLIMB_FLAG = SynchedEntityData.defineId(EntitySpiderPet.class, EntityDataSerializers.BYTE);
     }
 
     public boolean canWallClimb() {

@@ -10,18 +10,19 @@ import simplepets.brainsynder.api.entity.misc.IAgeablePet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 public abstract class EntityAgeablePet extends EntityPet implements IAgeablePet {
-    private static final EntityDataAccessor<Boolean> BABY;
+    private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityAgeablePet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityAgeablePet(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(BABY, Boolean.FALSE);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(BABY, Boolean.FALSE);
     }
 
     @Override
@@ -57,9 +58,5 @@ public abstract class EntityAgeablePet extends EntityPet implements IAgeablePet 
     @Override
     public void setBabySafe(boolean flag) {
         this.entityData.set(BABY, flag);
-    }
-
-    static {
-        BABY = SynchedEntityData.defineId(EntityAgeablePet.class, EntityDataSerializers.BOOLEAN);
     }
 }

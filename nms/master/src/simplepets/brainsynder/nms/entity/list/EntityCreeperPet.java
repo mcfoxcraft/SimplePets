@@ -9,25 +9,26 @@ import simplepets.brainsynder.api.entity.hostile.IEntityCreeperPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityCreeper}
  */
 public class EntityCreeperPet extends EntityPet implements IEntityCreeperPet {
-    protected static final EntityDataAccessor<Integer> STATE;
-    protected static final EntityDataAccessor<Boolean> POWERED;
-    protected static final EntityDataAccessor<Boolean> IGNITED;
+    protected static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> IGNITED = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.BOOLEAN);
 
     public EntityCreeperPet(PetType type, PetUser user) {
         super(EntityType.CREEPER, type, user);
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(STATE, -1);
-        registerAccessorValue(POWERED, false);
-        registerAccessorValue(IGNITED, false);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(STATE, -1);
+        dataAccess.define(POWERED, false);
+        dataAccess.define(IGNITED, false);
     }
 
     @Override
@@ -61,11 +62,5 @@ public class EntityCreeperPet extends EntityPet implements IEntityCreeperPet {
     @Override
     public void setPowered(boolean flag) {
         this.entityData.set(POWERED, flag);
-    }
-
-    static {
-        STATE = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.INT);
-        POWERED = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.BOOLEAN);
-        IGNITED = SynchedEntityData.defineId(EntityCreeperPet.class, EntityDataSerializers.BOOLEAN);
     }
 }

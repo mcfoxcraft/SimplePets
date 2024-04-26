@@ -13,14 +13,15 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.ColorWrapper;
 import simplepets.brainsynder.api.wrappers.LlamaColor;
 import simplepets.brainsynder.nms.entity.branch.EntityDonkeyAbstractPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityLlama}
  */
 public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLlamaPet {
-    private static final EntityDataAccessor<Integer> STRENGTH;
-    private static final EntityDataAccessor<Integer> COLOR;
-    private static final EntityDataAccessor<Integer> VARIANT;
+    private static final EntityDataAccessor<Integer> STRENGTH = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
 
     public EntityLlamaPet(PetType type, PetUser user) {
         this(EntityType.LLAMA, type, user);
@@ -32,11 +33,11 @@ public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLl
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(STRENGTH, 0);
-        registerAccessorValue(COLOR, -1);
-        registerAccessorValue(VARIANT, 0);
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(STRENGTH, 0);
+        dataAccess.define(COLOR, -1);
+        dataAccess.define(VARIANT, 0);
     }
 
     @Override
@@ -79,11 +80,5 @@ public class EntityLlamaPet extends EntityDonkeyAbstractPet implements IEntityLl
             return;
         }
         entityData.set(COLOR, DyeColor.byId(color.getWoolData()).getId());
-    }
-
-    static {
-        STRENGTH = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
-        COLOR = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
-        VARIANT = SynchedEntityData.defineId(EntityLlamaPet.class, EntityDataSerializers.INT);
     }
 }

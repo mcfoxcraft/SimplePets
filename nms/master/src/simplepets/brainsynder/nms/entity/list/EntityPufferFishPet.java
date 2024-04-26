@@ -10,15 +10,22 @@ import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.api.wrappers.PufferState;
 import simplepets.brainsynder.nms.entity.EntityFishPet;
+import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.server.v1_16_R3.EntityPufferFish}
  */
 public class EntityPufferFishPet extends EntityFishPet implements IEntityPufferFishPet {
-    private static final EntityDataAccessor<Integer> PUFF_STATE;
+    private static final EntityDataAccessor<Integer> PUFF_STATE = SynchedEntityData.defineId(EntityPufferFishPet.class, EntityDataSerializers.INT);
 
     public EntityPufferFishPet(PetType type, PetUser user) {
         super(EntityType.PUFFERFISH, type, user);
+    }
+
+    @Override
+    public void populateDataAccess(PetDataAccess dataAccess) {
+        super.populateDataAccess(dataAccess);
+        dataAccess.define(PUFF_STATE, 0);
     }
 
     @Override
@@ -35,12 +42,6 @@ public class EntityPufferFishPet extends EntityFishPet implements IEntityPufferF
     }
 
     @Override
-    protected void registerDatawatchers() {
-        super.registerDatawatchers();
-        registerAccessorValue(PUFF_STATE, 0);
-    }
-
-    @Override
     public PufferState getPuffState() {
         return PufferState.getByID(entityData.get(PUFF_STATE));
     }
@@ -48,9 +49,5 @@ public class EntityPufferFishPet extends EntityFishPet implements IEntityPufferF
     @Override
     public void setPuffState(PufferState state) {
         entityData.set(PUFF_STATE, state.ordinal());
-    }
-
-    static {
-        PUFF_STATE = SynchedEntityData.defineId(EntityPufferFishPet.class, EntityDataSerializers.INT);
     }
 }
