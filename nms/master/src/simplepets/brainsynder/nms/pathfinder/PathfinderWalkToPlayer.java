@@ -1,14 +1,10 @@
 package simplepets.brainsynder.nms.pathfinder;
 
 import lib.brainsynder.math.MathUtils;
-import lib.brainsynder.reflection.Reflection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import org.bukkit.Bukkit;
@@ -24,7 +20,6 @@ import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityPet;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.EnumSet;
 
 public class PathfinderWalkToPlayer extends Goal {
@@ -118,7 +113,7 @@ public class PathfinderWalkToPlayer extends Goal {
 
             // Will create a path to the player, and stop the pet within 5 (default) blocks of the player
             // it will stop around 10 blocks if it is a large pet
-            navigation.moveTo(player, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+            navigation.moveTo(navigation.createPath(player, getStoppingDistance()), VersionTranslator.getWalkSpeed(entity));
         }
     }
 
@@ -191,32 +186,5 @@ public class PathfinderWalkToPlayer extends Goal {
 
     private int getRandomInt(int min, int max) {
         return MathUtils.random(max - min) + min;
-    }
-
-    private Path fixThisStupidThing() {
-        try {
-            return navigation.createPath(player, getStoppingDistance());
-        } catch (NoSuchMethodError ex) {
-            try {
-                return (Path) Reflection.getMethod(PathNavigation.class, "createPath", Entity.class, int.class)
-                        .invoke(navigation, player, getStoppingDistance());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    private void alsoFixThis(Path path) {
-        try {
-            navigation.moveTo(path, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
-        } catch (NoSuchMethodError ex) {
-            try {
-                Reflection.getMethod(PathNavigation.class, "moveTo", Path.class, double.class)
-                        .invoke(navigation, path, entity.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

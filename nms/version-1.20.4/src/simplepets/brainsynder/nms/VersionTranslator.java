@@ -71,7 +71,7 @@ public class VersionTranslator {
                 public float bl
                 protected int bm
              */
-            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_3.getEntityJumpField()); // For 1.20.1
+            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_4.getEntityJumpField()); // For 1.20.1
             jumpingField.setAccessible(true);
             return VersionTranslator.jumpingField = jumpingField;
         } catch (Exception ex) {
@@ -89,6 +89,14 @@ public class VersionTranslator {
         if ((flySpeed != -1) && (entityPet instanceof IFlyableEntity) && entityPet.getAttribute(Attributes.FLYING_SPEED) != null) {
             entityPet.getAttribute(Attributes.FLYING_SPEED).setBaseValue(flySpeed);
         }
+    }
+
+    public static double getWalkSpeed (EntityPet entityPet) {
+        return entityPet.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
+    }
+
+    public static double getFlySpeed (EntityPet entityPet) {
+        return entityPet.getAttribute(Attributes.FLYING_SPEED).getValue();
     }
 
     public static void setItemSlot(ArmorStand stand, EquipmentSlot enumitemslot, ItemStack itemstack, boolean silent) {
@@ -141,7 +149,7 @@ public class VersionTranslator {
                                       boolean glow) throws IllegalAccessException {
         Int2ObjectMap<SynchedEntityData.DataItem<Byte>> newMap =
                 (Int2ObjectMap<SynchedEntityData.DataItem<Byte>>) FieldUtils.readDeclaredField(toCloneDataWatcher,
-                        VersionFields.v1_20_3.getEntityDataMapField(), true);
+                        VersionFields.v1_20_4.getEntityDataMapField(), true);
 
         SynchedEntityData.DataItem<Byte> item = newMap.get(0);
         byte initialBitMask = item.getValue();
@@ -151,7 +159,7 @@ public class VersionTranslator {
         } else {
             item.setValue((byte) (initialBitMask & ~(1 << bitMaskIndex)));
         }
-        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_20_3.getEntityDataMapField(), newMap, true);
+        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_20_4.getEntityDataMapField(), newMap, true);
     }
 
     public static org.bukkit.inventory.ItemStack toItemStack(StorageTagCompound compound) {
