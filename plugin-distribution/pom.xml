@@ -17,10 +17,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <finalName>SimplePets</finalName>
@@ -39,6 +35,45 @@
                             <descriptors>
                                 <descriptor>all-jar.xml</descriptor>
                             </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.version}</version>
+                <configuration>
+                    <minimizeJar>false</minimizeJar>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <outputDirectory>/tmp</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>${groupId}.internal.apache</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>anvil.brainsynder</pattern>
+                                    <shadedPattern>${groupId}.internal.anvil</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>${groupId}.internal.papermc</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.jeff_media.updatechecker</pattern>
+                                    <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -158,6 +193,26 @@
             </dependencies>
         </profile>
 
+        <profile>
+            <!-- Used to compile only the latest MC version  -->
+            <id>targeted</id>
+            <activation>
+                <property>
+                    <name>target-mc</name>
+                </property>
+            </activation>
+
+            <dependencies>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_${target-mc}</artifactId>
+                    <version>${module.version}</version>
+                    <type>jar</type>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
 
         <profile>
             <id>default</id>
@@ -246,21 +301,4 @@
             </dependencies>
         </profile>
     </profiles>
-
-    <dependencies>
-        <dependency>
-            <groupId>simplepets.brainsynder</groupId>
-            <artifactId>API</artifactId>
-            <version>${module.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>simplepets.brainsynder</groupId>
-            <artifactId>MAIN</artifactId>
-            <version>${module.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>

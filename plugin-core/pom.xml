@@ -33,6 +33,41 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.version}</version>
+                <configuration>
+                    <minimizeJar>false</minimizeJar>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <outputDirectory>/tmp</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>${groupId}.internal.apache</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>anvil.brainsynder</pattern>
+                                    <shadedPattern>${groupId}.internal.anvil</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>${groupId}.internal.papermc</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.jeff_media.updatechecker</pattern>
+                                    <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

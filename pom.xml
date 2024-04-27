@@ -10,24 +10,30 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jenkins.name>SimplePets_v5</jenkins.name>
-        <jenkins.buildNumber>0</jenkins.buildNumber>
+        <env.JOB_NAME>SimplePets_v5</env.JOB_NAME>
+        <env.BUILD_NUMBER>0</env.BUILD_NUMBER>
+
+        <jenkins.name>${env.JOB_NAME}</jenkins.name>
+        <jenkins.buildNumber>${env.BUILD_NUMBER}</jenkins.buildNumber>
 
         <module.info>-parent</module.info>
         <module.version>5.0-BUILD-${jenkins.buildNumber}</module.version>
 
         <java.version>17</java.version>
-        <bslib.version>B126</bslib.version>
+        <bslib.version>B127</bslib.version>
         <anvilgui.version>1.6.16-CUSTOM</anvilgui.version>
         <spigotupdatechecker.version>3.0.3</spigotupdatechecker.version>
         <protocol-lib.version>5.0.0</protocol-lib.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <specialsource.version>2.0.2</specialsource.version>
+        <specialsource.version>2.0.3</specialsource.version>
         <shade.version>3.5.0</shade.version>
 
         <minecraft.version>1.20.5</minecraft.version>
         <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
         <spigot.nms>v1_20_R4</spigot.nms>
+
+        <!-- Used to compile specific versions -->
+        <target-mc>${minecraft.version}</target-mc>
 
         <current-module.version/>
         <current-module.nms/>
@@ -39,6 +45,27 @@
     </properties>
 
     <profiles>
+        <!-- Used to compile a selected version Example: mvn clean install -Dtarget-mc=1.20.4 -->
+        <profile>
+            <id>targeted</id>
+            <activation>
+                <property>
+                    <name>target-mc</name>
+                </property>
+            </activation>
+
+            <modules>
+                <module>plugin-api</module>
+                <module>plugin-core</module>
+                <module>plugin-distribution</module>
+
+                <module>nms/master</module>
+                <module>nms/version-${target-mc}</module>
+            </modules>
+        </profile>
+
+
+        <!-- Used to compile for the latest mc version Example: mvn clean install -Platest -->
         <profile>
             <id>latest</id>
 
@@ -52,7 +79,26 @@
             </modules>
         </profile>
 
-        <!-- Used to compile all the supported MC versions -->
+
+        <!-- Used to compile for the 1.19 mc versions Example: mvn clean install -P1.19 -->
+        <profile>
+            <id>1.19</id>
+
+            <modules>
+                <module>plugin-api</module>
+                <module>plugin-core</module>
+                <module>plugin-distribution</module>
+
+                <module>nms/master</module>
+                <module>nms/version-1.19</module>
+                <module>nms/version-1.19.1</module>
+                <module>nms/version-1.19.2</module>
+                <module>nms/version-1.19.3</module>
+                <module>nms/version-1.19.4</module>
+            </modules>
+        </profile>
+
+        <!-- This profile is automatically run when running the 'mvn clean install' command -->
         <profile>
             <id>default</id>
             <activation>
@@ -70,6 +116,7 @@
                 <module>nms/version-1.19.2</module>
                 <module>nms/version-1.19.3</module>
                 <module>nms/version-1.19.4</module>
+
                 <module>nms/version-1.20</module>
                 <module>nms/version-1.20.1</module>
                 <module>nms/version-1.20.2</module>
@@ -170,6 +217,9 @@
                         <property>
                             <name>specialsource.version</name>
                         </property>
+                        <property>
+                            <name>target-mc</name>
+                        </property>
                     </properties>
                 </configuration>
             </plugin>
@@ -225,6 +275,34 @@
                         <createDependencyReducedPom>false</createDependencyReducedPom>
                         <shadedArtifactAttached>false</shadedArtifactAttached>
                         <outputDirectory>/tmp</outputDirectory>
+
+                        <relocations>
+                            <relocation>
+                                <pattern>${groupId}.nms</pattern>
+                                <shadedPattern>${groupId}.versions.${current-module.version}</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>org.bukkit.craftbukkit.${spigot.nms}</pattern>
+                                <shadedPattern>org.bukkit.craftbukkit.${current-module.nms}</shadedPattern>
+                            </relocation>
+
+                            <relocation>
+                                <pattern>org.apache.commons</pattern>
+                                <shadedPattern>${groupId}.internal.apache</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>anvil.brainsynder</pattern>
+                                <shadedPattern>${groupId}.internal.anvil</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>io.papermc.lib</pattern>
+                                <shadedPattern>${groupId}.internal.papermc</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>com.jeff_media.updatechecker</pattern>
+                                <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
+                            </relocation>
+                        </relocations>
                     </configuration>
                     <executions>
                         <execution>
@@ -232,26 +310,6 @@
                             <goals>
                                 <goal>shade</goal>
                             </goals>
-                            <configuration>
-                                <relocations>
-                                    <relocation>
-                                        <pattern>org.apache.commons</pattern>
-                                        <shadedPattern>${groupId}.internal.apache</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>anvil.brainsynder</pattern>
-                                        <shadedPattern>${groupId}.internal.anvil</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>io.papermc.lib</pattern>
-                                        <shadedPattern>${groupId}.internal.papermc</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.jeff_media.updatechecker</pattern>
-                                        <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
-                                    </relocation>
-                                </relocations>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
