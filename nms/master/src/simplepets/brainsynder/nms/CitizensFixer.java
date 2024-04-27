@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import org.bukkit.Bukkit;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.debug.DebugLevel;
+import simplepets.brainsynder.utils.VersionFields;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

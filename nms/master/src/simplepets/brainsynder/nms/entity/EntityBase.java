@@ -8,9 +8,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.VersionFields;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
+import simplepets.brainsynder.utils.VersionFields;
 
 import java.lang.reflect.Field;
 

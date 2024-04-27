@@ -3,7 +3,7 @@
  * BSDevelopment <https://bsdevelopment.org>
  */
 
-package simplepets.brainsynder.nms.utils;
+package simplepets.brainsynder.utils;
 
 public interface FieldValues {
     String getEntityDataMapField ();
@@ -12,4 +12,6 @@ public interface FieldValues {
     String getEntityJumpField ();
     String getRegistryFrozenField ();
     String getRegistryIntrusiveField ();
+    String getRideCooldownField ();
+    String getServerRunningField ();
 }

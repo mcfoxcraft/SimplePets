@@ -46,6 +46,7 @@ import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.DataWatcherValue;
 import simplepets.brainsynder.nms.utils.FieldUtils;
 import simplepets.brainsynder.nms.utils.InvalidInputException;
+import simplepets.brainsynder.utils.VersionFields;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

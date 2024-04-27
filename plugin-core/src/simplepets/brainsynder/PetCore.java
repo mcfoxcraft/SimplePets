@@ -44,6 +44,7 @@ import simplepets.brainsynder.sql.handlers.MySQLHandler;
 import simplepets.brainsynder.sql.handlers.SQLiteHandler;
 import simplepets.brainsynder.utils.JavaVersion;
 import simplepets.brainsynder.utils.Premium;
+import simplepets.brainsynder.utils.VersionFields;
 import simplepets.brainsynder.utils.debug.Debug;
 
 import java.io.File;
@@ -344,25 +345,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             Class<?> nmsClass = Reflection.getNmsClass("MinecraftServer", "server");
             try {
                 Object server = Reflection.getMethod(nmsClass, "getServer").invoke(null);
-
-                // Class: net.minecraft.server.MinecraftServer
-                // private volatile boolean (below 'private PlayerList')
-                String methodName = "isRunning"; // 1.17 - 1.17.1
-                if (ServerVersion.isEqualNew(ServerVersion.v1_18) && ServerVersion.isOlder(ServerVersion.v1_19))
-                    methodName = "v"; // 1.18 - 1.18.2
-                if (ServerVersion.isEqualNew(ServerVersion.v1_19))
-                    methodName = "u"; // 1.19
-                if (ServerVersion.isEqualNew(ServerVersion.v1_19_3))
-                    methodName = "Q"; // 1.19.3
-                if (ServerVersion.isEqualNew(ServerVersion.v1_19_4)
-                        || ServerVersion.isEqualNew(ServerVersion.v1_20)
-                        || ServerVersion.isEqualNew(ServerVersion.v1_20_1)
-                        || ServerVersion.isEqualNew(ServerVersion.v1_20_2))
-                    methodName = "R"; // 1.19.4 / 1.20 / 1.20.1 / 1.20.2
-                if (ServerVersion.isEqualNew(ServerVersion.v1_20_3))
-                    methodName = "S"; // 1.20.3 / 1.20.4
-
-                Method isRunning = Reflection.getMethod(nmsClass, new String[]{methodName}); // Remapped Field Name: running
+                Method isRunning = Reflection.getMethod(nmsClass, new String[]{VersionFields.fromServerVersion(ServerVersion.getVersion()).getServerRunningField()});
                 return (boolean) Reflection.invoke(isRunning, server);
             } catch (IllegalAccessException | InvocationTargetException exception) {
                 exception.printStackTrace();

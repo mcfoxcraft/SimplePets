@@ -15,9 +15,9 @@ import org.bukkit.craftbukkit.v1_20_R4.entity.CraftLivingEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.CitizensFixer;
-import simplepets.brainsynder.nms.VersionFields;
 import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
+import simplepets.brainsynder.utils.VersionFields;
 
 import java.lang.reflect.Field;
 import java.util.IdentityHashMap;
