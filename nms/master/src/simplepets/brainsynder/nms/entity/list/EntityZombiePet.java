@@ -31,6 +31,7 @@ public class EntityZombiePet extends EntityPet implements IEntityZombiePet {
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(BABY, false);
+        dataAccess.define(UNKNOWN, 0);
         dataAccess.define(DROWN_CONVERTING, false);
     }
 
