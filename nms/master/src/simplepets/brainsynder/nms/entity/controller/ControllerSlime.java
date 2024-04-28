@@ -1,6 +1,5 @@
 package simplepets.brainsynder.nms.entity.controller;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Bukkit;
@@ -49,7 +48,7 @@ public class ControllerSlime extends MoveControl {
             lastJump++;
         } else {
             this.operation = Operation.WAIT;
-            this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
+            this.mob.setSpeed((float)(this.speedModifier * VersionTranslator.getWalkSpeed(slimePet)));
             // If the slime is on the ground or simply stuck,
             if (this.mob.onGround || lastJump > 60) {
                 if (this.jumpDelay-- <= 0) {

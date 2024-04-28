@@ -7,11 +7,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import simplepets.brainsynder.api.entity.hostile.IEntitySlimePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
+import simplepets.brainsynder.nms.VersionTranslator;
 import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.entity.controller.ControllerSlime;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
@@ -56,7 +56,7 @@ public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
 
     public void setSize(int i) {
         this.entityData.set(SIZE, i);
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2 + 0.1 * i);
+        VersionTranslator.setAttributes(this, 0.2 + 0.1 * i, -1);
     }
 
     public void playJumpSound() {

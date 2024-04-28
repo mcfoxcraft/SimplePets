@@ -517,7 +517,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 this.yRotO = getYRot();
             }
 
-            double current = getAttribute(Attributes.MOVEMENT_SPEED).getValue();
+            double current = VersionTranslator.getWalkSpeed(this);
             if (isOwnerRiding()) {
                 if (current != rideSpeed)
                     VersionTranslator.setAttributes(this, rideSpeed, -1);

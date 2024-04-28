@@ -92,6 +92,14 @@ public class VersionTranslator {
         }
     }
 
+    public static double getWalkSpeed (EntityPet entityPet) {
+        return entityPet.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
+    }
+
+    public static double getFlySpeed (EntityPet entityPet) {
+        return entityPet.getAttribute(Attributes.FLYING_SPEED).getValue();
+    }
+
     public static void setItemSlot(ArmorStand stand, EquipmentSlot enumitemslot, ItemStack itemstack, boolean silent) {
         stand.setItemSlot(enumitemslot, itemstack, silent);
     }
