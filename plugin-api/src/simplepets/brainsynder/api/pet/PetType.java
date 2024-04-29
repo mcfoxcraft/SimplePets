@@ -61,6 +61,10 @@ public enum PetType {
     @PetCustomization(ambient = SoundMaker.ENTITY_ALLAY_AMBIENT_WITHOUT_ITEM, weight = PetWeight.LIGHT)
     ALLAY(IEntityAllayPet.class, "40e1c7064af7dee68677efaa95f6e6e01430b006dd91638ea2a61849254488ec"),
 
+    @PetCustomization(ambient = SoundMaker.ENTITY_ARMADILLO_AMBIENT, weight = PetWeight.HEAVY)
+    ARMADILLO(IEntityArmadilloPet.class, "9164ed0e0ef69b0ce7815e4300b4413a4828fcb0092918543545a418a48e0c3c",
+            AgeData.class, ArmadilloPhaseData.class),
+
     @InDevelopment
     @PetCustomization(ambient = SoundMaker.ENTITY_ARMORSTAND_FALL, weight = PetWeight.LIGHT)
     ARMOR_STAND(IEntityArmorStandPet.class, Material.ARMOR_STAND),
@@ -443,6 +447,8 @@ public enum PetType {
         switch (this) {
             case POLARBEAR:
                 return EntityType.POLAR_BEAR;
+            case SNOWMAN:
+                return (ServerVersion.isOlder(ServerVersion.v1_20_5)) ? EntityType.valueOf("SNOW_GOLEM") : EntityType.valueOf("SNOWMAN");
             case MOOSHROOM:
                 return (ServerVersion.isOlder(ServerVersion.v1_20_5)) ? EntityType.valueOf("MUSHROOM_COW") : EntityType.valueOf("MOOSHROOM");
             default:
