@@ -22,10 +22,8 @@ import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.nms.entity.EntityPet;
-import simplepets.brainsynder.nms.utils.DataWatcherValue;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
 import java.util.Optional;
 
 @Deprecated
@@ -153,7 +151,7 @@ public class VersionTranslator {
     }
 
     // ADDED DURING 1.20.5 DEVELOPMENT
-    public static void registerDataAccessors (SynchedEntityData.Builder datawatcher, LinkedList<DataWatcherValue> values) {
+    public static boolean isWalkable (EntityPet entity, BlockPos.MutableBlockPos blockposition) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
 }

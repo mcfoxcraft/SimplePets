@@ -5,8 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import simplepets.brainsynder.api.entity.misc.EntityPetType;
@@ -175,9 +173,7 @@ public class PathfinderWalkToPlayer extends Goal {
     }
 
     private boolean canTeleportTo(BlockPos blockposition) {
-        // TODO: VersionTranslator to check path...
-        PathType pathtype = WalkNodeEvaluator.getPathTypeStatic(entity, blockposition.mutable());
-        if (pathtype != PathType.WALKABLE) return false;
+        if (!VersionTranslator.isWalkable(entity, blockposition.mutable())) return false;
 
         // Translation: BlockPosition.subtract (BlockPosition)
         BlockPos position = VersionTranslator.subtract(blockposition, this.entity.blockPosition());

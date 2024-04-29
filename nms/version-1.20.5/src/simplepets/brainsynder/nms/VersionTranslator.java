@@ -31,6 +31,8 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -44,14 +46,12 @@ import org.bukkit.craftbukkit.v1_20_R4.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.nms.entity.EntityPet;
-import simplepets.brainsynder.nms.utils.DataWatcherValue;
 import simplepets.brainsynder.nms.utils.FieldUtils;
 import simplepets.brainsynder.nms.utils.InvalidInputException;
 import simplepets.brainsynder.utils.VersionFields;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Optional;
 
 public class VersionTranslator {
@@ -269,9 +269,7 @@ public class VersionTranslator {
     }
 
     // ADDED DURING 1.20.5 DEVELOPMENT
-    public static void registerDataAccessors(SynchedEntityData.Builder datawatcher, LinkedList<DataWatcherValue> values) {
-        values.forEach(accessor -> {
-            datawatcher.define(accessor.accessor(), accessor.value());
-        });
+    public static boolean isWalkable (EntityPet entity, BlockPos.MutableBlockPos blockposition) {
+        return WalkNodeEvaluator.getPathTypeStatic(entity, blockposition) == PathType.WALKABLE;
     }
 }
