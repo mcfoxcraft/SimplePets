@@ -6,11 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDismountEvent;
-import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.event.user.PetRenameEvent;
-import simplepets.brainsynder.api.pet.CommandReason;
-import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 
 import java.util.List;
@@ -90,21 +86,6 @@ public class PetEventListener implements Listener {
 
         event.setName(name);
     }
-
-    // TODO: This might be an issue on older versions...
-
-    @EventHandler
-    public void onDismount (EntityDismountEvent event) {
-        if ((event.getEntity() instanceof Player) && SimplePets.isPetEntity(event.getDismounted())) {
-            SimplePets.getUserManager().getPetUser((Player) event.getEntity()).ifPresent(user -> {
-                SimplePets.getSpawnUtil().getHandle(event.getDismounted()).ifPresent(o -> {
-                    IEntityPet pet = (IEntityPet) o;
-                    SimplePets.getPetUtilities().runPetCommands(CommandReason.RIDE_DISMOUNT, user, pet.getPetType());
-                });
-            });
-        }
-    }
-
 
     /**
      * A modified method from BSLib as a temp fix for it not removing post-translated colors

@@ -37,6 +37,7 @@ import simplepets.brainsynder.impl.PetConfiguration;
 import simplepets.brainsynder.impl.PetOwner;
 import simplepets.brainsynder.impl.PetUtility;
 import simplepets.brainsynder.listeners.*;
+import simplepets.brainsynder.listeners.breaking.DismountListener;
 import simplepets.brainsynder.managers.*;
 import simplepets.brainsynder.sql.SQLData;
 import simplepets.brainsynder.sql.SQLHandler;
@@ -386,6 +387,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         manager.registerEvents(new SavesGUIListener(), this);
         manager.registerEvents(new SelectionGUIListener(), this);
         manager.registerEvents(new LocationChangeListener(), this);
+        manager.registerEvents(new DismountListener(), this);
     }
 
     @Override
