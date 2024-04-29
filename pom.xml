@@ -89,7 +89,6 @@
                 <module>plugin-core</module>
                 <module>plugin-distribution</module>
 
-                <module>nms/master</module>
                 <module>nms/version-1.19</module>
                 <module>nms/version-1.19.1</module>
                 <module>nms/version-1.19.2</module>
@@ -225,11 +224,6 @@
                         </property>
                     </properties>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
             </plugin>
         </plugins>
 
