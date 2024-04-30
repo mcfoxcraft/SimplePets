@@ -61,7 +61,7 @@ public class VersionTranslator {
         if (jumpingField != null) return jumpingField;
 
         try {
-            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_5.getEntityJumpField()); // For 1.20.1
+            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_6.getEntityJumpField());
             jumpingField.setAccessible(true);
             return VersionTranslator.jumpingField = jumpingField;
         } catch (Exception ex) {
@@ -139,7 +139,7 @@ public class VersionTranslator {
                                       boolean glow) throws IllegalAccessException {
         Int2ObjectMap<SynchedEntityData.DataItem<Byte>> newMap =
                 (Int2ObjectMap<SynchedEntityData.DataItem<Byte>>) FieldUtils.readDeclaredField(toCloneDataWatcher,
-                        VersionFields.v1_20_5.getEntityDataMapField(), true);
+                        VersionFields.v1_20_6.getEntityDataMapField(), true);
 
         SynchedEntityData.DataItem<Byte> item = newMap.get(0);
         byte initialBitMask = item.getValue();
@@ -149,7 +149,7 @@ public class VersionTranslator {
         } else {
             item.setValue((byte) (initialBitMask & ~(1 << bitMaskIndex)));
         }
-        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_20_5.getEntityDataMapField(), newMap, true);
+        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_20_6.getEntityDataMapField(), newMap, true);
     }
 
     public static org.bukkit.inventory.ItemStack toItemStack(StorageTagCompound compound) {

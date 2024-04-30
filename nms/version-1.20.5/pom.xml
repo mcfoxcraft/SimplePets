@@ -13,6 +13,17 @@
     <artifactId>Version_${minecraft.version}</artifactId>
     <version>${module.version}</version>
 
+    <properties>
+        <java.version>21</java.version>
+
+        <minecraft.version>1.20.5</minecraft.version>
+        <current-module.version>v1_20_5</current-module.version>
+        <current-module.nms>v1_20_R4</current-module.nms>
+
+        <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
+        <module.info>-${minecraft.version}</module.info>
+    </properties>
+
     <build>
         <sourceDirectory>src/</sourceDirectory>
         <plugins>
@@ -55,17 +66,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <java.version>21</java.version>
-
-        <minecraft.version>1.20.5</minecraft.version>
-        <current-module.version>v1_20_5</current-module.version>
-        <current-module.nms>v1_20_R4</current-module.nms>
-
-        <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
-        <module.info>-${minecraft.version}</module.info>
-    </properties>
 
     <dependencies>
         <dependency>
