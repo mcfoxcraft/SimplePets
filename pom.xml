@@ -110,11 +110,6 @@
                 <module>plugin-distribution</module>
 
                 <module>nms/master</module>
-                <module>nms/version-1.19</module>
-                <module>nms/version-1.19.1</module>
-                <module>nms/version-1.19.2</module>
-                <module>nms/version-1.19.3</module>
-                <module>nms/version-1.19.4</module>
 
                 <module>nms/version-1.20</module>
                 <module>nms/version-1.20.1</module>
