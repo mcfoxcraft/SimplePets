@@ -5,8 +5,10 @@ import lib.brainsynder.SupportedVersion;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
+import net.minecraft.world.level.gameevent.GameEvent;
 import simplepets.brainsynder.api.entity.passive.IEntityArmadilloPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
@@ -38,6 +40,13 @@ public class EntityArmadilloPet extends EntityAgeablePet implements IEntityArmad
 
     @Override
     public void setPhase(ArmadilloPhase phase) {
+        this.gameEvent(GameEvent.ENTITY_ACTION);
+        if (phase == ArmadilloPhase.IDLE) {
+            this.makeSound(SoundEvents.ARMADILLO_UNROLL_FINISH);
+        }else{
+            this.makeSound(SoundEvents.ARMADILLO_ROLL);
+        }
+
         entityData.set(ARMADILLO_STATE, Armadillo.ArmadilloState.valueOf(phase.name()));
     }
 }
