@@ -349,7 +349,8 @@ public enum PetType {
 
     @PetCustomization(ambient = SoundMaker.ENTITY_WOLF_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
     WOLF(IEntityWolfPet.class, "24d7727f52354d24a64bd6602a0ce71a7b484d05963da83b470360faa9ceab5f",
-            AgeData.class, TamedData.class, AngryData.class, ColorData.class, SittingData.class, WolfTiltData.class, ShakeData.class),
+            AgeData.class, TamedData.class, AngryData.class, ColorData.class, SittingData.class,
+            WolfTiltData.class, ShakeData.class, WolfTypeData.class),
 
     @LargePet
     @PetCustomization(ambient = SoundMaker.ENTITY_ZOGLIN_AMBIENT, weight = PetWeight.YOUR_KILLING_ME)
