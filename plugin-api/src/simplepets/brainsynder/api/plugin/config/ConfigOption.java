@@ -218,6 +218,12 @@ public enum ConfigOption {
                     This is the minimum distance required, there could be other reasons for a teleport.
                     
                     Default: {default}""").setPastPaths("Pathfinding.Min-Distance-For-Teleport");
+    public final ConfigEntry<Integer> PATHFINDING_UPDATE_INTERVAL = createOption("pathfinding.update-interval", 10,
+            """
+                    Modify this value to control how often a pet tries to calculate a new path to its owner
+                    Note: This is in ticks ( 20 ticks = 1 second )
+                    
+                    Default: {default}""");
 
 
     // Worlds

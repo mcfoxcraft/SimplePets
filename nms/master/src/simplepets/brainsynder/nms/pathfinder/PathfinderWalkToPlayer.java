@@ -3,7 +3,6 @@ package simplepets.brainsynder.nms.pathfinder;
 import lib.brainsynder.math.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import org.bukkit.Bukkit;
@@ -36,6 +35,7 @@ public class PathfinderWalkToPlayer extends Goal {
 
     private final int largeDistance;
     private final int smallDistance;
+    private final int updateInterval;
 
     public PathfinderWalkToPlayer(EntityPet entity, int minDistance, int maxDistance) {
         this.entity = entity;
@@ -56,6 +56,8 @@ public class PathfinderWalkToPlayer extends Goal {
 
         largeDistance = ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_LARGE.getValue();
         smallDistance = ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_SMALL.getValue();
+
+        updateInterval = ConfigOption.INSTANCE.PATHFINDING_UPDATE_INTERVAL.getValue();
 
         // Translation: setControls(EnumSet<Goal.Control>)
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -113,13 +115,9 @@ public class PathfinderWalkToPlayer extends Goal {
 
         if ( (!(entity instanceof IFlyableEntity)) && (!entity.onGround())) return;
 
-        // Translation: EntityInsentient.getLookControl().lookAt(EntityPlayer, 10.0F, (float)EntityInsentient.getLookPitchSpeed())
-        //entity.getControllerLook().a(player, 10F, entity.O());
         if (--this.updateCountdownTicks <= 0) {
-            this.updateCountdownTicks = 10;
+            this.updateCountdownTicks = updateInterval;
 
-            // Will create a path to the player, and stop the pet within 5 (default) blocks of the player
-            // it will stop around 10 blocks if it is a large pet
             navigation.moveTo(navigation.createPath(player, getStoppingDistance()), VersionTranslator.getWalkSpeed(entity));
         }
     }
