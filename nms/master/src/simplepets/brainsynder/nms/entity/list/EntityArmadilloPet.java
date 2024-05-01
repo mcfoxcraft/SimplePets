@@ -2,6 +2,7 @@ package simplepets.brainsynder.nms.entity.list;
 
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.SupportedVersion;
+import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -34,6 +35,19 @@ public class EntityArmadilloPet extends EntityAgeablePet implements IEntityArmad
     }
 
     @Override
+    public StorageTagCompound asCompound() {
+        StorageTagCompound object = super.asCompound();
+        object.setEnum("phase", getPhase());
+        return object;
+    }
+
+    @Override
+    public void applyCompound(StorageTagCompound object) {
+        if (object.hasKey("phase")) setPhase(object.getEnum("phase", ArmadilloPhase.class));
+        super.applyCompound(object);
+    }
+
+    @Override
     public ArmadilloPhase getPhase() {
         return ArmadilloPhase.getByName(entityData.get(ARMADILLO_STATE).name());
     }
@@ -41,12 +55,12 @@ public class EntityArmadilloPet extends EntityAgeablePet implements IEntityArmad
     @Override
     public void setPhase(ArmadilloPhase phase) {
         this.gameEvent(GameEvent.ENTITY_ACTION);
-        if (phase == ArmadilloPhase.IDLE) {
+        if (phase == ArmadilloPhase.STANDING) {
             this.makeSound(SoundEvents.ARMADILLO_UNROLL_FINISH);
         }else{
             this.makeSound(SoundEvents.ARMADILLO_ROLL);
         }
 
-        entityData.set(ARMADILLO_STATE, Armadillo.ArmadilloState.valueOf(phase.name()));
+        entityData.set(ARMADILLO_STATE, Armadillo.ArmadilloState.valueOf(phase.getMojangName()));
     }
 }

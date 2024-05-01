@@ -6,12 +6,11 @@ import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.entity.passive.IEntityArmadilloPet;
 import simplepets.brainsynder.api.pet.PetData;
 import simplepets.brainsynder.api.wrappers.ArmadilloPhase;
-import simplepets.brainsynder.api.wrappers.CatType;
 
 @Namespace(namespace = "phase")
 public class ArmadilloPhaseData extends PetData<IEntityArmadilloPet> {
     public ArmadilloPhaseData() {
-        for (CatType type : CatType.values()) {
+        for (ArmadilloPhase type : ArmadilloPhase.values()) {
             addDefaultItem(type.name(), new ItemBuilder(Material.PLAYER_HEAD)
                     .withName("&#c8c8c8{name}: &a"+type.name())
                     .setTexture(type.getTexture()));
@@ -20,7 +19,7 @@ public class ArmadilloPhaseData extends PetData<IEntityArmadilloPet> {
 
     @Override
     public Object getDefaultValue() {
-        return ArmadilloPhase.IDLE;
+        return ArmadilloPhase.STANDING;
     }
 
     @Override
