@@ -30,11 +30,13 @@
 ```
 
 ## How to compile yourself:
-Placeholders:
-- {build} = The build number you want as the version (e.g 1000 = 5.0-BUILD-1000)
-- {job} = This can be set to what you want its mostly used by the update checker (e.g SimplePets_v5)
+#### Notice as of `May 1st 2024`
+When compiling a custom version you need to supply a 'revision' variable  
+which will be your custom version. If no revision is supplied the version  
+will default to be `5.0-BUILD-0`  
+**Example:** `-Drevision=5.0-BUILD-100`
 
 There are a few different ways you can compile the plugin (as of `May 1st 2024`): 
-- If you want to compile all current supported version you can run this command: `mvn clean install -Denv.BUILD_NUMBER={build}`
-- If you want to compile a specific supported version run a command similar to this: `mvn clean install -Denv.BUILD_NUMBER={build} -Dtarget-mc=1.20.6`
-- If you want to compile the latest supported version run this command: `mvn clean install -Denv.BUILD_NUMBER={build} -Platest`
+- If you want to compile all current supported version you can run this command: `mvn clean install -Drevision={version}`
+- If you want to compile a specific supported version run a command similar to this: `mvn clean install -Drevision={version} -Dtarget-mc=1.20.6`
+- If you want to compile the latest supported version run this command: `mvn clean install -Drevision={version} -Platest`

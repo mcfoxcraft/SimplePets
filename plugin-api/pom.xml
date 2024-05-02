@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>API</artifactId>
-    <version>${module.version}</version>
+    <version>${revision}</version>
 
     <build>
         <sourceDirectory>src/</sourceDirectory>

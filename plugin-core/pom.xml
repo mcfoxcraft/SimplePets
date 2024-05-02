@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>MAIN</artifactId>
-    <version>${module.version}</version>
+    <version>${revision}</version>
 
     <build>
         <sourceDirectory>src/</sourceDirectory>
@@ -50,19 +50,19 @@
                             <relocations>
                                 <relocation>
                                     <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>${groupId}.internal.apache</shadedPattern>
+                                    <shadedPattern>${project.groupId}.internal.apache</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>anvil.brainsynder</pattern>
-                                    <shadedPattern>${groupId}.internal.anvil</shadedPattern>
+                                    <shadedPattern>${project.groupId}.internal.anvil</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>io.papermc.lib</pattern>
-                                    <shadedPattern>${groupId}.internal.papermc</shadedPattern>
+                                    <shadedPattern>${project.groupId}.internal.papermc</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.jeff_media.updatechecker</pattern>
-                                    <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
+                                    <shadedPattern>${project.groupId}.internal.updatechecker</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>API</artifactId>
-            <version>${module.version}</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

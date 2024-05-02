@@ -10,14 +10,12 @@
     <packaging>pom</packaging>
 
     <properties>
-        <env.JOB_NAME>SimplePets_v5</env.JOB_NAME>
-        <env.BUILD_NUMBER>0</env.BUILD_NUMBER>
-
-        <jenkins.name>${env.JOB_NAME}</jenkins.name>
-        <jenkins.buildNumber>${env.BUILD_NUMBER}</jenkins.buildNumber>
+        <!-- These 2 values are used by my Update Checker to check for new dev builds -->
+        <jenkins.name>SimplePets_v5</jenkins.name>
+        <jenkins.buildNumber>0</jenkins.buildNumber>
 
         <module.info>-parent</module.info>
-        <module.version>5.0-BUILD-${jenkins.buildNumber}</module.version>
+        <revision>5.0-BUILD-0</revision>
 
         <java.version>17</java.version>
         <bslib.version>B129</bslib.version>
@@ -174,12 +172,42 @@
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.15.0</version>
                 <configuration>
                     <groupId>simplepets.brainsynder</groupId>
 
                     <properties>
+                        <property>
+                            <name>revision</name>
+                        </property>
                         <property>
                             <name>spigot.version</name>
                         </property>
@@ -238,8 +266,8 @@
 
                         <relocations>
                             <relocation>
-                                <pattern>${groupId}.nms</pattern>
-                                <shadedPattern>${groupId}.versions.${current-module.version}</shadedPattern>
+                                <pattern>${project.groupId}.nms</pattern>
+                                <shadedPattern>${project.groupId}.versions.${current-module.version}</shadedPattern>
                             </relocation>
                             <relocation>
                                 <pattern>org.bukkit.craftbukkit.${spigot.nms}</pattern>
@@ -248,19 +276,19 @@
 
                             <relocation>
                                 <pattern>org.apache.commons</pattern>
-                                <shadedPattern>${groupId}.internal.apache</shadedPattern>
+                                <shadedPattern>${project.groupId}.internal.apache</shadedPattern>
                             </relocation>
                             <relocation>
                                 <pattern>anvil.brainsynder</pattern>
-                                <shadedPattern>${groupId}.internal.anvil</shadedPattern>
+                                <shadedPattern>${project.groupId}.internal.anvil</shadedPattern>
                             </relocation>
                             <relocation>
                                 <pattern>io.papermc.lib</pattern>
-                                <shadedPattern>${groupId}.internal.papermc</shadedPattern>
+                                <shadedPattern>${project.groupId}.internal.papermc</shadedPattern>
                             </relocation>
                             <relocation>
                                 <pattern>com.jeff_media.updatechecker</pattern>
-                                <shadedPattern>${groupId}.internal.updatechecker</shadedPattern>
+                                <shadedPattern>${project.groupId}.internal.updatechecker</shadedPattern>
                             </relocation>
                         </relocations>
                     </configuration>

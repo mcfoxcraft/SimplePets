@@ -10,8 +10,8 @@
         <version>1</version>
     </parent>
 
-    <artifactId>Version_${minecraft.version}</artifactId>
-    <version>${module.version}</version>
+    <artifactId>Version_1.19</artifactId>
+    <version>${revision}</version>
 
     <build>
         <sourceDirectory>src/</sourceDirectory>
@@ -78,12 +78,12 @@
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>API</artifactId>
-            <version>${module.version}</version>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>MAIN</artifactId>
-            <version>${module.version}</version>
+            <version>${revision}</version>
             <exclusions>
                 <exclusion>
                     <groupId>anvil.brainsynder</groupId>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>NMS_Master</artifactId>
-            <version>${module.version}</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

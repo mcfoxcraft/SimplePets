@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>NMS_Master</artifactId>
-    <version>${module.version}</version>
+    <version>${revision}</version>
 
     <build>
         <sourceDirectory>src/</sourceDirectory>
@@ -34,13 +34,13 @@
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>API</artifactId>
-            <version>${module.version}</version>
+            <version>${revision}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>MAIN</artifactId>
-            <version>${module.version}</version>
+            <version>${revision}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
