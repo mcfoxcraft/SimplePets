@@ -95,35 +95,30 @@
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.1</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.2</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.3</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.19.4</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
@@ -137,49 +132,42 @@
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.1</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.2</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.3</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.4</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.5</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.6</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
@@ -194,7 +182,6 @@
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_${minecraft.version}</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
@@ -214,7 +201,6 @@
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_${target-mc}</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
             </dependencies>
@@ -232,49 +218,42 @@
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.1</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.2</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.3</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.4</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.5</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.6</artifactId>
                     <version>${revision}</version>
-                    <type>jar</type>
                     <scope>compile</scope>
                 </dependency>
                 <!-- AUTOMATION: INSERTION POINT -->
