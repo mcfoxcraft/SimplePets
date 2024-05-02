@@ -6,7 +6,6 @@ import lib.brainsynder.math.MathUtils;
 import lib.brainsynder.nbt.StorageTagCompound;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,6 +34,7 @@ import java.util.OptionalInt;
 public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
     private static final EntityDataAccessor<Holder<FrogVariant>> DATA_VARIANT = SynchedEntityData.defineId(EntityFrogPet.class, EntityDataSerializers.FROG_VARIANT);
     private static final EntityDataAccessor<OptionalInt> TONGUE_TARGET_ID = SynchedEntityData.defineId(EntityFrogPet.class, EntityDataSerializers.OPTIONAL_UNSIGNED_INT);
+    private FrogType type = FrogType.TEMPERATE;
 
     private boolean croaking = false;
     private int croakingTick = 0;
@@ -116,14 +116,16 @@ public class EntityFrogPet extends EntityAgeablePet implements IEntityFrogPet {
     }
 
     @Override
-    public void setVariant(FrogType variant) {
+    public void setVariant(FrogType type) {
+        this.type = type;
+
         Registry<FrogVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.FROG_VARIANT);
-        entityData.set(DATA_VARIANT, registry.wrapAsHolder(registry.get(CraftNamespacedKey.toMinecraft(variant.getKey()))));
+        entityData.set(DATA_VARIANT, registry.wrapAsHolder(registry.get(CraftNamespacedKey.toMinecraft(type.getKey()))));
     }
 
     @Override
     public FrogType getVariant() {
-        return FrogType.getByID(BuiltInRegistries.FROG_VARIANT.getId(entityData.get(DATA_VARIANT).value()));
+        return type;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
     private static final EntityDataAccessor<Boolean> SLEEPING_WITH_OWNER = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HEAD_UP = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(EntityCatPet.class, EntityDataSerializers.INT);
+    private CatType type = CatType.TABBY;
 
     public EntityCatPet(PetType type, PetUser user) {
         super(EntityType.CAT, type, user);
@@ -64,11 +65,13 @@ public class EntityCatPet extends EntityTameablePet implements IEntityCatPet {
 
     @Override
     public CatType getCatType() {
-        return CatType.getByID(BuiltInRegistries.CAT_VARIANT.getId(entityData.get(TYPE).value()));
+        return type;
     }
 
     @Override
     public void setCatType(CatType type) {
+        this.type = type;
+
         Registry<CatVariant> registry = CraftRegistry.getMinecraftRegistry(Registries.CAT_VARIANT);
         entityData.set(TYPE, registry.wrapAsHolder(registry.get(CraftNamespacedKey.toMinecraft(type.getKey()))));
     }
