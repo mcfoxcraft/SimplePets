@@ -9,3 +9,4 @@ dependency-reduced-pom.xml
 libs/craftbukkit-*
 /.idea/
 .flattened-pom.xml
+*/*-pom.xml
