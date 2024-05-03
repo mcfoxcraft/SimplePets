@@ -179,49 +179,25 @@ public enum ConfigOption {
 
 
     // Pathfinding
-    public final ConfigEntry<Double> PATHFINDING_DISTANCE_SMALL = createOption("pathfinding.distance-to-player.small.stand", 1.9,
+    public final ConfigEntry<Integer> PATHFINDING_MIN_DISTANCE = createOption("pathfinding.min-distance-to-player", 5,
             """
-                    How far away can the pets stand near the player?
-                    Small pets can be considered: cow, chicken, enderman, armorstand, ETC...
+                    This is the minimum distance a pet can be to a player
+                    Note: This is in reference to a random location around the player the pet could be closer then this
                     
-                    Explanation: Player is walking around the pet wont start to follow unless they are {default} blocks away
-                    Default: {default}""").setPastPaths("Pathfinding.Distance-to-Player");
-    public final ConfigEntry<Double> PATHFINDING_DISTANCE_LARGE = createOption("pathfinding.distance-to-player.large.stand", 2.9,
+                    Default: {default}""");
+    public final ConfigEntry<Integer> PATHFINDING_MAX_DISTANCE = createOption("pathfinding.max-distance-to-player", 10,
             """
-                    How far away can the large pets stand near the player?
-                    Large pets can be considered: Ravager, Ghast, Giant, Wither, ETC...
+                    This is the maximum stopping distance from the player
                     
-                    Explanation: Player is walking around the pet wont start to follow unless they are {default} blocks away
-                    Default: {default}""").setPastPaths("Pathfinding.Distance-to-Player_LargePets");
-    public final ConfigEntry<Integer> PATHFINDING_STOP_DISTANCE_SMALL = createOption("pathfinding.distance-to-player.small.walk", 3,
-            """
-                    How far away can the pet be before it will stop walking near the player?
-                    Small pets can be considered: cow, chicken, enderman, armorstand, ETC...
-                    
-                    Explanation: Pet is walking to player, they will stop within {default} blocks of the player
-                    Default: {default}""").setPastPaths("Pathfinding.Stopping-Distance");
-    public final ConfigEntry<Integer> PATHFINDING_STOP_DISTANCE_LARGE = createOption("pathfinding.distance-to-player.large.walk", 7,
-            """
-                    How far away can the pet be before it will stop walking near the player?
-                    Large pets can be considered: Ravager, Ghast, Giant, Wither, ETC...
-                    
-                    Explanation: Pet is walking to player, they will stop within {default} blocks of the player
-                    Default: {default}""").setPastPaths("Pathfinding.Stopping-Distance_LargePets");
+                    Default: {default}""");
     public final ConfigEntry<Boolean> PATHFINDING_FOLLOW_WHEN_RIDING = createOption("pathfinding.follow-when-inside-vehicle", true,
             """
                     Should the pets follow the player when they are in a vehicle (or riding another pet)?
                     
                     Default: {default}""");
-    public final ConfigEntry<Integer> PATHFINDING_MINIMUM_TELEPORT = createOption("pathfinding.distance-till-teleport", 20,
+    public final ConfigEntry<Integer> PATHFINDING_TELEPORT_DISTANCE = createOption("pathfinding.distance-till-teleport", 1000,
             """
                     How far away from the player does the pet have to be before it teleports closer
-                    This is the minimum distance required, there could be other reasons for a teleport.
-                    
-                    Default: {default}""").setPastPaths("Pathfinding.Min-Distance-For-Teleport");
-    public final ConfigEntry<Integer> PATHFINDING_UPDATE_INTERVAL = createOption("pathfinding.update-interval", 10,
-            """
-                    Modify this value to control how often a pet tries to calculate a new path to its owner
-                    Note: This is in ticks ( 20 ticks = 1 second )
                     
                     Default: {default}""");
 

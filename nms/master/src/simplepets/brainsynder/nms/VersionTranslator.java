@@ -40,6 +40,10 @@ public class VersionTranslator {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
 
+    public static void setFollowAttributes (EntityPet entityPet, double value) {
+        throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
+    }
+
     public static double getWalkSpeed (EntityPet entityPet) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }

@@ -34,8 +34,8 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.plugin.config.ConfigOption;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
+import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderGoalLookAtOwner;
-import simplepets.brainsynder.nms.pathfinder.PathfinderWalkToPlayer;
 import simplepets.brainsynder.nms.utils.EntityUtils;
 
 import java.lang.reflect.Field;
@@ -168,7 +168,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
         if (getPetType() != PetType.SHULKER)
-            goalSelector.addGoal(2, new PathfinderWalkToPlayer(this, 3, 10));
+            goalSelector.addGoal(2, new PathfinderFollowPlayer(this));
         goalSelector.addGoal(3, new PathfinderGoalLookAtOwner(this, 3f, 0.2f));
         goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }

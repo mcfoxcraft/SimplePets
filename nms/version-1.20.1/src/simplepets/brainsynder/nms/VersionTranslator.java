@@ -79,6 +79,10 @@ public class VersionTranslator {
         }
     }
 
+    public static void setFollowAttributes (EntityPet entityPet, double value) {
+        entityPet.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(value);
+    }
+
     public static double getWalkSpeed (EntityPet entityPet) {
         return entityPet.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
     }
