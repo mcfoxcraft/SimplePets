@@ -30,6 +30,15 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
     }
 
     @Override
+    protected PathNavigation createNavigation(Level var1) {
+        FlyingPathNavigation navigationflying = new FlyingPathNavigation(this, var1);
+        navigationflying.setCanOpenDoors(false);
+        navigationflying.setCanFloat(true);
+        navigationflying.setCanPassDoors(true);
+        return navigationflying;
+    }
+
+    @Override
     public void populateDataAccess(PetDataAccess dataAccess) {
         super.populateDataAccess(dataAccess);
         dataAccess.define(TYPE, 0);
@@ -81,14 +90,5 @@ public class EntityParrotPet extends EntityTameablePet implements IEntityParrotP
     @Override
     public void setRainbow(boolean rainbow) {
         this.rainbow = rainbow;
-    }
-
-    @Override
-    protected PathNavigation createNavigation(Level var1) {
-        FlyingPathNavigation navigationflying = new FlyingPathNavigation(this, var1);
-        navigationflying.setCanOpenDoors(false);
-        navigationflying.setCanFloat(true);
-        navigationflying.setCanPassDoors(true);
-        return navigationflying;
     }
 }
