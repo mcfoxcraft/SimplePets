@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityBlazePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Blaze}
  */
-public class EntityBlazePet extends EntityPet implements IEntityBlazePet {
+public class EntityBlazePet extends EntityFlyablePet implements IEntityBlazePet {
     private static final EntityDataAccessor<Byte> ON_FIRE = SynchedEntityData.defineId(EntityBlazePet.class, EntityDataSerializers.BYTE);
 
     public EntityBlazePet(PetType type, PetUser user) {

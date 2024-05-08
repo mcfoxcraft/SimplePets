@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityVexPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Vex}
  */
-public class EntityVexPet extends EntityPet implements IEntityVexPet {
+public class EntityVexPet extends EntityFlyablePet implements IEntityVexPet {
     protected static final EntityDataAccessor<Byte> VEX_FLAGS = SynchedEntityData.defineId(EntityVexPet.class, EntityDataSerializers.BYTE);
 
     public EntityVexPet(PetType type, PetUser user) {

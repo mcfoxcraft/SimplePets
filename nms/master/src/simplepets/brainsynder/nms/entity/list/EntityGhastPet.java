@@ -17,6 +17,7 @@ import simplepets.brainsynder.nms.utils.PetDataAccess;
 public class EntityGhastPet extends EntityPet implements IEntityGhastPet {
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(EntityGhastPet.class, EntityDataSerializers.BOOLEAN);
 
+    // TODO: Need to figure out why the Ghast pet wont work properly if given the Flight MoveController
     public EntityGhastPet(PetType type, PetUser user) {
         super(EntityType.GHAST, type, user);
     }

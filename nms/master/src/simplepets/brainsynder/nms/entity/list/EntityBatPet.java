@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.passive.IEntityBatPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.ambient.Bat}
  */
-public class EntityBatPet extends EntityPet implements IEntityBatPet {
+public class EntityBatPet extends EntityFlyablePet implements IEntityBatPet {
     private static final EntityDataAccessor<Byte> HANGING = SynchedEntityData.defineId(EntityBatPet.class, EntityDataSerializers.BYTE);
 
     public EntityBatPet(PetType type, PetUser user) {

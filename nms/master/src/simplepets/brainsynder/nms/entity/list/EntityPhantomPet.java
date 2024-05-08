@@ -5,16 +5,16 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import simplepets.brainsynder.api.entity.hostile.IEntitySlimePet;
+import simplepets.brainsynder.api.entity.hostile.IEntityPhantomPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.EntityPet;
+import simplepets.brainsynder.nms.entity.EntityFlyablePet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Phantom}
  */
-public class EntityPhantomPet extends EntityPet implements IEntitySlimePet {
+public class EntityPhantomPet extends EntityFlyablePet implements IEntityPhantomPet {
     private static final EntityDataAccessor<Integer> SIZE = SynchedEntityData.defineId(EntityPhantomPet.class, EntityDataSerializers.INT);
 
     public EntityPhantomPet(PetType type, PetUser user) {
