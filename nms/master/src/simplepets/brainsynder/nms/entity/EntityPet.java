@@ -103,6 +103,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         this.collides = false;
         this.noPhysics = false;
 
+        VersionTranslator.overrideAttributeMap(this);
 
         immovable = ConfigOption.INSTANCE.PET_TOGGLES_MOB_PUSHER.getValue();
         glowVanishToggle = ConfigOption.INSTANCE.PET_TOGGLES_GLOW_VANISH.getValue();

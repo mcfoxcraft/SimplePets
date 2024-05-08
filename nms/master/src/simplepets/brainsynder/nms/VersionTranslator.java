@@ -158,4 +158,8 @@ public class VersionTranslator {
     public static boolean isWalkable (EntityPet entity, BlockPos.MutableBlockPos blockposition) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
+
+    public static void overrideAttributeMap (EntityPet entityPet) {
+        throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
+    }
 }

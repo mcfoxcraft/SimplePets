@@ -6,6 +6,7 @@ import lib.brainsynder.ServerVersion;
 import lib.brainsynder.nbt.JsonToNBT;
 import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.nbt.other.NBTException;
+import lib.brainsynder.reflection.FieldAccessor;
 import lib.brainsynder.storage.RandomCollection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,10 +21,9 @@ import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
@@ -53,29 +53,33 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class VersionTranslator {
+    private static final FieldAccessor<AttributeMap> accessor;
     private static Field jumpingField = null;
 
-    public static Field getJumpField() {
-        if (jumpingField != null) return jumpingField;
+    static {
+        accessor = FieldAccessor.getField(LivingEntity.class, "attributes", AttributeMap.class);
 
         try {
-            /*
-                net.minecraft.world.entity.EntityLiving
-
-                protected int bg
-                public float bh
-                protected boolean bi  <---- This one
-                public float bj
-                public float bk
-                public float bl
-                protected int bm
-             */
-            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_3.getEntityJumpField()); // For 1.20.1
+            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_3.getEntityJumpField());
             jumpingField.setAccessible(true);
-            return VersionTranslator.jumpingField = jumpingField;
+            VersionTranslator.jumpingField = jumpingField;
         } catch (Exception ex) {
             throw new UnsupportedOperationException("Unable to find the correct jumpingField name for " + ServerVersion.getVersion().name());
         }
+    }
+
+    public static Field getJumpField() {
+        return jumpingField;
+    }
+
+    public static void overrideAttributeMap (EntityPet entityPet) {
+        accessor.set(entityPet, new AttributeMap(createAttributes(entityPet).build()));
+    }
+
+    private static AttributeSupplier.Builder createAttributes (EntityPet entityPet) {
+        AttributeSupplier.Builder builder = Mob.createMobAttributes();
+        if (entityPet instanceof IFlyableEntity) builder.add(Attributes.FLYING_SPEED, 1);
+        return builder.add(Attributes.MOVEMENT_SPEED, 1);
     }
 
     public static org.bukkit.entity.Entity getBukkitEntity (Entity entity) {
