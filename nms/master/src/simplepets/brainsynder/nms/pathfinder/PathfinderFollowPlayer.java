@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.api.event.entity.movment.PetTeleportEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.pet.CommandReason;
@@ -88,6 +89,9 @@ public class PathfinderFollowPlayer extends Goal {
 
     @Override // Set navigation here
     public void start() {
+        // Failed: pet is in the air and is not a flying pet
+        if ( (!(entity instanceof IFlyableEntity)) && (!entity.onGround())) return;
+
         Path path = navigation.createPath(targetPos, 1);
         navigation.moveTo(path, VersionTranslator.getWalkSpeed(entity));
     }
