@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.phys.Vec3;
 import simplepets.brainsynder.api.entity.hostile.IEntitySlimePet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.plugin.SimplePets;
@@ -65,5 +66,12 @@ public class EntitySlimePet extends EntityPet implements IEntitySlimePet {
             SoundMaker sound = config.getSound();
             if (sound != null) sound.playSound(getEntity());
         });
+    }
+
+    @Override
+    protected void jumpFromGround() {
+        Vec3 vec3d = this.getDeltaMovement();
+        this.setDeltaMovement(vec3d.x, this.getJumpPower(), vec3d.z);
+        this.hasImpulse = true;
     }
 }

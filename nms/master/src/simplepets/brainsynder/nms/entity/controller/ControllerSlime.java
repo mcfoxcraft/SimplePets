@@ -13,42 +13,39 @@ public class ControllerSlime extends MoveControl {
     private float yRot;
     private int jumpDelay;
     private final EntitySlimePet slimePet;
+    private final Player player;
     private int lastJump; // Slime sometimes gets stuck when going around fences so I implemented this variable to patch it
 
     public ControllerSlime(EntitySlimePet entityslime) {
         super(entityslime);
         this.slimePet = entityslime;
+        this.player = VersionTranslator.getEntityHandle(Bukkit.getPlayer(slimePet.getOwnerUUID()));
         this.yRot = 180.0F * entityslime.getYRot() / 3.1415927F;
     }
 
-    public void a(float f) {
-        this.yRot = f;
-    }
-
-    public void setWantedMovement(double speedModifier) {
-        this.speedModifier = speedModifier;
-        this.operation = Operation.MOVE_TO;
-    }
-
-    public void a() {
+    @Override
+    public void tick() {
+        if (!mob.getNavigation().isInProgress()) return;
         // Store owner
-        Player owner = VersionTranslator.getEntityHandle(Bukkit.getPlayer(slimePet.getOwnerUUID()));
-        // Store the stopping distance
-        int stoppingDistance = ConfigOption.INSTANCE.PATHFINDING_STOP_DISTANCE_SMALL.getValue();
-        // Rotate the slime's position so it can look to the player
-        this.mob.lookAt(owner, 10, 10);
+        int stoppingDistance = ConfigOption.INSTANCE.PATHFINDING_MAX_DISTANCE.getValue();
+        // Rotate the slime's position, so it can look to the player
+        this.mob.lookAt(player, 10, 10);
+
         this.yRot = this.mob.getYRot();
+
         // Turn left or right depending on which is closer
         this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
         this.mob.yHeadRot = this.mob.getYRot();
         this.mob.yBodyRot = this.mob.getYRot();
+
         // Let the slime idle if 1. It isn't prompted to move, 2. It isn't stuck, 3. It is close to its owner
-        if (this.operation != Operation.MOVE_TO && lastJump < 60 && slimePet.distanceToSqr(owner) <= stoppingDistance) {
-            this.mob.setSpeed(0.0F);
+        if (this.operation != Operation.MOVE_TO && lastJump < 60 && slimePet.distanceToSqr(player) <= stoppingDistance) {
+            this.mob.setZza(0.0F);
             lastJump++;
         } else {
             this.operation = Operation.WAIT;
             this.mob.setSpeed((float)(this.speedModifier * VersionTranslator.getWalkSpeed(slimePet)));
+
             // If the slime is on the ground or simply stuck,
             if (this.mob.onGround || lastJump > 60) {
                 if (this.jumpDelay-- <= 0) {
@@ -69,6 +66,5 @@ public class ControllerSlime extends MoveControl {
                 lastJump++;
             }
         }
-
     }
 }
