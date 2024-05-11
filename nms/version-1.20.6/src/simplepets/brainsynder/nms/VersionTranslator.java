@@ -59,7 +59,7 @@ public class VersionTranslator {
     private static Field jumpingField = null;
 
     static {
-        accessor = FieldAccessor.getField(LivingEntity.class, "attributes", AttributeMap.class);
+        accessor = FieldAccessor.getField(LivingEntity.class, VersionFields.v1_20_6.getAttributesField(), AttributeMap.class);
 
         try {
             Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_20_6.getEntityJumpField());
