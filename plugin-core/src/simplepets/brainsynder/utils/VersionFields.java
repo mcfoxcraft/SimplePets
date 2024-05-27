@@ -5,6 +5,7 @@
 
 package simplepets.brainsynder.utils;
 
+import io.papermc.lib.PaperLib;
 import lib.brainsynder.ServerVersion;
 
 public enum VersionFields implements FieldValues {
@@ -145,62 +146,68 @@ public enum VersionFields implements FieldValues {
         return valueOf(version.name());
     }
 
-    private final String entityDataMap, entityFactory, registryFrozen, registryIntrusive, entityRegistry, entityJump, resetCooldown, isRunning, attributes;
+
+    private final boolean paper;
+    private final FieldName entityDataMap, entityFactory, registryFrozen, registryIntrusive, entityRegistry, entityJump, resetCooldown, isRunning, attributes;
 
     VersionFields (String entityDataMap, String entityFactory, String registryFrozen, String registryIntrusive,
                    String entityRegistry, String entityJump,String resetCooldown, String isRunning, String attributes) {
-        this.entityDataMap = entityDataMap;
-        this.entityFactory = entityFactory;
-        this.registryFrozen = registryFrozen;
-        this.registryIntrusive = registryIntrusive;
-        this.entityRegistry = entityRegistry;
-        this.entityJump = entityJump;
-        this.resetCooldown = resetCooldown;
-        this.isRunning = isRunning;
-        this.attributes = attributes;
+        this.entityDataMap = new FieldName ("itemsById", entityDataMap);
+        this.entityFactory = new FieldName ("factory", entityFactory);
+        this.registryFrozen = new FieldName ("frozen", registryFrozen);
+        this.registryIntrusive = new FieldName ("unregisteredIntrusiveHolders", registryIntrusive);
+        this.entityRegistry = new FieldName ("ENTITY_TYPE", entityRegistry);
+        this.entityJump = new FieldName ("jumping", entityJump);
+        this.resetCooldown = new FieldName ("boardingCooldown", resetCooldown);
+        this.isRunning = new FieldName ("running", isRunning);
+        this.attributes = new FieldName ("attributes", attributes);
+
+        this.paper = PaperLib.isPaper();
     }
 
     @Override
     public String getEntityDataMapField() {
-        return entityDataMap;
+        return paper ? entityDataMap.mojangMapped() : entityDataMap.obfuscated();
     }
 
     @Override
     public String getEntityFactoryField() {
-        return entityFactory;
+        return paper ? entityFactory.mojangMapped() : entityFactory.obfuscated();
     }
 
     @Override
     public String getRegistryFrozenField() {
-        return registryFrozen;
+        return paper ? registryFrozen.mojangMapped() : registryFrozen.obfuscated();
     }
 
     @Override
     public String getRegistryIntrusiveField() {
-        return registryIntrusive;
+        return paper ? registryIntrusive.mojangMapped() : registryIntrusive.obfuscated();
     }
 
     @Override
     public String getEntityRegistryField() {
-        return entityRegistry;
+        return paper ? entityRegistry.mojangMapped() : entityRegistry.obfuscated();
     }
 
     @Override
     public String getEntityJumpField() {
-        return entityJump;
+        return paper ? entityJump.mojangMapped() : entityJump.obfuscated();
     }
 
     @Override
     public String getRideCooldownField() {
-        return resetCooldown;
+        return paper ? resetCooldown.mojangMapped() : resetCooldown.obfuscated();
     }
 
     @Override
     public String getServerRunningField() {
-        return isRunning;
+        return paper ? isRunning.mojangMapped() : isRunning.obfuscated();
     }
 
     public String getAttributesField() {
-        return attributes;
+        return paper ? attributes.mojangMapped() : attributes.obfuscated();
     }
+
+    public record FieldName (String mojangMapped, String obfuscated) {}
 }
