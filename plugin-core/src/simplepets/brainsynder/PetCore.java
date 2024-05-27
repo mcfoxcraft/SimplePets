@@ -1,6 +1,7 @@
 package simplepets.brainsynder;
 
 import com.jeff_media.updatechecker.UpdateChecker;
+import io.papermc.lib.PaperLib;
 import lib.brainsynder.ServerVersion;
 import lib.brainsynder.commands.CommandRegistry;
 import lib.brainsynder.json.WriterConfig;
@@ -8,6 +9,7 @@ import lib.brainsynder.metric.bukkit.Metrics;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.update.UpdateResult;
 import lib.brainsynder.update.UpdateUtils;
+import lib.brainsynder.utils.AdvString;
 import lib.brainsynder.utils.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -60,6 +62,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
+    public static final ServerInformation SERVER_INFORMATION = new ServerInformation();
     private final List<String> supportedVersions = new ArrayList<>();
     private static PetCore instance;
 
@@ -543,7 +546,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                     .setBroadcast(true)
                     .setMessages(
                             "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
-                            "Please check the Jenkins for an updated build: https://ci.pluginwiki.us/job/SimplePets_v5/",
+                            "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
                             "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
                             " ",
                             "Error: "+e.getMessage()
@@ -633,6 +636,79 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             return file.getName();
         }catch (Exception e) {
             return "Error: " + e.getMessage();
+        }
+    }
+
+    public static class ServerInformation {
+        private final String java;
+        private final String serverType;
+        private final String rawVersion;
+        private final String bukkitVersion;
+        private final String minecraftVersion;
+        private final int buildNumber;
+        private final boolean paper;
+
+        public ServerInformation() {
+            paper = PaperLib.isPaper();
+
+            // Fetches JavaVersion
+            String java = System.getProperty("java.version");
+            int pos = java.indexOf('.');
+            pos = java.indexOf('.', pos + 1);
+            if (pos != -1) {
+                this.java = java.substring(0, pos).replace(".0", "");
+            } else {
+                this.java = java;
+            }
+
+            rawVersion = Bukkit.getVersion();
+            bukkitVersion = Bukkit.getBukkitVersion();
+
+            if (paper) {
+                buildNumber = Integer.parseInt(AdvString.between("-", "-", rawVersion));
+                try {
+                    Class<?> buildInfoClass = Class.forName("io.papermc.paper.ServerBuildInfo");
+                    Method buildInfoMethod = Reflection.getMethod(buildInfoClass, "buildInfo");
+                    Object instance = Reflection.invoke(buildInfoMethod, null);
+
+                    serverType = (String) Reflection.invoke(Reflection.getMethod(buildInfoClass, "brandName"), instance);
+                }catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                serverType = "Spigot";
+                buildNumber = Integer.parseInt(AdvString.before("-", rawVersion));
+            }
+
+            minecraftVersion = AdvString.between("(MC: ", ")", rawVersion);
+        }
+
+        public String getJava() {
+            return java;
+        }
+
+        public int getBuildNumber() {
+            return buildNumber;
+        }
+
+        public String getBukkitVersion() {
+            return bukkitVersion;
+        }
+
+        public String getMinecraftVersion() {
+            return minecraftVersion;
+        }
+
+        public String getRawVersion() {
+            return rawVersion;
+        }
+
+        public String getServerType() {
+            return serverType;
+        }
+
+        public boolean isPaper() {
+            return paper;
         }
     }
 }
