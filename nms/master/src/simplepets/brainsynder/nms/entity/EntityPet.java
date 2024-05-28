@@ -253,6 +253,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             object.setTag("additional", additional);
         }
 
+        object.setDouble("scale", VersionTranslator.getScaleSize(this));
         object.setBoolean("frozen", isFrozen());
         object.setBoolean("burning", isBurning());
         object.setEnum("glow-color", getGlowColor());
@@ -298,6 +299,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             flySpeed = object.getDouble("flySpeed");
             VersionTranslator.setAttributes(this, -1, flySpeed);
         }
+        if (object.hasKey("scale")) VersionTranslator.setScaleSize(this, object.getDouble("scale"));
     }
 
     @Override

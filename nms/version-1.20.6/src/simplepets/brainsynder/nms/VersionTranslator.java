@@ -81,6 +81,7 @@ public class VersionTranslator {
     private static AttributeSupplier.Builder createAttributes (EntityPet entityPet) {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         if (entityPet instanceof IFlyableEntity) builder.add(Attributes.FLYING_SPEED, 1);
+        builder.add(Attributes.SCALE, 1);
         return builder.add(Attributes.MOVEMENT_SPEED, 1);
     }
 
@@ -100,12 +101,20 @@ public class VersionTranslator {
         entityPet.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(value);
     }
 
+    public static void setScaleSize (EntityPet entityPet, double value) {
+        entityPet.getAttribute(Attributes.SCALE).setBaseValue(value);
+    }
+
     public static double getWalkSpeed (EntityPet entityPet) {
         return entityPet.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
     }
 
     public static double getFlySpeed (EntityPet entityPet) {
         return entityPet.getAttribute(Attributes.FLYING_SPEED).getValue();
+    }
+
+    public static double getScaleSize (EntityPet entityPet) {
+        return entityPet.getAttribute(Attributes.SCALE).getValue();
     }
 
     public static void setItemSlot(ArmorStand stand, EquipmentSlot enumitemslot, ItemStack itemstack, boolean silent) {

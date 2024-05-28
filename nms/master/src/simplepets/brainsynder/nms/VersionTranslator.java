@@ -44,12 +44,20 @@ public class VersionTranslator {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
 
+    // Only used for 1.20.5+
+    public static void setScaleSize (EntityPet entityPet, double value) {}
+
     public static double getWalkSpeed (EntityPet entityPet) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
     }
 
     public static double getFlySpeed (EntityPet entityPet) {
         throw new UnsupportedOperationException ("Missing support for "+ ServerVersion.getVersion().name());
+    }
+
+    // Only used for 1.20.5+
+    public static double getScaleSize (EntityPet entityPet) {
+        return 1.0;
     }
 
     public static void setItemSlot(ArmorStand stand, EquipmentSlot enumitemslot, ItemStack itemstack, boolean silent) {
