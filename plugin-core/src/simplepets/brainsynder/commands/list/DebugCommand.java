@@ -30,8 +30,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @ICommand(
         name = "debug",
@@ -70,32 +68,26 @@ public class DebugCommand extends PetSubCommand {
         json.add("reloaded", PetCore.getInstance().wasReloaded());
         PetCore.getInstance().checkWorldGuard(value -> json.add("worldguard_config_check", value));
         fetchServerInfo(object -> json.add("server", object));
-        json.add("plugins", fetchPlugins());
+        fetchJenkinsInfo(skipJenkins, object -> {
+            if (!skipJenkins) json.add("jenkins", object);
+            json.add("plugins", fetchPlugins());
 
-        JsonArray addons = new JsonArray();
-        PetCore.getInstance().getAddonManager().getLocalDataMap().forEach((localData, modules) -> {
-            JsonObject addonJson = new JsonObject();
-            JsonArray moduleArray = new JsonArray();
-            modules.forEach(module -> {
-                moduleArray.add("Module: '"+module.getNamespace().namespace()+"' | Loaded: "+module.isLoaded()+" | Enabled: "+module.isEnabled());
+            JsonArray addons = new JsonArray();
+            PetCore.getInstance().getAddonManager().getLocalDataMap().forEach((localData, modules) -> {
+                JsonObject addonJson = new JsonObject();
+                JsonArray moduleArray = new JsonArray();
+                modules.forEach(module -> {
+                    moduleArray.add("Module: '" + module.getNamespace().namespace() + "' | Loaded: " + module.isLoaded() + " | Enabled: " + module.isEnabled());
+                });
+
+                addonJson.add("addon-name", localData.getName() + "(v" + localData.getVersion() + ") by: " + localData.getAuthors().toString()
+                        .replace("[", "").replace("]", ""));
+                addonJson.add("addon-file-name", localData.getFile().getName());
+                addonJson.add("addon-modules", moduleArray);
+                addons.add(addonJson);
             });
+            json.set("loaded_addons", addons);
 
-            addonJson.add("addon-name", localData.getName() + "(v"+localData.getVersion()+") by: "+localData.getAuthors().toString()
-                    .replace("[", "").replace("]", ""));
-            addonJson.add("addon-file-name", localData.getFile().getName());
-            addonJson.add("addon-modules", moduleArray);
-            addons.add(addonJson);
-        });
-        json.set("loaded_addons", addons);
-
-        if (skipJenkins) {
-            fetchDebugMessages(values -> json.add("debug_log", values));
-            consumer.accept(json);
-            return;
-        }
-
-        fetchJenkinsInfo(object -> {
-            json.add("jenkins", object);
             fetchDebugMessages(values -> json.add("debug_log", values));
             consumer.accept(json);
         });
@@ -124,10 +116,15 @@ public class DebugCommand extends PetSubCommand {
         consumer.accept(array);
     }
 
-    private static void fetchJenkinsInfo(Consumer<JsonObject> consumer) {
+    private static void fetchJenkinsInfo(boolean skipJenkins, Consumer<JsonObject> consumer) {
+        if (skipJenkins) {
+            consumer.accept(new JsonObject());
+            return;
+        }
+
         UpdateResult result = PetCore.getInstance().getUpdateUtils().getResult();
         int build = result.getCurrentBuild();
-        WebConnector.getInputStreamString("https://pluginwiki.us/version/jenkins/"+result.getRepo(), PetCore.getInstance(), string -> {
+        WebConnector.getInputStreamString("https://bsdevelopment.org/api/jenkins/build-number/" + result.getRepo(), PetCore.getInstance(), string -> {
             JsonObject jenkins = new JsonObject();
             jenkins.add("repo", result.getRepo());
             jenkins.add("plugin_build_number", build);
@@ -136,8 +133,8 @@ public class DebugCommand extends PetSubCommand {
                 JsonObject buildResult = (JsonObject) Json.parse(string);
 
                 if (!buildResult.isEmpty()) {
-                    if (buildResult.names().contains("build")) {
-                        int latestBuild = buildResult.getInt("build", -1);
+                    if (buildResult.names().contains("build-number")) {
+                        int latestBuild = buildResult.getInt("build-number", -1);
 
                         // New build found
                         if (latestBuild > build) jenkins.add("number_of_builds_behind", (latestBuild - build));
@@ -183,38 +180,17 @@ public class DebugCommand extends PetSubCommand {
     private static void fetchServerInfo(Consumer<JsonObject> consumer) {
         JsonObject info = new JsonObject();
 
-        String java = System.getProperty("java.version");
-        int pos = java.indexOf('.');
-        pos = java.indexOf('.', pos + 1);
-        if (pos != -1) {
-            info.add("java", Double.parseDouble(java.substring(0, pos).replace(".0", "")));
-        } else {
-            info.add("java", java);
-        }
+        PetCore.ServerInformation serverInformation = PetCore.SERVER_INFORMATION;
+        info.add("java", serverInformation.getJava());
 
-        String version = Bukkit.getVersion();
-        info.add("raw", version);
-
-        Pattern pattern = Pattern.compile("git-(\\w+)-\"(\\w+)\"");
-        Matcher matcher = pattern.matcher(version);
-        if (matcher.find()) {
-            info.add("server_type", matcher.group(1));
-        } else {
-            // Backup just in case it does not catch the pattern
-            if (version.contains("-")) {
-                String[] args = version.split("-");
-                if (args.length >= 2) {
-                    String type = args[1];
-                    if (type.toLowerCase().contains("spigot") || type.toLowerCase().contains("bukkit")) {
-                        info.add("server_type", type);
-                    }
-                }
-            }
-            if (!info.names().contains("server_type")) info.add("server_type", version);
-        }
-
-        info.add("bukkit_version", Bukkit.getBukkitVersion());
-        info.add("server-version", new JsonObject()
+        info.add("server-information", new JsonObject()
+                .add("server-type", serverInformation.getServerType())
+                .add("minecraft-version", serverInformation.getMinecraftVersion())
+                .add("server-build", serverInformation.getBuildNumber())
+                .add("bukkit-version", serverInformation.getBukkitVersion())
+                .add("raw-version", serverInformation.getRawVersion())
+        );
+        info.add("bslib-server-version", new JsonObject()
                 .add("nms", ServerVersion.getVersion().getNMS())
                 .add("name", ServerVersion.getVersion().name())
         );
