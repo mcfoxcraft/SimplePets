@@ -140,6 +140,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         configuration.initValues();
 
         reloaded = ConfigOption.INSTANCE.RELOAD_DETECT.getValue();
+        ConfigOption.INSTANCE.RELOAD_DETECT.setValue(false, true);
         debug.debug(DebugLevel.HIDDEN, "Plugin reloaded: " + reloaded);
 
 //        debug.debug(DebugLevel.HIDDEN, "Initializing Inventory SQL");
