@@ -60,6 +60,8 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
     public static final ServerInformation SERVER_INFORMATION = new ServerInformation();
@@ -642,12 +644,13 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
     public static class ServerInformation {
         private final String java;
-        private final String serverType;
         private final String rawVersion;
         private final String bukkitVersion;
         private final String minecraftVersion;
-        private final int buildNumber;
         private final boolean paper;
+
+        private String serverType = "Unknown";
+        private int buildNumber = -1;
 
         public ServerInformation() {
             paper = PaperLib.isPaper();
@@ -666,15 +669,24 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             bukkitVersion = Bukkit.getBukkitVersion();
 
             if (paper) {
-                buildNumber = Integer.parseInt(AdvString.between("-", "-", rawVersion));
                 try {
                     Class<?> buildInfoClass = Class.forName("io.papermc.paper.ServerBuildInfo");
                     Method buildInfoMethod = Reflection.getMethod(buildInfoClass, "buildInfo");
                     Object instance = Reflection.invoke(buildInfoMethod, null);
 
                     serverType = (String) Reflection.invoke(Reflection.getMethod(buildInfoClass, "brandName"), instance);
+                    buildNumber = Integer.parseInt(AdvString.between("-", "-", rawVersion));
                 }catch (Exception e) {
-                    throw new RuntimeException(e);
+
+                    Pattern pattern = Pattern.compile("git-(\\w+)-(\\w+) \\(MC: (\\w.+)\\)");
+                    Matcher matcher = pattern.matcher(rawVersion);
+                    if (matcher.find()) {
+                        serverType = matcher.group(1);
+                        buildNumber = Integer.parseInt(matcher.group(2));
+                    }else{
+                        serverType = rawVersion;
+                        buildNumber = -1;
+                    }
                 }
             } else {
                 serverType = "Spigot";
