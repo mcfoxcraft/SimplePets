@@ -98,6 +98,14 @@ public class VersionTranslator {
         entityPet.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(value);
     }
 
+    // Only used for 1.20.5+
+    public static void setScaleSize (EntityPet entityPet, double value) {}
+
+    // Only used for 1.20.5+
+    public static double getScaleSize (EntityPet entityPet) {
+        return 1.0;
+    }
+
     public static double getWalkSpeed (EntityPet entityPet) {
         return entityPet.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
     }
