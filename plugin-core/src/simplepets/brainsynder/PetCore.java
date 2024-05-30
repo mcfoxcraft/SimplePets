@@ -51,6 +51,7 @@ import simplepets.brainsynder.utils.VersionFields;
 import simplepets.brainsynder.utils.debug.Debug;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PetCore extends JavaPlugin implements IPetsPlugin {
-    public static final ServerInformation SERVER_INFORMATION = new ServerInformation();
+    public static ServerInformation SERVER_INFORMATION;
     private final List<String> supportedVersions = new ArrayList<>();
     private static PetCore instance;
 
@@ -103,6 +104,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         isStarting = true;
 
         debug = new Debug(this);
+        SERVER_INFORMATION = new ServerInformation();
 
         if (ServerVersion.isEqualNew(ServerVersion.v1_20_3)) {
             SimplePets.getDebugLogger().debug(DebugLevel.WARNING, " *** This version is still under development any issues found please report");
@@ -651,6 +653,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
         private String serverType = "Unknown";
         private int buildNumber = -1;
+        private boolean mojangMapped = false;
 
         public ServerInformation() {
             paper = PaperLib.isPaper();
@@ -694,6 +697,17 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             }
 
             minecraftVersion = AdvString.between("(MC: ", ")", rawVersion);
+
+            try {
+                Class<?> livingClass = Class.forName("net,minecraft,core,registries,BuiltInRegistries".replace(",", "."));
+                Field field = livingClass.getDeclaredField("ENTITY_TYPE");
+                if (field != null) {
+                    mojangMapped = true;
+                    SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, "Plugin is on a server that is using Mojang Mappings");
+                }
+            } catch (Exception e) {
+                SimplePets.getDebugLogger().debug(DebugLevel.DEBUG, "Plugin is on a server that is using Obfuscated Mappings");
+            }
         }
 
         public String getJava() {
@@ -718,6 +732,10 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
         public String getServerType() {
             return serverType;
+        }
+
+        public boolean isMojangMapped() {
+            return mojangMapped;
         }
 
         public boolean isPaper() {

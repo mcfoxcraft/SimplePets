@@ -5,8 +5,8 @@
 
 package simplepets.brainsynder.utils;
 
-import io.papermc.lib.PaperLib;
 import lib.brainsynder.ServerVersion;
+import simplepets.brainsynder.PetCore;
 
 public enum VersionFields implements FieldValues {
     v1_19 (
@@ -147,7 +147,7 @@ public enum VersionFields implements FieldValues {
     }
 
 
-    private final boolean paper;
+    private final boolean mojangMapped;
     private final FieldName entityDataMap, entityFactory, registryFrozen, registryIntrusive, entityRegistry, entityJump, resetCooldown, isRunning, attributes;
 
     VersionFields (String entityDataMap, String entityFactory, String registryFrozen, String registryIntrusive,
@@ -162,51 +162,51 @@ public enum VersionFields implements FieldValues {
         this.isRunning = new FieldName ("running", isRunning);
         this.attributes = new FieldName ("attributes", attributes);
 
-        this.paper = PaperLib.isPaper();
+        mojangMapped = PetCore.SERVER_INFORMATION.isMojangMapped();
     }
 
     @Override
     public String getEntityDataMapField() {
-        return paper ? entityDataMap.mojangMapped() : entityDataMap.obfuscated();
+        return mojangMapped ? entityDataMap.mojangMapped() : entityDataMap.obfuscated();
     }
 
     @Override
     public String getEntityFactoryField() {
-        return paper ? entityFactory.mojangMapped() : entityFactory.obfuscated();
+        return mojangMapped ? entityFactory.mojangMapped() : entityFactory.obfuscated();
     }
 
     @Override
     public String getRegistryFrozenField() {
-        return paper ? registryFrozen.mojangMapped() : registryFrozen.obfuscated();
+        return mojangMapped ? registryFrozen.mojangMapped() : registryFrozen.obfuscated();
     }
 
     @Override
     public String getRegistryIntrusiveField() {
-        return paper ? registryIntrusive.mojangMapped() : registryIntrusive.obfuscated();
+        return mojangMapped ? registryIntrusive.mojangMapped() : registryIntrusive.obfuscated();
     }
 
     @Override
     public String getEntityRegistryField() {
-        return paper ? entityRegistry.mojangMapped() : entityRegistry.obfuscated();
+        return mojangMapped ? entityRegistry.mojangMapped() : entityRegistry.obfuscated();
     }
 
     @Override
     public String getEntityJumpField() {
-        return paper ? entityJump.mojangMapped() : entityJump.obfuscated();
+        return mojangMapped ? entityJump.mojangMapped() : entityJump.obfuscated();
     }
 
     @Override
     public String getRideCooldownField() {
-        return paper ? resetCooldown.mojangMapped() : resetCooldown.obfuscated();
+        return mojangMapped ? resetCooldown.mojangMapped() : resetCooldown.obfuscated();
     }
 
     @Override
     public String getServerRunningField() {
-        return paper ? isRunning.mojangMapped() : isRunning.obfuscated();
+        return mojangMapped ? isRunning.mojangMapped() : isRunning.obfuscated();
     }
 
     public String getAttributesField() {
-        return paper ? attributes.mojangMapped() : attributes.obfuscated();
+        return mojangMapped ? attributes.mojangMapped() : attributes.obfuscated();
     }
 
     public record FieldName (String mojangMapped, String obfuscated) {}
