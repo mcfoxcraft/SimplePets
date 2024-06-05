@@ -186,7 +186,7 @@ public class DebugCommand extends PetSubCommand {
         info.add("server-information", new JsonObject()
                 .add("server-type", serverInformation.getServerType())
                 .add("minecraft-version", serverInformation.getMinecraftVersion())
-                .add("server-build", serverInformation.getBuildNumber())
+                .add("server-build", serverInformation.getBuildVersion())
                 .add("bukkit-version", serverInformation.getBukkitVersion())
                 .add("raw-version", serverInformation.getRawVersion())
         );

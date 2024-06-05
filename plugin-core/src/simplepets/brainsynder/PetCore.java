@@ -652,7 +652,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         private final boolean paper;
 
         private String serverType = "Unknown";
-        private int buildNumber = -1;
+        private String buildVersion = "Unknown";
         private boolean mojangMapped = false;
 
         public ServerInformation() {
@@ -678,22 +678,22 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                     Object instance = Reflection.invoke(buildInfoMethod, null);
 
                     serverType = (String) Reflection.invoke(Reflection.getMethod(buildInfoClass, "brandName"), instance);
-                    buildNumber = Integer.parseInt(AdvString.between("-", "-", rawVersion));
+                    buildVersion = AdvString.between("-", "-", rawVersion);
                 }catch (Exception e) {
 
                     Pattern pattern = Pattern.compile("git-(\\w+)-(\\w+) \\(MC: (\\w.+)\\)");
                     Matcher matcher = pattern.matcher(rawVersion);
                     if (matcher.find()) {
                         serverType = matcher.group(1);
-                        buildNumber = Integer.parseInt(matcher.group(2));
+                        buildVersion = matcher.group(2);
                     }else{
                         serverType = rawVersion;
-                        buildNumber = -1;
+                        buildVersion = "Unknown";
                     }
                 }
             } else {
                 serverType = "Spigot";
-                buildNumber = Integer.parseInt(AdvString.before("-", rawVersion));
+                buildVersion = AdvString.before("-", rawVersion);
             }
 
             minecraftVersion = AdvString.between("(MC: ", ")", rawVersion);
@@ -714,8 +714,8 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             return java;
         }
 
-        public int getBuildNumber() {
-            return buildNumber;
+        public String getBuildVersion() {
+            return buildVersion;
         }
 
         public String getBukkitVersion() {
