@@ -699,7 +699,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             minecraftVersion = AdvString.between("(MC: ", ")", rawVersion);
 
             try {
-                Class<?> livingClass = Class.forName("net,minecraft,core,registries,BuiltInRegistries".replace(",", "."));
+                Class<?> livingClass = Class.forName("net,minecraft,core,registries,BuiltInRegistries".replace(",", "."), false, getInstance().getClassLoader());
                 Field field = livingClass.getDeclaredField("ENTITY_TYPE");
                 if (field != null) {
                     mojangMapped = true;
