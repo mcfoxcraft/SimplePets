@@ -103,7 +103,7 @@ public class Utilities {
         } else {
             SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.FAILED, player, player.getLocation());
             if (entityPet.isSecondPresent()) {
-                Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()))
+                Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
                         .tooltip(entityPet.second().get()).send(player);
                 return false;
             }

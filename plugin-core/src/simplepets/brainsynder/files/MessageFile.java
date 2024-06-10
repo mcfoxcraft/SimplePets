@@ -97,9 +97,13 @@ public class MessageFile {
     }
 
     public static String getTranslation (MessageOption option) {
+        return getTranslation(option, true);
+    }
+
+    public static String getTranslation (MessageOption option, boolean translateColor) {
         String message = file.getString(option);
         if (message.contains("{prefix}") && (option != MessageOption.PREFIX)) message = message.replace("{prefix}", file.getString(MessageOption.PREFIX));
-        return Colorize.translateBungeeHex(message);
+        return translateColor ? Colorize.translateBungeeHex(message) : message;
     }
 
 

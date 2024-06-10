@@ -178,7 +178,7 @@ public class SummonCommand extends PetSubCommand {
             BiOptional<IEntityPet, String> entityPet = spawner.spawnEntityPet(type, user, finalCompound);
             if (!entityPet.isFirstPresent()) {
                 if (entityPet.isSecondPresent()) {
-                    Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON).replace("{type}", type.getName()))
+                    Tellraw.fromLegacy(MessageFile.getTranslation(MessageOption.FAILED_SUMMON, false).replace("{type}", type.getName()))
                             .tooltip(entityPet.second().get()).send(sender);
                     return;
                 }
