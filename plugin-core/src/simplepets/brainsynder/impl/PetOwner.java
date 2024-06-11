@@ -64,7 +64,7 @@ public class PetOwner implements PetUser {
         this(Bukkit.getPlayerExact(username));
     }
 
-    public void loadCompound (StorageTagCompound compound) {
+    public void loadCompound(StorageTagCompound compound) {
         respawnPets.clear();
         savedPetData.clear();
         hatPets.clear();
@@ -186,7 +186,7 @@ public class PetOwner implements PetUser {
                         if (!Utilities.hasPermission(player, type.getPermission())) return;
                         if (hasPet(type)) {
                             laterTasks.add(BiOptional.of(type, tag.getCompoundTag("data")));
-                        }else{
+                        } else {
                             spawnUtil.spawnEntityPet(type, PetOwner.this, tag.getCompoundTag("data"));
                         }
                     }
@@ -210,8 +210,8 @@ public class PetOwner implements PetUser {
     public void cacheAndRemove() {
         petMap.forEach((type, entityPet) -> {
             respawnPets.add(new StorageTagCompound()
-                    .setTag("data", entityPet.asCompound())
-                    .setString("type", type.getName())
+                .setTag("data", entityPet.asCompound())
+                .setString("type", type.getName())
             );
         });
 
@@ -244,11 +244,11 @@ public class PetOwner implements PetUser {
     /**
      * Will save all the pets currently spawned, upload them to the database and then remove them
      */
-    public void markForRespawn () {
+    public void markForRespawn() {
         petMap.forEach((type, entityPet) -> {
             respawnPets.add(new StorageTagCompound()
-                    .setTag("data", entityPet.asCompound())
-                    .setString("type", type.getName())
+                .setTag("data", entityPet.asCompound())
+                .setString("type", type.getName())
             );
         });
         // If the server is shutting down
@@ -412,8 +412,8 @@ public class PetOwner implements PetUser {
         IEntityPet entityPet = petMap.get(type);
 
         respawnPets.remove(new StorageTagCompound()
-                .setTag("data", entityPet.asCompound())
-                .setString("type", type.getName()));
+            .setTag("data", entityPet.asCompound())
+            .setString("type", type.getName()));
 
         entityPet.getEntities().forEach(entity -> {
             SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
@@ -433,8 +433,8 @@ public class PetOwner implements PetUser {
             Utilities.runPetCommands(CommandReason.REVOKE, this, type);
 
             respawnPets.remove(new StorageTagCompound()
-                    .setTag("data", entityPet.asCompound())
-                    .setString("type", type.getName()));
+                .setTag("data", entityPet.asCompound())
+                .setString("type", type.getName()));
 
             entityPet.getEntities().forEach(entity -> {
                 SimplePets.getParticleHandler().sendParticle(ParticleManager.Reason.REMOVE, getPlayer(), entity.getLocation());
@@ -454,7 +454,8 @@ public class PetOwner implements PetUser {
     public Optional<IEntityPet> getPetEntity(PetType type) {
         if (petMap.containsKey(type)) {
             IEntityPet entityPet = petMap.get(type);
-            if (entityPet instanceof IEntityControllerPet) entityPet = ((IEntityControllerPet)entityPet).getVisibleEntity();
+            if (entityPet instanceof IEntityControllerPet)
+                entityPet = ((IEntityControllerPet) entityPet).getVisibleEntity();
             return Optional.of(entityPet);
         }
         return Optional.empty();
@@ -530,7 +531,7 @@ public class PetOwner implements PetUser {
                     return;
                 }
                 hatPets.add(type);
-                PostPetHatEvent hatEvent = new PostPetHatEvent (PetOwner.this, entityPet, PostPetHatEvent.Type.SET);
+                PostPetHatEvent hatEvent = new PostPetHatEvent(PetOwner.this, entityPet, PostPetHatEvent.Type.SET);
                 Bukkit.getPluginManager().callEvent(hatEvent);
                 // Set the pet as a hat
                 Entity finalEnt = ent;
@@ -555,7 +556,7 @@ public class PetOwner implements PetUser {
                 Entity vehicle = ent.getVehicle();
                 Entity riderMob = getRiderEntity(ent);
                 hatPets.remove(type);
-                PostPetHatEvent hatEvent = new PostPetHatEvent (PetOwner.this, entityPet, PostPetHatEvent.Type.REMOVE);
+                PostPetHatEvent hatEvent = new PostPetHatEvent(PetOwner.this, entityPet, PostPetHatEvent.Type.REMOVE);
                 Bukkit.getPluginManager().callEvent(hatEvent);
                 if (entityPet instanceof IEntityControllerPet controller) {
                     Optional<Entity> riderOptional = controller.getDisplayRider();

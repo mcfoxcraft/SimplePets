@@ -72,7 +72,8 @@ public class SelectionGUIListener implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            Utilities.handlePetSpawning(user, type.getType(), new StorageTagCompound(), false); }
+                            Utilities.handlePetSpawning(user, type.getType(), new StorageTagCompound(), false);
+                        }
                     }.runTask(PetCore.getInstance());
                     break;
 

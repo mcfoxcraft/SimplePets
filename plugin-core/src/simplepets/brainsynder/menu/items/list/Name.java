@@ -52,7 +52,7 @@ public class Name extends Item {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    user.getPlayer().performCommand("pet rename "+type.getName());
+                    user.getPlayer().performCommand("pet rename " + type.getName());
                 }
             }.runTaskLater(PetCore.getInstance(), 2);
         });

@@ -106,7 +106,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         debug = new Debug(this);
         SERVER_INFORMATION = new ServerInformation();
 
-        if (ServerVersion.isEqualNew(ServerVersion.v1_20_3)) {
+        if (ServerVersion.isEqualNew(ServerVersion.v1_20_6)) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build()
                 .setLevel(DebugLevel.WARNING).setBroadcast(true)
                 .setMessages(
@@ -124,14 +124,14 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         if (!fetchSupportedVersions()) {
             Bukkit.getPluginManager().registerEvents(new BrokenVersionListener(), this);
             debug.debug(DebugBuilder.build(getClass())
-                    .setLevel(DebugLevel.CRITICAL)
-                    .setBroadcast(true)
-                    .setMessages(
-                            "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
-                            "Please check the Jenkins for an updated build: https://ci.pluginwiki.us/job/SimplePets_v5/",
-                            "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
-                            "Current SimplePets jar name: "+getJarName()
-                    )
+                .setLevel(DebugLevel.CRITICAL)
+                .setBroadcast(true)
+                .setMessages(
+                    "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
+                    "Please check the Jenkins for an updated build: https://ci.pluginwiki.us/job/SimplePets_v5/",
+                    "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
+                    "Current SimplePets jar name: " + getJarName()
+                )
             );
             isStarting = false;
             return;
@@ -161,7 +161,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         debug.debug(DebugLevel.HIDDEN, "Initializing SQL Handler");
         if (SQLData.USE_SQLITE) {
             sqlHandler = new SQLiteHandler();
-        }else{
+        } else {
             sqlHandler = new MySQLHandler();
         }
         sqlHandler.initiateDatabase();
@@ -187,7 +187,7 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
                 debug.debug(DebugLevel.ERROR, "Could not find unit for '" + timeunit + "'");
             }
 
-            debug.debug(SimplePets.ADDON, "Loading addons in '"+ ConfigOption.INSTANCE.ADDON_LOAD_TIME.getValue()+ " " + timeunit + "'");
+            debug.debug(SimplePets.ADDON, "Loading addons in '" + ConfigOption.INSTANCE.ADDON_LOAD_TIME.getValue() + " " + timeunit + "'");
 
             new BukkitRunnable() {
                 @Override
@@ -204,11 +204,11 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         checkWorldGuard(value -> {
             if (value) {
                 debug.debug(DebugBuilder.build(getClass()).setLevel(DebugLevel.CRITICAL)
-                        .setMessages(
-                                "Your server is using WorldGuard and the 'mobs.block-plugin-spawning' is set to true",
-                                "This causes issues with the plugin not being able to spawn pets",
-                                "Please set this to 'false' in the WorldGuard config so pets can spawn"
-                        ));
+                    .setMessages(
+                        "Your server is using WorldGuard and the 'mobs.block-plugin-spawning' is set to true",
+                        "This causes issues with the plugin not being able to spawn pets",
+                        "Please set this to 'false' in the WorldGuard config so pets can spawn"
+                    ));
             }
         });
 
@@ -254,11 +254,11 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         // Detected a reload...
         if (wasPluginReloaded()) {
             SimplePets.getDebugLogger().debug(DebugBuilder.build().setMessages(
-                    "------------------------------------",
-                    "    The plugin has detected a reload",
-                    "If you encounter ANY strange issues then this will be the cause.",
-                    "To fix those, Simply RESTART your server",
-                    "------------------------------------"
+                "------------------------------------",
+                "    The plugin has detected a reload",
+                "If you encounter ANY strange issues then this will be the cause.",
+                "To fix those, Simply RESTART your server",
+                "------------------------------------"
             ).setSync(false).setBroadcast(true).setLevel(DebugLevel.CRITICAL));
             ConfigOption.INSTANCE.RELOAD_DETECT.setValue(true, true);
         }
@@ -272,30 +272,30 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
     private boolean checkJavaVersion() {
         if (ServerVersion.isEqualNew(ServerVersion.v1_18)
-                && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17))) {
+            && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17))) {
             debug.debug(DebugBuilder.build(getClass())
-                    .setLevel(DebugLevel.CRITICAL)
-                    .setBroadcast(true)
-                    .setMessages(
-                            "Your server does not support Java 17!",
-                            "Java 17 is required for servers 1.18+ (Mojang Requirement)",
-                            "Disabling the plugin..."
-                    )
+                .setLevel(DebugLevel.CRITICAL)
+                .setBroadcast(true)
+                .setMessages(
+                    "Your server does not support Java 17!",
+                    "Java 17 is required for servers 1.18+ (Mojang Requirement)",
+                    "Disabling the plugin..."
+                )
             );
             return false;
         }
 
         if (ServerVersion.isEqualNew(ServerVersion.v1_17)
-                && ServerVersion.isOlder(ServerVersion.v1_18)
-                && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_16))) {
+            && ServerVersion.isOlder(ServerVersion.v1_18)
+            && (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_16))) {
             debug.debug(DebugBuilder.build(getClass())
-                    .setLevel(DebugLevel.CRITICAL)
-                    .setBroadcast(true)
-                    .setMessages(
-                            "Your server does not support Java 16!",
-                            "Java 16 is required for servers 1.17-1.17.1 (Mojang Requirement)",
-                            "Disabling the plugin..."
-                    )
+                .setLevel(DebugLevel.CRITICAL)
+                .setBroadcast(true)
+                .setMessages(
+                    "Your server does not support Java 16!",
+                    "Java 16 is required for servers 1.17-1.17.1 (Mojang Requirement)",
+                    "Disabling the plugin..."
+                )
             );
             return false;
         }
@@ -318,31 +318,31 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         debug.debug(DebugLevel.HIDDEN, "Initializing update checker");
         if ((!Premium.getDownloadType().fromDownloadSite()) || ConfigOption.INSTANCE.UPDATE_CHECK_DEV_BUILDS.getValue()) {
             updateResult = new UpdateResult().setPreStart(() -> debug.debug(DebugLevel.UPDATE, "Checking for new builds..."))
-                    .setFailParse(members -> debug.debug(DebugLevel.UPDATE, "Data collected: " + members.toString(WriterConfig.PRETTY_PRINT)))
-                    .setNoNewBuilds(() -> debug.debug(DebugLevel.UPDATE, "No new builds were found"))
-                    .setOnError(() -> debug.debug(DebugLevel.UPDATE, "An error occurred when checking for an update"))
-                    .setNewBuild(members -> {
-                        int latestBuild = members.getInt("build", -1);
+                .setFailParse(members -> debug.debug(DebugLevel.UPDATE, "Data collected: " + members.toString(WriterConfig.PRETTY_PRINT)))
+                .setNoNewBuilds(() -> debug.debug(DebugLevel.UPDATE, "No new builds were found"))
+                .setOnError(() -> debug.debug(DebugLevel.UPDATE, "An error occurred when checking for an update"))
+                .setNewBuild(members -> {
+                    int latestBuild = members.getInt("build", -1);
 
-                        // New build found
-                        if (latestBuild > updateResult.getCurrentBuild()) {
-                            debug.debug(DebugLevel.UPDATE, "You are " + (latestBuild - updateResult.getCurrentBuild()) + " build(s) behind the latest.");
-                            debug.debug(DebugLevel.UPDATE, "https://ci.bsdevelopment.org/job/" + updateResult.getRepo() + "/" + latestBuild + "/");
-                        }
-                    });
+                    // New build found
+                    if (latestBuild > updateResult.getCurrentBuild()) {
+                        debug.debug(DebugLevel.UPDATE, "You are " + (latestBuild - updateResult.getCurrentBuild()) + " build(s) behind the latest.");
+                        debug.debug(DebugLevel.UPDATE, "https://ci.bsdevelopment.org/job/" + updateResult.getRepo() + "/" + latestBuild + "/");
+                    }
+                });
             updateUtils = new UpdateUtils(this, updateResult);
             updateUtils.startUpdateTask(time, unit); // Runs the update check every 12 hours
         }
         if (Premium.getDownloadType().fromDownloadSite()) {
             int resourceID = Integer.parseInt(Premium.RESOURCE_ID);
             new UpdateChecker(this, Premium.getDownloadType().toSource(), Premium.RESOURCE_ID)
-                    .setChangelogLink(resourceID)
-                    .setDownloadLink(resourceID)
-                    .setColoredConsoleOutput(true)
-                    .setNotifyOpsOnJoin(true).setNotifyByPermissionOnJoin("pet.update")
-                    .suppressUpToDateMessage(true)
-                    .checkEveryXHours(12)
-                    .checkNow();
+                .setChangelogLink(resourceID)
+                .setDownloadLink(resourceID)
+                .setColoredConsoleOutput(true)
+                .setNotifyOpsOnJoin(true).setNotifyByPermissionOnJoin("pet.update")
+                .suppressUpToDateMessage(true)
+                .checkEveryXHours(12)
+                .checkNow();
         }
     }
 
@@ -551,15 +551,15 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             }
         } catch (Exception e) {
             debug.debug(DebugBuilder.build(getClass())
-                    .setLevel(DebugLevel.CRITICAL)
-                    .setBroadcast(true)
-                    .setMessages(
-                            "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
-                            "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
-                            "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
-                            " ",
-                            "Error: "+e.getMessage()
-                    )
+                .setLevel(DebugLevel.CRITICAL)
+                .setBroadcast(true)
+                .setMessages(
+                    "OH NO! We could not find any support for your servers version " + ServerVersion.getVersion().name().replace("v", "").replace("_", "."),
+                    "Please check the Jenkins for an updated build: https://ci.bsdevelopment.org/job/SimplePets_v5/",
+                    "Check if there is a SimplePets-" + ServerVersion.getVersion().name().replace("v", "").replace("_", ".") + ".jar (IF AVAILABLE)",
+                    " ",
+                    "Error: " + e.getMessage()
+                )
             );
         }
     }
@@ -637,13 +637,13 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         return isStarting;
     }
 
-    public String getJarName () {
+    public String getJarName() {
         try {
             Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
             getFileMethod.setAccessible(true);
             File file = (File) getFileMethod.invoke(this);
             return file.getName();
-        }catch (Exception e) {
+        } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
     }
@@ -683,14 +683,14 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
 
                     serverType = (String) Reflection.invoke(Reflection.getMethod(buildInfoClass, "brandName"), instance);
                     buildVersion = AdvString.between("-", "-", rawVersion);
-                }catch (Exception e) {
+                } catch (Exception e) {
 
                     Pattern pattern = Pattern.compile("git-(\\w+)-(\\w+) \\(MC: (\\w.+)\\)");
                     Matcher matcher = pattern.matcher(rawVersion);
                     if (matcher.find()) {
                         serverType = matcher.group(1);
                         buildVersion = matcher.group(2);
-                    }else{
+                    } else {
                         serverType = rawVersion;
                         buildVersion = "Unknown";
                     }

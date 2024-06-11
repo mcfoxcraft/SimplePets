@@ -10,7 +10,7 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 public class ChunkUnloadListener implements Listener {
 
     @EventHandler
-    public void onUnload (ChunkUnloadEvent event) {
+    public void onUnload(ChunkUnloadEvent event) {
         for (Entity entity : event.getChunk().getEntities()) {
             if (!SimplePets.isPetEntity(entity)) continue;
             SimplePets.getSpawnUtil().getHandle(entity).ifPresent(o -> {

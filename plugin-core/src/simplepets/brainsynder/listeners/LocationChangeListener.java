@@ -12,7 +12,7 @@ import simplepets.brainsynder.api.plugin.config.ConfigOption;
 public class LocationChangeListener implements Listener {
 
     @EventHandler
-    public void onWorldChange (PlayerChangedWorldEvent event) {
+    public void onWorldChange(PlayerChangedWorldEvent event) {
         if (!ConfigOption.INSTANCE.REMOVE_PET_ON_WORLD_CHANGE.getValue()) return;
 
         SimplePets.getUserManager().getPetUser(event.getPlayer()).ifPresent(user -> {
@@ -22,7 +22,7 @@ public class LocationChangeListener implements Listener {
     }
 
     @EventHandler
-    public void onTeleport (PlayerTeleportEvent event) {
+    public void onTeleport(PlayerTeleportEvent event) {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) return;
 
         SimplePets.getUserManager().getPetUser(event.getPlayer()).ifPresent(user -> {
