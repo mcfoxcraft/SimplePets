@@ -5,13 +5,15 @@ import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R1.entity.CraftLivingEntity;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.CitizensFixer;
@@ -47,7 +49,7 @@ public class EntityBase extends Mob {
     }
 
     @Override
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         if (this instanceof EntitySlimePet) {
             Vec3 vec3d = this.getDeltaMovement();
             this.setDeltaMovement(vec3d.x, this.getJumpPower(), vec3d.z);
@@ -71,19 +73,19 @@ public class EntityBase extends Mob {
     }
 
     @Override
-    protected void handleNetherPortal() {
+    protected void handlePortal() {
         // fuck around and find out
     }
 
     public void populateDataAccess(PetDataAccess dataAccess) {}
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
+    protected void defineSynchedData(SynchedEntityData.Builder datawatcher) {
+        super.defineSynchedData(datawatcher);
 
         PetDataAccess dataAccess = new PetDataAccess();
         populateDataAccess(dataAccess);
-        dataAccess.getAccessorDefinitions().forEach(entityData::define);
+        dataAccess.getAccessorDefinitions().forEach(datawatcher::define);
     }
 
     // 1.20.1+   Replaces boolean rideableUnderWater()
@@ -108,11 +110,11 @@ public class EntityBase extends Mob {
             CitizensFixer.overrideRegistry(registry);
 
             // Melts the frozen status, so we can register the mob...
-            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_20_4.getRegistryFrozenField());
+            Field frozen = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21.getRegistryFrozenField());
             if (frozen != null) frozen.set(registry, false);
 
             // Clears the intrusive holder field to an empty map
-            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_20_4.getRegistryIntrusiveField());
+            Field intrusiveField = Reflection.getField(registry.getClass().getSuperclass(), VersionFields.v1_21.getRegistryIntrusiveField());
             if (intrusiveField != null) intrusiveField.set(registry, new IdentityHashMap<>());
 
             // Fetch the entity type instance before we resume
@@ -132,7 +134,7 @@ public class EntityBase extends Mob {
     }
 
     private EntityType<? extends Mob> handleMobBuilder(EntityType<? extends Mob> originalType) throws NoSuchFieldException, IllegalAccessException {
-        Field field = Reflection.getField(EntityType.class, VersionFields.v1_20_4.getEntityFactoryField());
+        Field field = Reflection.getField(EntityType.class, VersionFields.v1_21.getEntityFactoryField());
 
         EntityType.Builder<? extends Mob> builder = EntityType.Builder.of(
                 (EntityType.EntityFactory<? extends Mob>) field.get(originalType),
@@ -162,8 +164,7 @@ public class EntityBase extends Mob {
         return (CraftLivingEntity) this.getBukkitEntity();
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return VersionTranslator.getAddEntityPacket(this, originalEntityType, VersionTranslator.getPosition(this));
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entitytrackerentry) {
+        return VersionTranslator.getAddEntityPacket(this, entitytrackerentry, originalEntityType, VersionTranslator.getPosition(this));
     }
 }
