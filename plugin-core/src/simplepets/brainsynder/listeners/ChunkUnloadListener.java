@@ -11,6 +11,7 @@ public class ChunkUnloadListener implements Listener {
 
     @EventHandler
     public void onUnload(ChunkUnloadEvent event) {
+        if (!event.getChunk().isLoaded()) return;
         for (Entity entity : event.getChunk().getEntities()) {
             if (!SimplePets.isPetEntity(entity)) continue;
             SimplePets.getSpawnUtil().getHandle(entity).ifPresent(o -> {
