@@ -6,6 +6,7 @@ import lib.brainsynder.ServerVersion;
 import lib.brainsynder.commands.CommandRegistry;
 import lib.brainsynder.json.WriterConfig;
 import lib.brainsynder.metric.bukkit.Metrics;
+import lib.brainsynder.reflection.FieldAccessor;
 import lib.brainsynder.reflection.Reflection;
 import lib.brainsynder.update.UpdateResult;
 import lib.brainsynder.update.UpdateUtils;
@@ -355,12 +356,16 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
             Method isStopping = Bukkit.class.getDeclaredMethod("isStopping");
             return !((boolean) Reflection.invoke(isStopping, null));
         } catch (Exception e) {
+            String fieldName = VersionFields.fromServerVersion(ServerVersion.getVersion()).getServerRunningField();
+
             Class<?> nmsClass = Reflection.getNmsClass("MinecraftServer", "server");
+
             try {
                 Object server = Reflection.getMethod(nmsClass, "getServer").invoke(null);
-                Method isRunning = Reflection.getMethod(nmsClass, new String[]{VersionFields.fromServerVersion(ServerVersion.getVersion()).getServerRunningField()});
-                return (boolean) Reflection.invoke(isRunning, server);
-            } catch (IllegalAccessException | InvocationTargetException exception) {
+                Field field = nmsClass.getDeclaredField(fieldName);
+                Reflection.setFieldAccessible(field);
+                return (boolean) field.get(server);
+            } catch (Exception exception) {
                 exception.printStackTrace();
             }
         }
