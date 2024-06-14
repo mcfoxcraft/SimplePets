@@ -86,6 +86,13 @@ public enum PetType {
     @PetCustomization(ambient = SoundMaker.ENTITY_BLAZE_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
     BLAZE(IEntityBlazePet.class, "b78ef2e4cf2c41a2d14bfde9caff10219f5b1bf5b35a49eb51c6467882cb5f0"),
 
+    @PetCustomization(ambient = SoundMaker.ENTITY_BREEZE_IDLE_GROUND, weight = PetWeight.LIGHT)
+    BREEZE(IEntityBreezePet.class, "a275728af7e6a29c88125b675a39d88ae9919bb61fdc200337fed6ab0c49d65c"),
+
+    @PetCustomization(ambient = SoundMaker.ENTITY_BOGGED_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
+    BOGGED(IEntityBoggedPet.class, "a3b9003ba2d05562c75119b8a62185c67130e9282f7acbac4bc2824c21eb95d9",
+        ShearData.class),
+
     @PetCustomization(ambient = SoundMaker.ENTITY_CAMEL_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
     CAMEL(IEntityCamelPet.class, "92b31239520511ca7b6712ef0ecfb55b6c56b9347240f4cbf9925ce0bf0fa445",
         AgeData.class, SittingData.class),
