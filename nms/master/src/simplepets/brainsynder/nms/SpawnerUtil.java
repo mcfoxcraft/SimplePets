@@ -37,8 +37,6 @@ public class SpawnerUtil implements ISpawnUtil {
 
         for (PetType type : PetType.values()) {
             if (type.getEntityClass() == null) continue;
-            // TODO: Need to figure out why these 2 do not work
-            // See Error: https://www.pastelog.us/paste/HFKEIJCAGDB
             // if (type == PetType.ARMOR_STAND) continue;
             // if (type == PetType.SHULKER) continue;
 
