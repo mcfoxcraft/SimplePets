@@ -222,12 +222,6 @@
             <dependencies>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.1</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
