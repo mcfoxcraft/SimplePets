@@ -37,6 +37,6 @@ public class EntityBoggedPet extends EntitySkeletonAbstractPet implements IEntit
 
     @Override
     public void setSheared(boolean sheared) {
-        // entityData.set(DATA_SHEARED, sheared);
+        entityData.set(DATA_SHEARED, sheared);
     }
 }
