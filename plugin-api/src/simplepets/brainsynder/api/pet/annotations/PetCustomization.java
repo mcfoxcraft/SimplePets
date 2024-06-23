@@ -13,5 +13,6 @@ import java.lang.annotation.Target;
 public @interface PetCustomization {
     SoundMaker ambient();
 
+    @Deprecated
     PetWeight weight() default PetWeight.NONE;
 }
