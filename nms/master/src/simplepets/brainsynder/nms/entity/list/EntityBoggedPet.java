@@ -7,17 +7,16 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import simplepets.brainsynder.api.entity.hostile.IEntityBoggedPet;
-import simplepets.brainsynder.api.entity.hostile.IEntitySkeletonPet;
 import simplepets.brainsynder.api.pet.PetType;
 import simplepets.brainsynder.api.user.PetUser;
-import simplepets.brainsynder.nms.entity.branch.EntitySkeletonAbstractPet;
+import simplepets.brainsynder.nms.entity.EntityPet;
 import simplepets.brainsynder.nms.utils.PetDataAccess;
 
 /**
  * NMS: {@link net.minecraft.world.entity.monster.Bogged}
  */
 @SupportedVersion(version = ServerVersion.v1_21)
-public class EntityBoggedPet extends EntitySkeletonAbstractPet implements IEntityBoggedPet {
+public class EntityBoggedPet extends EntityPet implements IEntityBoggedPet {
     private static final EntityDataAccessor<Boolean> DATA_SHEARED = SynchedEntityData.defineId(EntityBoggedPet.class, EntityDataSerializers.BOOLEAN);;
     
     public EntityBoggedPet(PetType type, PetUser user) {
@@ -37,6 +36,8 @@ public class EntityBoggedPet extends EntitySkeletonAbstractPet implements IEntit
 
     @Override
     public void setSheared(boolean sheared) {
+        // For some reason when this is called it will cause a "Packet Handling Error"
+        // Which will kick the player for "Network Protocol Error"
         entityData.set(DATA_SHEARED, sheared);
     }
 }

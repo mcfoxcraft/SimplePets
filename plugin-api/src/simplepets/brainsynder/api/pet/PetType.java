@@ -273,8 +273,7 @@ public enum PetType {
     SILVERFISH(IEntitySilverfishPet.class, "d06310a8952b265c6e6bed4348239ddea8e5482c8c68be6fff981ba8056bf2e"),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_SKELETON_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
-    SKELETON(IEntitySkeletonPet.class, Material.SKELETON_SKULL,
-        ArmsData.class),
+    SKELETON(IEntitySkeletonPet.class, Material.SKELETON_SKULL),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_SKELETON_HORSE_AMBIENT, weight = PetWeight.HEAVY)
     SKELETON_HORSE(IEntitySkeletonHorsePet.class, "47effce35132c86ff72bcae77dfbb1d22587e94df3cbc2570ed17cf8973a",
@@ -299,8 +298,7 @@ public enum PetType {
     SQUID(IEntitySquidPet.class, "01433be242366af126da434b8735df1eb5b3cb2cede39145974e9c483607bac"),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_STRAY_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
-    STRAY(IEntityStrayPet.class, "2c5097916bc0565d30601c0eebfeb287277a34e867b4ea43c63819d53e89ede7",
-        ArmsData.class),
+    STRAY(IEntityStrayPet.class, "2c5097916bc0565d30601c0eebfeb287277a34e867b4ea43c63819d53e89ede7"),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_STRIDER_AMBIENT, weight = PetWeight.HEAVY)
     STRIDER(IEntityStriderPet.class, "cb7ffdda656c68d88851a8e05b48cd2493773ffc4ab7d64e9302229fe3571059",
@@ -351,8 +349,7 @@ public enum PetType {
         WitherShieldData.class, WitherSizeData.class),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_WITHER_SKELETON_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
-    WITHER_SKELETON(IEntityWitherSkeletonPet.class, Material.WITHER_SKELETON_SKULL,
-        ArmsData.class),
+    WITHER_SKELETON(IEntityWitherSkeletonPet.class, Material.WITHER_SKELETON_SKULL),
 
     @PetCustomization(ambient = SoundMaker.ENTITY_WOLF_AMBIENT, weight = PetWeight.SLIGHTLY_HEAVY)
     WOLF(IEntityWolfPet.class, "24d7727f52354d24a64bd6602a0ce71a7b484d05963da83b470360faa9ceab5f",
