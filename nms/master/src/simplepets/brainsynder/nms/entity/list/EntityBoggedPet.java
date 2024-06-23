@@ -36,8 +36,6 @@ public class EntityBoggedPet extends EntityPet implements IEntityBoggedPet {
 
     @Override
     public void setSheared(boolean sheared) {
-        // For some reason when this is called it will cause a "Packet Handling Error"
-        // Which will kick the player for "Network Protocol Error"
         entityData.set(DATA_SHEARED, sheared);
     }
 }
