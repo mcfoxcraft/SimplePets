@@ -198,7 +198,41 @@ public enum ConfigOption {
         """
             How far away from the player does the pet have to be before it teleports closer
 
-            Default: {default}""");
+                    Default: {default}""");
+
+
+    public final ConfigEntry<Boolean> LEGACY_PATHFINDING_ENABLED = createOption("legacy-pathfinding.enabled", false,
+            """
+                    Would you rather use the legacy pathfinder?
+                    
+                    Note:
+                    - When enabled you will not receive support for issues pertaining to this pathfinder as our main priority is the new system
+                    - There are some issues with the legacy pathfinder that is known to cause high TPS lag on servers (this was fixed with the new system)
+                      See: https://github.com/brainsynder-Dev/SimplePets/issues/260
+                        
+                    Default: {default}""");
+    public final ConfigEntry<Integer> LEGACY_PATHFINDING_STOP_DISTANCE_LARGE = createOption("legacy-pathfinding.distance-to-player.large.walk", 7,
+            """
+                    How far away can the pet be before it will stop walking near the player?
+                    Large pets can be considered: Ravager, Ghast, Giant, Wither, ETC...
+                    
+                    Explanation: Pet is walking to player, they will stop within {default} blocks of the player
+                    
+                    Default: {default}""");
+    public final ConfigEntry<Integer> LEGACY_PATHFINDING_STOP_DISTANCE_SMALL = createOption("legacy-pathfinding.distance-to-player.small.walk", 7,
+            """
+                    How far away can the pet be before it will stop walking near the player?
+                    Small pets can be considered: cow, chicken, enderman, armorstand, ETC...
+                    
+                    Explanation: Pet is walking to player, they will stop within {default} blocks of the player
+                    
+                    Default: {default}""");
+    public final ConfigEntry<Integer> LEGACY_PATHFINDING_UPDATE_INTERVAL = createOption("legacy-pathfinding.update-interval", 10,
+            """
+                    Modify this value to control how often a pet tries to calculate a new path to its owner
+                    Note: This is in ticks ( 20 ticks = 1 second )
+                    
+                    Default: {default}""");
 
 
     // Worlds
