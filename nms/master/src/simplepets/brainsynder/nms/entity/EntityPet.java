@@ -588,7 +588,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     @Override
     public EntityType<?> getType() {
-        return rawEntityType;
+        return super.originalEntityType;
     }
 
     private void glowHandler(Player player, boolean glow) {
