@@ -170,9 +170,22 @@
                     <version>${revision}</version>
                     <scope>compile</scope>
                 </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <!-- Used to compile only the 1.21 MC versions  -->
+            <id>1.21</id>
+
+            <dependencies>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.21</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.21.1</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
                 </dependency>
@@ -222,12 +235,6 @@
             <dependencies>
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
-                    <artifactId>Version_1.20.1</artifactId>
-                    <version>${revision}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.20.2</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
@@ -259,6 +266,12 @@
                 <dependency>
                     <groupId>simplepets.brainsynder</groupId>
                     <artifactId>Version_1.21</artifactId>
+                    <version>${revision}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>simplepets.brainsynder</groupId>
+                    <artifactId>Version_1.21.1</artifactId>
                     <version>${revision}</version>
                     <scope>compile</scope>
                 </dependency>
