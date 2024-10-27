@@ -11,15 +11,15 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <artifactId>Version_1.21</artifactId>
+    <artifactId>Version_1.21.3</artifactId>
     <version>${revision}</version>
 
     <properties>
         <java.version>21</java.version>
 
-        <minecraft.version>1.21</minecraft.version>
-        <current-module.version>v1_21</current-module.version>
-        <current-module.nms>v1_21_R1</current-module.nms>
+        <minecraft.version>1.21.3</minecraft.version>
+        <current-module.version>v1_21_3</current-module.version>
+        <current-module.nms>v1_21_R2</current-module.nms>
 
         <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
         <module.info>-${minecraft.version}</module.info>
@@ -46,7 +46,8 @@
                         <configuration>
                             <srgIn>org.spigotmc:minecraft-server:${spigot.version}:txt:maps-mojang</srgIn>
                             <reverse>true</reverse>
-                            <remappedDependencies>org.spigotmc:spigot:${spigot.version}:jar:remapped-mojang</remappedDependencies>
+                            <remappedDependencies>org.spigotmc:spigot:${spigot.version}:jar:remapped-mojang
+                            </remappedDependencies>
                             <remappedArtifactAttached>true</remappedArtifactAttached>
                             <remappedClassifierName>remapped-obf</remappedClassifierName>
                         </configuration>
@@ -58,9 +59,12 @@
                         </goals>
                         <id>remap-spigot</id>
                         <configuration>
-                            <inputFile>${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar</inputFile>
+                            <inputFile>
+                                ${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar
+                            </inputFile>
                             <srgIn>org.spigotmc:minecraft-server:${spigot.version}:csrg:maps-spigot</srgIn>
-                            <remappedDependencies>org.spigotmc:spigot:${spigot.version}:jar:remapped-obf</remappedDependencies>
+                            <remappedDependencies>org.spigotmc:spigot:${spigot.version}:jar:remapped-obf
+                            </remappedDependencies>
                         </configuration>
                     </execution>
                 </executions>

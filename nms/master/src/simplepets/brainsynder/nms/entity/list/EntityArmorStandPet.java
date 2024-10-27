@@ -151,7 +151,7 @@ public class EntityArmorStandPet extends ArmorStand implements IEntityArmorStand
         if ((this.pet == null)
                 || (VersionTranslator.getBukkitEntity(pet).isDead())
                 || (!VersionTranslator.getBukkitEntity(pet).isValid())) {
-            kill();
+            VersionTranslator.killEntity(this, (ServerLevel) level());
             return;
         }
 

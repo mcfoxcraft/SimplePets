@@ -42,11 +42,11 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_21_R1.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_21_R1.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R2.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_21_R2.util.CraftNamespacedKey;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import simplepets.brainsynder.api.entity.misc.IFlyableEntity;
 import simplepets.brainsynder.nms.entity.EntityPet;
@@ -63,10 +63,10 @@ public class VersionTranslator {
     private static Field jumpingField = null;
 
     static {
-        accessor = FieldAccessor.getField(LivingEntity.class, VersionFields.v1_21_1.getAttributesField(), AttributeMap.class);
+        accessor = FieldAccessor.getField(LivingEntity.class, VersionFields.v1_21_3.getAttributesField(), AttributeMap.class);
 
         try {
-            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_21_1.getEntityJumpField());
+            Field jumpingField = LivingEntity.class.getDeclaredField(VersionFields.v1_21_3.getEntityJumpField());
             jumpingField.setAccessible(true);
             VersionTranslator.jumpingField = jumpingField;
         } catch (Exception ex) {
@@ -90,7 +90,7 @@ public class VersionTranslator {
     }
 
     public static org.bukkit.entity.Entity getBukkitEntity(Entity entity) {
-        org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity craftEntity = entity.getBukkitEntity();
+        org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity craftEntity = entity.getBukkitEntity();
         return craftEntity;
     }
 
@@ -171,7 +171,7 @@ public class VersionTranslator {
                                       boolean glow) throws IllegalAccessException {
         Int2ObjectMap<SynchedEntityData.DataItem<Byte>> newMap =
                 (Int2ObjectMap<SynchedEntityData.DataItem<Byte>>) FieldUtils.readDeclaredField(toCloneDataWatcher,
-                        VersionFields.v1_21_1.getEntityDataMapField(), true);
+                        VersionFields.v1_21_3.getEntityDataMapField(), true);
 
         SynchedEntityData.DataItem<Byte> item = newMap.get(0);
         byte initialBitMask = item.getValue();
@@ -181,7 +181,7 @@ public class VersionTranslator {
         } else {
             item.setValue((byte) (initialBitMask & ~(1 << bitMaskIndex)));
         }
-        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_21_1.getEntityDataMapField(), newMap, true);
+        FieldUtils.writeDeclaredField(newDataWatcher, VersionFields.v1_21_3.getEntityDataMapField(), newMap, true);
     }
 
     public static org.bukkit.inventory.ItemStack toItemStack(StorageTagCompound compound) {
@@ -296,14 +296,14 @@ public class VersionTranslator {
 
     // ADDED DURING 1.21.3 DEVELOPMENT
     public static <T> T getRegistryValue (Registry<T> registry, NamespacedKey key) {
-        return registry.get(CraftNamespacedKey.toMinecraft(key));
+        return registry.getValue(CraftNamespacedKey.toMinecraft(key));
     }
 
     public static void killEntity (Entity entity, ServerLevel level) {
-        entity.kill();
+        entity.kill(level);
     }
 
     public static ClientboundTeleportEntityPacket getTeleportPacket (Entity entity) {
-        return new ClientboundTeleportEntityPacket(entity);
+        return new ClientboundTeleportEntityPacket(entity.getId(), PositionMoveRotation.of(entity), Relative.ALL, entity.onGround);
     }
 }

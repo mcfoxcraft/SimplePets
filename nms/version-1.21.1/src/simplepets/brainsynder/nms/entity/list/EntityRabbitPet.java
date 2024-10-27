@@ -5,7 +5,6 @@ import lib.brainsynder.reflection.Reflection;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -74,7 +73,7 @@ public class EntityRabbitPet extends EntityAgeablePet implements IEntityRabbitPe
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel worldserver) {
+    public void customServerAiStep() {
         if (this.ticksUntilJump > 0) {
             --this.ticksUntilJump;
         }
