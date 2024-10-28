@@ -25,8 +25,6 @@ import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.event.entity.EntityNameChangeEvent;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
-import simplepets.brainsynder.api.event.entity.movment.PetJumpEvent;
-import simplepets.brainsynder.api.event.entity.movment.PetRideEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.pet.CommandReason;
 import simplepets.brainsynder.api.pet.IPetConfig;
@@ -40,7 +38,6 @@ import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderGoalLookAtOwner;
 import simplepets.brainsynder.nms.utils.EntityUtils;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -133,6 +130,10 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     public boolean isJumping() {
         return jumping;
+    }
+
+    public double getJumpHeight() {
+        return jumpHeight;
     }
 
     @Override
@@ -391,78 +392,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (passengers.size() == 0) return false;
         net.minecraft.world.entity.player.Player owner = VersionTranslator.getEntityHandle(getPetUser().getPlayer());
         return getSelfAndPassengers().anyMatch(e -> e.equals(owner));
-    }
-
-    @Override
-    public void travel(Vec3 vec3d) {
-        if ((getPetType() == null) || (getPetUser() == null)) return;
-
-        if ((passengers == null)
-                || (!isOwnerRiding())) {
-            super.travel(vec3d);
-            return;
-        }
-
-        ServerPlayer passenger = VersionTranslator.getEntityHandle(getPetUser().getPlayer());
-
-        if (doIndirectAttach) {
-            if (getFirstPassenger() instanceof SeatEntity seat) {
-                // orient the seat entity correctly. Seems to fix the issue
-                // where ridden horses are not oriented properly
-                seat.setYRot(passenger.getYRot());
-                seat.yRotO = this.getYRot();
-                seat.setXRot(passenger.getXRot() * 0.5F);
-                seat.setRot(this.getYRot(), this.getXRot());
-                seat.yHeadRot = this.yBodyRot = this.getYRot();
-            }
-        }
-
-        this.setYRot(passenger.getYRot());
-        this.yRotO = this.getYRot();
-        this.setXRot(passenger.getXRot() * 0.5F);
-        this.setRot(this.getYRot(), this.getXRot());
-        this.yHeadRot = this.yBodyRot = this.getYRot();
-
-        double strafe = passenger.xxa * 0.5;
-        double vertical = vec3d.y;
-        double forward = passenger.zza;
-        if (forward <= 0) {
-            forward *= 0.25F;
-        }
-
-        PetMoveEvent moveEvent = new PetRideEvent(this);
-        Bukkit.getServer().getPluginManager().callEvent(moveEvent);
-        if (moveEvent.isCancelled()) return;
-
-        double speed = VersionTranslator.getWalkSpeed(this);
-
-        Field jumpField = VersionTranslator.getJumpField();
-        if ((jumpField != null) && (!passengers.isEmpty())) {
-            SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-                try {
-                    boolean flight = false;
-                    double height = jumpHeight;
-
-                    if (config.canFly(getPetUser().getPlayer())) {
-                        flight = true;
-                        height = 0.3;
-                    }
-
-                    PetJumpEvent jumpEvent = new PetJumpEvent(this, height);
-                    Bukkit.getServer().getPluginManager().callEvent(jumpEvent);
-                    if ((!jumpEvent.isCancelled()) && jumpField.getBoolean(passenger)) {
-                        if (flight || this.onGround) {
-                            setDeltaMovement(getDeltaMovement().x, jumpEvent.getJumpHeight(), getDeltaMovement().z);
-                            this.hasImpulse = true;
-                        }
-                    }
-                } catch (IllegalArgumentException | IllegalStateException | IllegalAccessException ignored) {
-                }
-            });
-        }
-
-        this.setSpeed((float) speed);
-        super.travel(new Vec3(strafe, vertical, forward));
     }
 
     @Override
