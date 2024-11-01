@@ -352,7 +352,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (owner != null) {
             SimplePets.getPetUtilities().runPetCommands(CommandReason.RIDE, getPetUser(), getPetType());
             if (!doIndirectAttach) {
-                return VersionTranslator.getBukkitEntity(this).addPassenger(owner);
+                // This was a test to see if using the startRiding method would work instead...
+                return VersionTranslator.getEntityHandle(owner).startRiding(this);
             } else {
                 return SeatEntity.attach(VersionTranslator.getEntityHandle(owner), this);
             }
