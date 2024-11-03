@@ -2,8 +2,8 @@ package simplepets.brainsynder.nms.entity;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
@@ -14,14 +14,10 @@ import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.api.user.PetUser;
 import simplepets.brainsynder.nms.VersionTranslator;
 
-import java.lang.reflect.Field;
-
 public class EntityPetOverride extends EntityPet {
     public EntityPetOverride(EntityType<? extends Mob> entitytypes, PetType type, PetUser user) {
         super(entitytypes, type, user);
     }
-
-    // TODO: Investigate why pet riding is not working on 1.21.3, it wont work using the old travel method or the tickRidden method
 
     @Override
     public void travel(Vec3 vec3d) {
@@ -33,12 +29,7 @@ public class EntityPetOverride extends EntityPet {
             return;
         }
 
-        LivingEntity passenger = (LivingEntity) passengers.stream().filter(entity -> entity instanceof LivingEntity).filter(entity -> entity instanceof ServerPlayer).findFirst().orElseGet(null);
-        if (passenger == null) {
-            System.out.println("- No passenger found");
-            return;
-        }
-        System.out.println("- passenger: " + passenger.getName().toString());
+        ServerPlayer passenger = VersionTranslator.getEntityHandle(getUser().getPlayer());
 
         if (doIndirectAttach) {
             if (getFirstPassenger() instanceof SeatEntity seat) {
@@ -58,10 +49,13 @@ public class EntityPetOverride extends EntityPet {
         this.setRot(this.getYRot(), this.getXRot());
         this.yHeadRot = this.yBodyRot = this.getYRot();
 
-        double strafe = passenger.xxa * 0.5;
-        System.out.println("- strafe: " + strafe + " | Passenger: " + passenger.xxa + " | Vec3d: "+vec3d.x);
+        Input clientInput = passenger.getLastClientInput();
+        double xxa = (clientInput.left() == clientInput.right() ? 0 : (clientInput.left() ? 1 : -1));
+        double zza = (clientInput.forward() == clientInput.backward() ? 0 : (clientInput.forward() ? 1 : -1));
+
+        double strafe = xxa * 0.5;
         double vertical = vec3d.y;
-        double forward = passenger.zza;
+        double forward = zza;
         if (forward <= 0) {
             forward *= 0.25F;
         }
@@ -72,8 +66,7 @@ public class EntityPetOverride extends EntityPet {
 
         double speed = VersionTranslator.getWalkSpeed(this);
 
-        Field jumpField = VersionTranslator.getJumpField();
-        if ((jumpField != null) && (!passengers.isEmpty())) {
+        if (!passengers.isEmpty()) {
             SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
                 try {
                     boolean flight = false;
@@ -86,62 +79,18 @@ public class EntityPetOverride extends EntityPet {
 
                     PetJumpEvent jumpEvent = new PetJumpEvent(this, height);
                     Bukkit.getServer().getPluginManager().callEvent(jumpEvent);
-                    if ((!jumpEvent.isCancelled()) && jumpField.getBoolean(passenger)) {
-                        System.out.println("- jump field: " + jumpField.getName());
+                    if ((!jumpEvent.isCancelled()) && clientInput.jump()) {
                         if (flight || this.onGround) {
                             setDeltaMovement(getDeltaMovement().x, jumpEvent.getJumpHeight(), getDeltaMovement().z);
                             this.hasImpulse = true;
                         }
                     }
-                } catch (IllegalArgumentException | IllegalStateException | IllegalAccessException ignored) {
+                } catch (IllegalArgumentException | IllegalStateException ignored) {
                 }
             });
         }
 
         this.setSpeed((float) speed);
-        System.out.println("- speed: " + speed);
-        System.out.println("- forward: " + forward);
-        System.out.println("- vertical: " + vertical);
-        System.out.println("- strafe: " + strafe);
         super.travel(new Vec3(strafe, vertical, forward));
     }
-
-    @Override
-    protected boolean isImmobile() {
-        return false;
-    }
-
-// TODO: This was my attempt to fix the riding bug by using the code for AbstractHorse
-//
-//    @Override
-//    protected void tickRidden(Player entityhuman, Vec3 vec3d) {
-//        super.tickRidden(entityhuman, vec3d);
-//        Vec2 vec2f = this.getRiddenRotation(entityhuman);
-//        this.setRot(vec2f.y, vec2f.x);
-//        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-//    }
-//
-//    protected Vec2 getRiddenRotation(LivingEntity entityliving) {
-//        return new Vec2(entityliving.getXRot() * 0.5F, entityliving.getYRot());
-//    }
-//
-//    @Override
-//    public void onPlayerJump(int i) {
-//
-//    }
-//
-//    @Override
-//    public boolean canJump() {
-//        return true;
-//    }
-//
-//    @Override
-//    public void handleStartJump(int i) {
-//
-//    }
-//
-//    @Override
-//    public void handleStopJump() {
-//
-//    }
 }
