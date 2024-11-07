@@ -86,6 +86,7 @@ public class VersionTranslator {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
         if (entityPet instanceof IFlyableEntity) builder.add(Attributes.FLYING_SPEED, 1);
         builder.add(Attributes.SCALE, 1);
+        builder.add(Attributes.STEP_HEIGHT, 1);
         return builder.add(Attributes.MOVEMENT_SPEED, 1);
     }
 
