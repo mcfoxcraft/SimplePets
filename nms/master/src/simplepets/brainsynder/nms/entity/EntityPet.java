@@ -4,6 +4,7 @@ import lib.brainsynder.nbt.StorageTagCompound;
 import lib.brainsynder.sounds.SoundMaker;
 import lib.brainsynder.utils.Colorize;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -24,8 +25,6 @@ import simplepets.brainsynder.api.entity.IEntityPet;
 import simplepets.brainsynder.api.entity.misc.IEntityControllerPet;
 import simplepets.brainsynder.api.event.entity.EntityNameChangeEvent;
 import simplepets.brainsynder.api.event.entity.PetMoveEvent;
-import simplepets.brainsynder.api.event.entity.movment.PetJumpEvent;
-import simplepets.brainsynder.api.event.entity.movment.PetRideEvent;
 import simplepets.brainsynder.api.other.ParticleHandler;
 import simplepets.brainsynder.api.pet.CommandReason;
 import simplepets.brainsynder.api.pet.IPetConfig;
@@ -39,7 +38,6 @@ import simplepets.brainsynder.nms.pathfinder.PathfinderFollowPlayer;
 import simplepets.brainsynder.nms.pathfinder.PathfinderGoalLookAtOwner;
 import simplepets.brainsynder.nms.utils.EntityUtils;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -78,7 +76,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     protected double rideSpeed = 0.4000000238418579;
     protected double flySpeed = 0.10000000149011612;
     private boolean floatDown = false;
-    private boolean immovable = false;
     private boolean glowVanishToggle = true;
     private boolean autoRemoveToggle = true;
     private boolean displayNameVisibility = true;
@@ -106,7 +103,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
         VersionTranslator.overrideAttributeMap(this);
 
-        immovable = ConfigOption.INSTANCE.PET_TOGGLES_MOB_PUSHER.getValue();
         glowVanishToggle = ConfigOption.INSTANCE.PET_TOGGLES_GLOW_VANISH.getValue();
         autoRemoveToggle = ConfigOption.INSTANCE.AUTO_REMOVE_ENABLED.getValue();
         autoRemoveTick = ConfigOption.INSTANCE.AUTO_REMOVE_TICK.getValue();
@@ -136,12 +132,16 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         return jumping;
     }
 
+    public double getJumpHeight() {
+        return jumpHeight;
+    }
+
     @Override
     public void teleportToOwner() {
-        getPetUser ().getUserLocation().ifPresent(location -> {
+        getPetUser().getUserLocation().ifPresent(location -> {
             setPos(location.getX(), location.getY(), location.getZ());
-            SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, getPetUser (), getPetType());
-            SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, getPetUser ().getPlayer(), location);
+            SimplePets.getPetUtilities().runPetCommands(CommandReason.TELEPORT, getPetUser(), getPetType());
+            SimplePets.getParticleHandler().sendParticle(ParticleHandler.Reason.TELEPORT, getPetUser().getPlayer(), location);
         });
     }
 
@@ -154,6 +154,11 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public ChatColor getGlowColor() {
         return glowColor;
+    }
+
+    // 1.20.3 - Changed method(s) AGAIN
+    protected boolean actuallyHurt(ServerLevel worldserver, DamageSource damagesource, float f, EntityDamageEvent event) {
+        return false;
     }
 
     protected boolean damageEntity0(DamageSource damagesource, float f) {
@@ -178,7 +183,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (getPetType() != PetType.SHULKER) {
             if (ConfigOption.INSTANCE.LEGACY_PATHFINDING_ENABLED.getValue()) {
                 goalSelector.addGoal(2, new LegacyPathfinderFollowPlayer(this, 3, 10));
-            }else{
+            } else {
                 goalSelector.addGoal(2, new PathfinderFollowPlayer(this));
             }
         }
@@ -216,7 +221,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 name = config.get().getDisplayName();
             }
         }
-        String newName = name.replace("%player%", getPetUser ().getPlayer().getName());
+        String newName = name.replace("%player%", getPetUser().getPlayer().getName());
 
         EntityNameChangeEvent event = new EntityNameChangeEvent(this, newName);
         Bukkit.getServer().getPluginManager().callEvent(event);
@@ -232,8 +237,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     public Optional<String> getPetName() {
         if (petName != null) return Optional.of(petName);
 
-        if (getPetUser ().getPetName(getPetType()).isPresent())
-            return getPetUser ().getPetName(getPetType());
+        if (getPetUser().getPetName(getPetType()).isPresent())
+            return getPetUser().getPetName(getPetType());
         return Optional.empty();
     }
 
@@ -244,7 +249,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     @Override
     public UUID getOwnerUUID() {
-        return getPetUser ().getPlayer().getUniqueId();
+        return getPetUser().getPlayer().getUniqueId();
     }
 
     @Override
@@ -253,7 +258,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         object.setString("PetType", getPetType().getName());
         object.setFloat("health", getHealth());
         object.setString("ownerName", getPetUser().getOwnerName());
-        getPetUser ().getPetName(getPetType()).ifPresent(name -> {
+        getPetUser().getPetName(getPetType()).ifPresent(name -> {
             object.setString("name", name.replace('§', '&'));
         });
         object.setBoolean("silent", silent);
@@ -343,11 +348,12 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     @Override
     public boolean attachOwner() {
         ejectPassengers();
-        var owner = getPetUser ().getPlayer();
+        var owner = getPetUser().getPlayer();
         if (owner != null) {
-            SimplePets.getPetUtilities().runPetCommands(CommandReason.RIDE, getPetUser (), getPetType());
+            SimplePets.getPetUtilities().runPetCommands(CommandReason.RIDE, getPetUser(), getPetType());
             if (!doIndirectAttach) {
-                return VersionTranslator.getBukkitEntity(this).addPassenger(owner);
+                // This was a test to see if using the startRiding method would work instead...
+                return VersionTranslator.getEntityHandle(owner).startRiding(this);
             } else {
                 return SeatEntity.attach(VersionTranslator.getEntityHandle(owner), this);
             }
@@ -362,7 +368,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
 
     @Override
     public PetUser getPetUser() {
-        return super.getUser ();
+        return super.getUser();
     }
 
     @Override
@@ -390,77 +396,6 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
     }
 
     @Override
-    public void travel(Vec3 vec3d) {
-        if ((getPetType() == null) || (getPetUser () == null)) return;
-
-        if ((passengers == null)
-                || (!isOwnerRiding())) {
-            super.travel(vec3d);
-            return;
-        }
-
-        ServerPlayer passenger = VersionTranslator.getEntityHandle(getPetUser().getPlayer());
-
-        if (doIndirectAttach) {
-            if (getFirstPassenger() instanceof SeatEntity seat) {
-                // orient the seat entity correctly. Seems to fix the issue
-                // where ridden horses are not oriented properly
-                seat.setYRot(passenger.getYRot());
-                seat.yRotO = this.getYRot();
-                seat.setXRot(passenger.getXRot() * 0.5F);
-                seat.setRot(this.getYRot(), this.getXRot());
-                seat.yHeadRot = this.yBodyRot = this.getYRot();
-            }
-        }
-
-        this.setYRot(passenger.getYRot());
-        this.yRotO = this.getYRot();
-        this.setXRot(passenger.getXRot() * 0.5F);
-        this.setRot(this.getYRot(), this.getXRot());
-        this.yHeadRot = this.yBodyRot = this.getYRot();
-
-        double strafe = passenger.xxa * 0.5;
-        double vertical = vec3d.y;
-        double forward = passenger.zza;
-        if (forward <= 0) {
-            forward *= 0.25F;
-        }
-
-        PetMoveEvent moveEvent = new PetRideEvent(this);
-        Bukkit.getServer().getPluginManager().callEvent(moveEvent);
-        if (moveEvent.isCancelled()) return;
-
-        double speed = VersionTranslator.getWalkSpeed(this);
-
-        Field jumpField = VersionTranslator.getJumpField();
-        if ((jumpField != null) && (!passengers.isEmpty())) {
-            SimplePets.getPetConfigManager().getPetConfig(getPetType()).ifPresent(config -> {
-                try {
-                    boolean flight = false;
-                    double height = jumpHeight;
-
-                    if (config.canFly(getPetUser().getPlayer())) {
-                        flight = true;
-                        height = 0.3;
-                    }
-
-                    PetJumpEvent jumpEvent = new PetJumpEvent(this, height);
-                    Bukkit.getServer().getPluginManager().callEvent(jumpEvent);
-                    if ((!jumpEvent.isCancelled()) && jumpField.getBoolean(passenger)) {
-                        if (flight || this.onGround) {
-                            setDeltaMovement(getDeltaMovement().x, jumpEvent.getJumpHeight(), getDeltaMovement().z);
-                            this.hasImpulse = true;
-                        }
-                    }
-                } catch (IllegalArgumentException | IllegalStateException | IllegalAccessException ignored) {}
-            });
-        }
-
-        this.setSpeed((float) speed);
-        super.travel(new Vec3(strafe, vertical, forward));
-    }
-
-    @Override
     public void tick() {
         super.tick();
 
@@ -477,8 +412,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 if (standStillTicks != 0) standStillTicks = 0;
             } else {
                 if (standStillTicks == autoRemoveTick) {
-                    if (getPetUser () != null) {
-                        getPetUser ().removePet(getPetType());
+                    if (getPetUser() != null) {
+                        getPetUser().removePet(getPetType());
                     } else {
                         bukkitEntity.remove();
                     }
@@ -488,23 +423,25 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         }
 
         // Handles all other Pet Tasks...
-        if (getPetUser () == null || getPetUser ().getPlayer() == null || !getPetUser ().getPlayer().isOnline()) {
+        if (getPetUser() == null || getPetUser().getPlayer() == null || !getPetUser().getPlayer().isOnline()) {
             if (bukkitEntity != null)
                 bukkitEntity.remove();
             return;
         }
 
-        if (verticalWorldConfines && ( (getY() > maxHeight) || (minHeight > getY()) )) {
-            getPetUser ().removePet(getPetType());
+        if (verticalWorldConfines && ((getY() > maxHeight) || (minHeight > getY()))) {
+            getPetUser().removePet(getPetType());
             return;
         }
 
+        // Ensures that pets that hover for too long are either removed
+        // by the player or automatically deleted if they are not associated with any player
         if (isOnGround()) {
             if (hoverTickCount != 0) hoverTickCount = 0;
         } else {
             if (hoverTickCount == hoverRemoveTick) {
-                if (getPetUser () != null) {
-                    getPetUser ().removePet(getPetType());
+                if (getPetUser() != null) {
+                    getPetUser().removePet(getPetType());
                 } else {
                     bukkitEntity.remove();
                 }
@@ -512,7 +449,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             hoverTickCount++;
         }
 
-        if (getPetUser ().isPetVehicle(getPetType())) {
+        if (getPetUser().isPetVehicle(getPetType())) {
             if (floatDown) {
                 if (!isOnGround(this)) {
                     setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y * 0.4, getDeltaMovement().z);
@@ -523,10 +460,10 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
         if (this.frozen && (getTicksFrozen() < 140)) setTicksFrozen(150);
         if (this.onFire && (getRemainingFireTicks() < 140)) setRemainingFireTicks(150);
 
-        if (getPetUser ().getPlayer() != null) {
-            Player player = getPetUser ().getPlayer();
+        if (getPetUser().getPlayer() != null) {
+            Player player = getPetUser().getPlayer();
             boolean shifting = player.isSneaking();
-            if ((displayNameVisibility && hideNameShifting)  && (getPetType() != PetType.SHULKER))
+            if ((displayNameVisibility && hideNameShifting) && (getPetType() != PetType.SHULKER))
                 getEntity().setCustomNameVisible((!shifting));
 
             // Checks if the pet can actually be toggled to match their owners
@@ -537,7 +474,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
             );
 
             if (ownerVanish && ConfigOption.INSTANCE.MISC_TOGGLES_REMOVED_VANISH.getValue()) {
-                getPetUser ().removePet(getPetType());
+                getPetUser().removePet(getPetType());
                 return;
             }
 
@@ -555,7 +492,7 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                 }
             }
 
-            if (getPetUser ().isPetHat(getPetType())) {
+            if (getPetUser().isPetHat(getPetType())) {
                 setYRot(player.getLocation().getYaw());
                 this.yRotO = getYRot();
             }
@@ -601,7 +538,8 @@ public abstract class EntityPet extends EntityBase implements IEntityPet {
                     EntityUtils.getGlowingInstance().unsetGlowing(entity, player);
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
