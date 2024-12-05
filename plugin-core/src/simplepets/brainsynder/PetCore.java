@@ -40,6 +40,7 @@ import simplepets.brainsynder.impl.PetOwner;
 import simplepets.brainsynder.impl.PetUtility;
 import simplepets.brainsynder.listeners.*;
 import simplepets.brainsynder.listeners.breaking.DismountListener;
+import simplepets.brainsynder.listeners.claim.ClaimListener;
 import simplepets.brainsynder.managers.*;
 import simplepets.brainsynder.sql.SQLData;
 import simplepets.brainsynder.sql.SQLHandler;
@@ -416,6 +417,12 @@ public class PetCore extends JavaPlugin implements IPetsPlugin {
         manager.registerEvents(new SelectionGUIListener(), this);
         manager.registerEvents(new LocationChangeListener(), this);
         manager.registerEvents(new DismountListener(), this);
+
+        // FOX Start
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("GriefPrevention")) {
+            manager.registerEvents(new ClaimListener(), this);
+        }
+        // FOX End
     }
 
     @Override

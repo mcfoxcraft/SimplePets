@@ -12,3 +12,4 @@ libs/craftbukkit-*
 /.idea/
 .flattened-pom.xml
 */*-pom.xml
+run

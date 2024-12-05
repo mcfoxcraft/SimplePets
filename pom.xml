@@ -15,7 +15,7 @@
         <jenkins.buildNumber>0</jenkins.buildNumber>
 
         <module.info>-parent</module.info>
-        <revision>5.0-BUILD-0</revision>
+        <revision>5.1-BUILD-0</revision>
 
         <java.version>17</java.version>
         <bslib.version>B132</bslib.version>
@@ -155,6 +155,12 @@
     </dependencies>
 
     <repositories>
+        <!-- FOX -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <!-- FOX -->
         <repository>
             <id>bs-repo-nms</id>
             <url>https://repo.bsdevelopment.org/nms</url>
@@ -316,6 +322,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

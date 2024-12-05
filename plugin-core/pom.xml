@@ -78,6 +78,14 @@
     </properties>
 
     <dependencies>
+        <!-- FOX -->
+        <dependency>
+            <groupId>com.github.GriefPrevention</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>16.18.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- FOX -->
         <dependency>
             <groupId>simplepets.brainsynder</groupId>
             <artifactId>API</artifactId>
